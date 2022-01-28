@@ -1,0 +1,23 @@
+.bottom_menu {
+  display: flex;
+  padding: 15px 0 !important;
+  justify-content: center;
+  .menu_item {
+    background: rgba(255, 255, 255, .1);
+    width: auto;
+    border-radius: 5px;
+    margin: 0 5px;
+    padding: 10px 10px;
+    .icon {
+      min-width: auto;
+    }
+    svg {
+      fill: white;
+      width: 1em;
+      height: 1em;
+    }
+    &:hover {
+      background: rgba(255, 255, 255, .2);
+    }
+  }
+}

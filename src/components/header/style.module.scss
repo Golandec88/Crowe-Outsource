@@ -1,0 +1,10 @@
+.header {
+  width: calc(100% - 300px) !important;
+  left: 300px !important;
+  min-height: 72px !important;
+  box-shadow: 0 10px 10px -1px rgb(0 0 0 / 2%) !important;
+  display: flex;
+  .title {
+    margin-right: auto;
+  }
+}

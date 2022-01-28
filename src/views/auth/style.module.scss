@@ -1,0 +1,21 @@
+.layout {
+  height: 100vh;
+  padding-top: 30vh;
+  background: no-repeat fixed center url("https://picsum.photos/1980/1200");
+  background-size: cover;
+  .container {
+    width: 450px;
+    border-radius: 20px;
+    padding: 20px;
+    backdrop-filter: blur(20px);
+    box-shadow: inset 0px -1px 1px #e7ebf0;
+    background-color: rgba(255,255,255,0.72);
+  }
+  .title {
+    font-family: Poppins, sans-serif;
+    font-size: 35px;
+    line-height: 1.1;
+    font-weight: 300;
+    text-align: center;
+  }
+}

@@ -1,0 +1,9 @@
+.button {
+  border-radius: 30px !important;
+  background-color: #6311af !important;
+  width: 150px;
+  margin: 0 auto;
+  &[disabled] {
+    background: #ffffff4f !important;
+  }
+}

@@ -1,0 +1,10 @@
+.text_field {
+  margin-bottom: 15px !important;
+
+  fieldset {
+    border-radius: 30px;
+  }
+  input:-webkit-autofill {
+    border-radius: 25px;
+  }
+}
