@@ -1,5 +1,5 @@
-import axios from "axios";
 import { SET_MESSAGE } from "@modules/user/types";
+import axios from "axios";
 
 const Request = ({ method, url, params, data, headers, dispatch } ) => {
   const token = localStorage.getItem("token");
@@ -15,15 +15,21 @@ const Request = ({ method, url, params, data, headers, dispatch } ) => {
       params
     })
       .then(({ data }) => resolve(data))
-      .catch(({ message }) => {
+      .catch(({ response }) => {
+        const { status, data } = response;
+
+        if(status === 401) {
+          localStorage.removeItem("token");
+          window.location.href = "auth";
+        }
         dispatch({ type: SET_MESSAGE, value: {
           message: {
             type: "error",
-            text: message
+            text: data.toString()
           },
           error: true,
         } });
-        reject(message);
+        reject(data.toString());
       });
   });
 };
