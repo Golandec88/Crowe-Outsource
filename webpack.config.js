@@ -2,14 +2,14 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
-const { 
-  HotModuleReplacementPlugin, 
-  ProvidePlugin, 
-  DefinePlugin, 
+const {
+  HotModuleReplacementPlugin,
+  ProvidePlugin,
+  DefinePlugin,
   SourceMapDevToolPlugin
 } = require("webpack");
 
-const dotenv = require("dotenv").config( {
+const dotenv = require("dotenv").config({
   path: path.join(__dirname, ".env")
 });
 
