@@ -1,17 +1,12 @@
 import initialState from "@modules/user/store";
-import combiner from "@utils/store-combiner";
-import { 
-  AUTH_USER, 
-  AUTH_USER_SUCCESS, 
-  USER_CLEAR,
-  GET_USER_INFO,
-  GET_USER_INFO_SUCCESS,
-  GET_ROLES,
-  GET_ROLES_SUCCESS,
-  GET_MENU,
-  GET_MENU_SUCCESS,
-  SET_MESSAGE
+import {
+  AUTH_USER,
+  AUTH_USER_SUCCESS, GET_MENU,
+  GET_MENU_SUCCESS, GET_ROLES,
+  GET_ROLES_SUCCESS, GET_USER_INFO,
+  GET_USER_INFO_SUCCESS, SET_MESSAGE, USER_CLEAR
 } from "@modules/user/types";
+import combiner from "@utils/store-combiner";
 
 export default (state = initialState, { type, value }) => {
   switch (type) {

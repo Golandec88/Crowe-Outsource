@@ -1,10 +1,19 @@
 import { SET_MESSAGE } from "@modules/user/types";
 import axios from "axios";
 
-const Request = ({ method, url, params, data, headers, dispatch } ) => {
+const Request = ({ 
+  method, 
+  url, 
+  params, 
+  data, 
+  headers,
+  type,
+  dispatch
+} ) => {
   const token = localStorage.getItem("token");
 
   return new Promise((resolve, reject) => {
+    dispatch({ type });
     axios({
       headers: Object.assign(token ? {
         "Authorization": "Bearer " + token,
@@ -17,11 +26,12 @@ const Request = ({ method, url, params, data, headers, dispatch } ) => {
       .then(({ data }) => resolve(data))
       .catch(({ response }) => {
         const { status, data } = response;
-
+        
         if(status === 401) {
           localStorage.removeItem("token");
           window.location.href = "auth";
         }
+        
         dispatch({ type: SET_MESSAGE, value: {
           message: {
             type: "error",
