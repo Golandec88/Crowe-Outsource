@@ -12,9 +12,9 @@ const AuthForm = () => {
   const redirect = useNavigate();
   const setToken = useLocalStorage("token").setItem;
   
-  const auth = useDispatcher(authUser, useFormParser("auth-form"), (token) => {
+  const auth = useDispatcher(authUser, useFormParser("auth-form"), (token, { role }) => {
     setToken(token);
-    redirect("/");
+    redirect(role === 3 ? "/requests" : "/");
   });
 
   const submitHandler = (e) => {
