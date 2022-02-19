@@ -11,7 +11,7 @@ import s from "./style.module.scss";
 const AuthForm = () => {
   const redirect = useNavigate();
   const setToken = useLocalStorage("token").setItem;
-  
+
   const auth = useDispatcher(authUser, useFormParser("auth-form"), (token, { role }) => {
     setToken(token);
     redirect(role === 3 ? "/requests" : "/");

@@ -1,4 +1,26 @@
 .title {
-    margin-top: 0;
-    margin-bottom: 5px;
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+
+.mainPaper {
+  display: flex;
+  justify-content: space-between;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  padding-bottom: 20px !important;
+}
+
+.formPaper {
+  flex-basis: 39%;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.actualRequestsPaper {
+  min-width: 350px;
+  height: 100%;
+  flex-basis: 20% !important;
+  box-shadow: none !important;
+  background-color: transparent !important;
 }

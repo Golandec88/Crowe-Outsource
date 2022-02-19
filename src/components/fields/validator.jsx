@@ -8,28 +8,29 @@ const Validator = props => {
   const { key, setValidationStatus } = useContext(Context);
 
   const check = (touched, value, counter = 0) => {
-    if(!touched || !schema[counter]) {
+    if (!touched || !schema[counter]) {
       setError(false);
       setValidationStatus({ [key]: { value: true, touched } });
       return;
     }
-    if(typeof schema[counter](value) === "string") {
+    if (typeof schema[counter](value) === "string") {
       setError(schema[counter](value));
       setValidationStatus({ [key]: { value: false, touched } });
-    }
-    else return check(touched, value, counter + 1);
+    } else return check(touched, value, counter + 1);
   };
 
   useEffect(() => {
     check(false);
   }, []);
 
-  if(!schema) return cloneElement(children, ...rest);
-  else return cloneElement(children, { ...{
-    onChange: event => check(true, event.target.value),
-    helperText: error,
-    error: !!error
-  }, ...rest });
+  if (!schema) return cloneElement(children, ...rest);
+  else return cloneElement(children, {
+    ...{
+      onChange: event => check(true, event.target.value),
+      helperText: error,
+      error: !!error
+    }, ...rest
+  });
 };
 
 Validator.protopTypes = {

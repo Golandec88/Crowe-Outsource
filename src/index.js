@@ -13,7 +13,7 @@ render(
   <Provider store={store}>
     <StrictMode>
       <Router>
-        <App />
+        <App/>
       </Router>
     </StrictMode>
   </Provider>,

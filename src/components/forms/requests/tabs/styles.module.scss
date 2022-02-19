@@ -1,0 +1,77 @@
+.tabBox {
+  width: 100% !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.tabItem {
+  width: 33%;
+  height: 56px !important;
+  background: #FFFFFF !important;
+  box-sizing: border-box;
+  border-radius: 8px !important;
+  font-weight: bold !important;
+  text-transform: uppercase !important;
+  border: 0.5px solid rgba(0, 0, 0, 0.04);
+}
+
+.cardRound {
+  margin-top: 18px;
+  border: 0.5px solid rgba(0, 0, 0, 0.04);
+  box-sizing: border-box;
+  border-radius: 12px;
+  box-shadow: none !important;
+  background-color: #FFFFFF !important;
+  padding: 30px 20px !important;
+}
+
+h3.title {
+  margin: 0 0 20px 0;
+}
+
+.textField {
+  width: 100% !important;
+  box-sizing: border-box !important;
+  border-radius: 8px !important;
+  border: 0.5px solid #D9D9D9;
+  margin-bottom: 20px !important;
+
+  fieldset {
+    border-radius: 8px;
+    border: 0.5px solid #D9D9D9;
+  }
+
+  input:-webkit-autofill {
+    border-radius: 8px;
+  }
+
+}
+
+.textField50 {
+  width: 47% !important;
+  box-sizing: border-box !important;
+  border-radius: 8px !important;
+  border: 0.5px solid #D9D9D9;
+  margin-bottom: 20px !important;
+
+  fieldset {
+    border-radius: 8px;
+    border: 0.5px solid #D9D9D9;
+  }
+
+  input:-webkit-autofill {
+    border-radius: 8px;
+  }
+}
+
+.oneLineForm {
+  display: flex;
+  justify-content: space-between;
+}
+
+.paddingZero {
+  padding-top: 0 !important;
+}
+

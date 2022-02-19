@@ -13,7 +13,7 @@ const AppDrawer = ({ menu, name, position }) => {
     info: useSelector(({ user }) => user.info.loading),
     menu: useSelector(({ user }) => user.menu.loading)
   };
-  
+
   return <>
     <Drawer
       className={s.drawer}
@@ -22,13 +22,13 @@ const AppDrawer = ({ menu, name, position }) => {
       anchor="left"
       open
     >
-      <Logo />
-      <Divider className={s.divider} />
+      <Logo/>
+      <Divider className={s.divider}/>
       <Avatar name={name} position={position} loading={loading.info}/>
-      <Divider className={s.divider} />
+      <Divider className={s.divider}/>
       <Menu list={menu} loading={loading.menu}/>
-      <Divider className={`${s.divider} ${s.mt_auto}`} />
-      <BottomMenu />
+      <Divider className={`${s.divider} ${s.mt_auto}`}/>
+      <BottomMenu/>
     </Drawer>
   </>;
 };

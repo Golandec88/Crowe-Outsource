@@ -12,4 +12,4 @@ export const GET_USER_INFO_SUCCESS = "GET_USER_INFO_SUCCESS";
 
 export const USER_CLEAR = "USER_CLEAR";
 
-export const SET_MESSAGE = "SET_MESSAGE";
+export const SET_MESSAGE = "SET_MESSAGE"; 

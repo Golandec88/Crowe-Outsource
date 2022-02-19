@@ -46,6 +46,7 @@ export const getUserInfo = (dispatch, id) => {
     type: GET_USER_INFO,
     dispatch
   }).then(data => {
+    console.log(data);
     dispatch({ type: GET_USER_INFO_SUCCESS, value: data });
   });
 };

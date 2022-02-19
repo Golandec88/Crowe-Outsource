@@ -9,7 +9,9 @@
     "eslint": "eslint ./src --ext js,jsx"
   },
   "dependencies": {
+    "@date-io/date-fns": "^2.13.1",
     "axios": "^0.24.0",
+    "date-fns": "^2.28.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.6",
@@ -23,6 +25,7 @@
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
     "@mui/icons-material": "^5.3.0",
+    "@mui/lab": "^5.0.0-alpha.68",
     "@mui/material": "^5.2.8",
     "autoprefixer": "^10.4.2",
     "babel-loader": "^8.2.3",
