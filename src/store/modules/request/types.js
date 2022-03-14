@@ -1,0 +1,2 @@
+export const GET_REQUESTS = "GET_REQUESTS";
+export const SET_REQUESTS = "SET_REQUESTS";

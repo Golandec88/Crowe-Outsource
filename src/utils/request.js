@@ -1,4 +1,4 @@
-import { SET_MESSAGE } from "@modules/user/types";
+import { SET_MESSAGE } from "@modules/global/types";
 import axios from "axios";
 
 const Request = ({ 
@@ -36,8 +36,7 @@ const Request = ({
           message: {
             type: "error",
             text: data.toString()
-          },
-          error: true,
+          }
         } });
         reject(data.toString());
       });

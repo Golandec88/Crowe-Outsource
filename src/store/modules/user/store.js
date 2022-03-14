@@ -13,9 +13,5 @@ export default {
   menu: {
     loading: false,
     items: []
-  },
-  message: {
-    type: null,
-    text: null
   }
 };

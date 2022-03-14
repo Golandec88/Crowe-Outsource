@@ -1,25 +1,29 @@
 import { Paper } from "@mui/material";
-import styles from "./style.module.scss";
-import BasicTabs from "../../components/forms/requests/tabs/tabs";
-import FileTable from "../../components/forms/requests/filesColumn";
-import RequestTable from "../../components/forms/requests/requestTable";
+import BasicTabs from "@components/forms/requests/tabs";
+import FileTable from "@components/tables/requests/files";
+import RequestTable from "@components/tables/requests/appeals";
+import Title from "@components/title";
+import s from "./style.module.scss";
+import useScroller from "@hooks/scroller";
+import useItemsUploader from "@hooks/items-uploader";
+import { getRequests } from "@modules/request/creators";
 
-const RequestsPage = () => {
+export default function RequestsPage() {
+  const offset = useScroller(135);
+  const [requests] = useItemsUploader("request", "requests", getRequests);
+
   return <>
-    <h1 className={styles.title}>Заявки</h1>
-    <Paper className={styles.mainPaper}>
-      <Paper className={styles.actualRequestsPaper}>
-        <RequestTable/>
+    <Title text="Заявки"/>
+    <Paper className={s.main}>
+      <Paper className={s.paper}>
+        <RequestTable offset={offset} items={requests.items} loading={requests.loading} />
       </Paper>
-      <Paper className={styles.formPaper}>
-        <BasicTabs/>
+      <Paper className={s.paper}>
+        <BasicTabs offset={offset}/>
       </Paper>
-      <Paper className={styles.formPaper}>
-        <FileTable/>
+      <Paper className={s.paper}>
+        <FileTable offset={offset}/>
       </Paper>
     </Paper>
   </>;
-};
-
-
-export default RequestsPage;
+}

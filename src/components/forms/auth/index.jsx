@@ -41,6 +41,7 @@ const AuthForm = () => {
               size: "small",
               label: "Логин",
               fullWidth: true,
+              rounded: true,
               rules: [validationRules.required]
             }
           }, {
@@ -52,6 +53,7 @@ const AuthForm = () => {
               label: "Пароль",
               fullWidth: true,
               type: "password",
+              rounded: true,
               rules: [validationRules.required, validationRules.minLength3]
             }
           }, {

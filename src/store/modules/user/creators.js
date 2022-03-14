@@ -1,65 +1,50 @@
-import {
-  AUTH_USER,
-  AUTH_USER_SUCCESS,
-  GET_MENU,
-  GET_MENU_SUCCESS,
-  GET_ROLES,
-  GET_ROLES_SUCCESS,
-  GET_USER_INFO,
-  GET_USER_INFO_SUCCESS,
-  USER_CLEAR
-} from "@modules/user/types";
+import * as types from "@modules/user/types";
 import Request from "@utils/request";
 
 export const getMenu = dispatch => {
   Request({
     method: "GET",
-    url: "/outsource/StaffUserMenu",
-    type: GET_MENU,
+    url: "/crm/StaffUserMenu",
+    type: types.GET_MENU,
     dispatch
   }).then(({ value }) => {
     dispatch({
-      type: GET_MENU_SUCCESS,
+      type: types.SET_MENU,
       value: value ? value.items : []
     });
   });
 };
-
 export const authUser = (dispatch, payload, callback) => {
   Request({
     method: "POST",
-    url: "/outsource/StaffUser/Authenticate",
+    url: "/crm/StaffUser/Authenticate",
     data: payload,
-    type: AUTH_USER,
+    type: types.AUTH_USER,
     dispatch
   }).then(data => {
     const { token, user } = data;
-    dispatch({ type: AUTH_USER_SUCCESS, value: { token, info: user } });
+    dispatch({ type: types.AUTH_USER_SUCCESS, value: { token, info: user } });
     callback(token, user);
   });
 };
-
 export const getUserInfo = (dispatch, id) => {
   Request({
     method: "GET",
-    url: `/outsource/StaffUser${id ? "/" + id : ""}`,
-    type: GET_USER_INFO,
+    url: `/crm/StaffUser${id ? "/" + id : ""}`,
+    type: types.GET_USER_INFO,
     dispatch
   }).then(data => {
-    console.log(data);
-    dispatch({ type: GET_USER_INFO_SUCCESS, value: data });
+    dispatch({ type: types.SET_USER_INFO, value: data });
   });
 };
-
-export const getRoles = (dispatch) => {
+export const getRoles = dispatch => {
   Request({
     method: "GET",
-    url: "/outsource/StaffUser/GetAllRoles",
-    type: GET_ROLES,
+    url: "/crm/StaffUser/GetAllRoles",
+    type: types.GET_ROLES,
     dispatch,
   }).then(data => {
-    dispatch({ type: GET_ROLES_SUCCESS, value: data });
+    dispatch({ type: types.SET_ROLES, value: data });
   });
 };
-
-export const logout = (dispatch) => dispatch({ type: USER_CLEAR });
+export const logout = dispatch => dispatch({ type: types.USER_CLEAR });

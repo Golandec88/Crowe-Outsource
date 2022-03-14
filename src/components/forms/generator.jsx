@@ -1,12 +1,18 @@
+import { createContext, useState } from "react";
 import SignButton from "@buttons/sign";
 import TextField from "@fields/text-field";
 import { Box, Grid } from "@mui/material";
 import proptypes from "prop-types";
-import { createContext, useState } from "react";
+import Title from "@components/title";
+import DateAdapter from "@mui/lab/AdapterDateFns";
+import { LocalizationProvider } from "@mui/lab";
+import DatePicker from "@fields/date";
 
 const fields = {
+  "title": Title,
   "text": TextField,
-  "button-sign": SignButton
+  "button-sign": SignButton,
+  "date": DatePicker
 };
  
 export const Context = createContext({});
@@ -16,40 +22,48 @@ const Generator = ({ grow, spacing, schema }) => {
   const [validationStatus, setValidationStatus] = useState({});
 
   return <>
-    <Box sx={{ flexGrow: grow }}>
-      <Grid container spacing={spacing}>
-        {schema.map((
-          item,
-          index
-        ) => <Grid item key={index} xs={item.cols}>
-          {item.child.map((
-            field,
-            subIndex
-          ) => {
-            const Component = fields[field.type];
+    <LocalizationProvider dateAdapter={DateAdapter}>
+      <Box sx={{ flexGrow: grow }}>
+        <Grid container spacing={spacing}>
+          {schema.map((
+            item,
+            index
+          ) => <Grid item key={index} xs={item.cols}>
+            <Grid container spacing={spacing}>
+              {item.child.map((
+                field,
+                subIndex
+              ) => {
+                const Component = fields[field.type];
 
-            if(field.type.split("-")[0] === "button")
-              return <Component
-                {...field.props}
-                key={`#key-${index}${subIndex}`}
-                disabled={!Object
-                  .values(validationStatus)
-                  .every(item => item.touched ? item.value : false)}
-              />;
+                if(field.type.split("-")[0] === "button") {
+                  return <Component
+                    {...field.props}
+                    key={`#component-key-${index}${subIndex}`}
+                    disabled={!Object
+                      .values(validationStatus)
+                      .every(item => item.touched ? item.value : false)}
+                  />;
+                }
 
-            return <Context.Provider
-              key={`#${field.type}-${index}-${subIndex}`}
-              value={{
-                setValidationStatus: event => setValidationStatus({ ...validationStatus, ...event }),
-                key: `#${field.type}-${index}-${subIndex}`,
-                validationStatus
-              }}>
-              <Component {...field.props}/>
-            </Context.Provider>;
-          })}
-        </Grid>)}
-      </Grid>
-    </Box>
+                return <Context.Provider
+                  key={`#${field.type}-${index}-${subIndex}`}
+                  value={{
+                    setValidationStatus: event => setValidationStatus({ ...validationStatus, ...event }),
+                    key: `#${field.type}-${index}-${subIndex}`,
+                    validationStatus
+                  }}>
+                  <Grid item key={`#grid-key-${index}${subIndex}`} xs={field.cols ? field.cols : 12}>
+                    <Component {...field.props}/>
+                  </Grid>
+                </Context.Provider>;
+              })}
+            </Grid>
+          </Grid>)}
+        </Grid>
+      </Box>
+
+    </LocalizationProvider>
   </>;
 };
 

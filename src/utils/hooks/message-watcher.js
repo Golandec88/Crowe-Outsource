@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { useEffect } from "react";
 
 const useMessageWatcher = (setModel) => {
-  const message = useSelector(({ user }) => user.message);
+  const message = useSelector(({ global }) => global.message);
 
   useEffect(() => {
     if(message.text) {

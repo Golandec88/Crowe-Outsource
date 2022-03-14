@@ -1,10 +1,10 @@
-module.exports = ({ API_OUTSOURCE }) => {
+module.exports = ({ API_CRM }) => {
   return {
-    "/outsource/": {
+    "/crm/": {
       secure: false,
-      target: API_OUTSOURCE,
+      target: API_CRM,
       pathRewrite: {
-        "^/outsource/": "/api/"
+        "^/crm/": "/api/"
       }
     }
   };

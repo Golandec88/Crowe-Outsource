@@ -1,5 +1,5 @@
 import { useState } from "react";
-import PropTypes from "prop-types";
+import proptypes from "prop-types";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -8,8 +8,7 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Checkbox from "@mui/material/Checkbox";
-import styles from "./style.module.scss";
-
+import s from "./style.module.scss";
 
 function createData(status, type, subType, date, number) {
   return { status, type, subType, date, number };
@@ -52,7 +51,7 @@ function getComparator(order, orderBy) {
 function EnhancedTableHead(props) {
   const { onSelectAllClick, order, orderBy, numSelected, rowCount } = props;
   return (
-    <TableHead className={styles.tableHead}>
+    <TableHead className={s.tableHead}>
       <TableRow>
         <TableCell padding="checkbox">
           <Checkbox
@@ -77,12 +76,12 @@ function EnhancedTableHead(props) {
 }
 
 EnhancedTableHead.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-  onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
-  order: PropTypes.oneOf(["asc", "desc"]).isRequired,
-  orderBy: PropTypes.string.isRequired,
-  rowCount: PropTypes.number.isRequired,
+  numSelected: proptypes.number,
+  onRequestSort: proptypes.func,
+  onSelectAllClick: proptypes.func,
+  order: proptypes.oneOf(["asc", "desc"]),
+  orderBy: proptypes.string,
+  rowCount: proptypes.number,
 };
 
 export default function SelectTable({ getSelectedDocs }) {
@@ -137,7 +136,7 @@ export default function SelectTable({ getSelectedDocs }) {
   const isSelected = (name) => selected.indexOf(name) !== -1;
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
-  return (<>
+  return <>
     <TableContainer>
       <Table>
         <EnhancedTableHead
@@ -156,7 +155,7 @@ export default function SelectTable({ getSelectedDocs }) {
 
               return (
                 <TableRow
-                  className={styles.tableBody}
+                  className={s.tableBody}
                   hover
                   role="checkbox"
                   onClick={(event) => handleClick(event, row)}
@@ -182,8 +181,7 @@ export default function SelectTable({ getSelectedDocs }) {
               );
             })}
           {emptyRows > 0 && (
-            <TableRow
-            >
+            <TableRow>
               <TableCell colSpan={6}/>
             </TableRow>
           )}
@@ -199,5 +197,9 @@ export default function SelectTable({ getSelectedDocs }) {
       onPageChange={handleChangePage}
       onRowsPerPageChange={handleChangeRowsPerPage}
     />
-  </>);
+  </>;
 }
+
+SelectTable.propTypes = {
+  getSelectedDocs: proptypes.func
+};
