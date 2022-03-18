@@ -2,8 +2,9 @@ import Generator from "@forms/generator";
 import formRules from "@utils/validation-rules";
 import proptypes from "prop-types";
 
-export default function UserInfo ({ form }) {
+export default function UserInfo({ form }) {
   return <>
+
     <Generator schema={[
       {
         cols: 6,
@@ -57,7 +58,7 @@ export default function UserInfo ({ form }) {
           type: "title",
           props: {
             text: "Серия и номер пасспорта:",
-            size: "small"
+            size: "small",
           }
         }, {
           type: "text",
@@ -65,9 +66,21 @@ export default function UserInfo ({ form }) {
             name: "passport",
             label: "Серия и номер",
             rules: [formRules.required],
+            value: form?.passportData.serialAndNumber,
             fullWidth: true
           }
-        }, {
+        },
+        {
+          type: "text",
+          props: {
+            name: "givenPlace",
+            label: "Кем выдано",
+            rules: [formRules.required],
+            value: form?.passportData.givenPlace,
+            fullWidth: true
+          }
+        },
+        {
           type: "date",
           props: {
             name: "dateOfBirth",
@@ -76,17 +89,11 @@ export default function UserInfo ({ form }) {
             fullWidth: true
           }
         }, {
-          type: "title",
-          props: {
-            text: "Срок действия паспорта: ",
-            size: "small",
-          }
-        }, {
           type: "date",
           cols: 6,
           props: {
             name: "passportDateFrom",
-            label: "Дата (от)",
+            label: "Срок (от)",
             rules: [formRules.required],
             fullWidth: true
           }
@@ -95,7 +102,7 @@ export default function UserInfo ({ form }) {
           cols: 6,
           props: {
             name: "passportExpireDate",
-            label: "Дата (до)",
+            label: "Срок (до)",
             rules: [formRules.required],
             fullWidth: true
           }
@@ -109,6 +116,7 @@ export default function UserInfo ({ form }) {
             name: "address",
             cols: 12,
             label: "Адрес прописки",
+            value: form?.passportData.registration,
             fullWidth: true
           }
         }, {
@@ -117,6 +125,8 @@ export default function UserInfo ({ form }) {
           props: {
             name: "phone",
             label: "Телефон",
+            rules: [formRules.required],
+            value: form?.request.phone,
             fullWidth: true
           },
         }, {
@@ -125,6 +135,8 @@ export default function UserInfo ({ form }) {
           props: {
             name: "email",
             label: "EMail",
+            rules: [formRules.required],
+            value: form?.request.email,
             fullWidth: true
           }
         }]

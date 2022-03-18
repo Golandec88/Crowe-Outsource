@@ -11,7 +11,7 @@ const useRoles = (id) => {
 
   useEffect(() => {
     console.log(id);
-    if(id) getRoles();
+    if (id) getRoles();
   }, [roles]);
 
   return {

@@ -26,7 +26,7 @@ export default function Validator({ children, schema, value, ...rest }) {
   };
 
   const onChange = (event) => {
-    if(schema) check(true, event.target.value);
+    if (schema) check(true, event.target.value);
     setLocalValue(event.target.value);
   };
 

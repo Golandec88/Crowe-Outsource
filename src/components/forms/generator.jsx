@@ -17,7 +17,8 @@ const fields = {
 
 export const Context = createContext({
   validationStatus: {},
-  setValidationStatus: function() {},
+  setValidationStatus: function () {
+  },
   key: ""
 });
 
@@ -41,7 +42,7 @@ export default function Generator({ grow, spacing, schema }) {
                 ) => {
                   const Component = fields[field.type];
 
-                  if(field.type.split("-")[0] === "button") {
+                  if (field.type.split("-")[0] === "button") {
                     return <Component
                       {...field.props}
                       key={`#component-key-${index}${subIndex}`}

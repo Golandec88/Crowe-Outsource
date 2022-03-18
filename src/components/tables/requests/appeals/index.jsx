@@ -23,8 +23,10 @@ const columns = [
 
 const ThField = (id, label) => {
   switch (id) {
-    case "notification": return <Icon.Notifications sx={{ color: "white" }}/>;
-    default: return label;
+    case "notification":
+      return <Icon.Notifications sx={{ color: "white" }}/>;
+    default:
+      return label;
   }
 };
 
@@ -60,7 +62,7 @@ export default function RequestsTable({ offset, items, onChange, selected, loadi
                 <TableRow>
                   {columns.map((column, index) =>
                     <TableCell key={`table-skeleton-${index}`}>
-                      <Skeleton className={s.skeleton} />
+                      <Skeleton className={s.skeleton}/>
                     </TableCell>
                   )}
                 </TableRow>
@@ -81,7 +83,7 @@ export default function RequestsTable({ offset, items, onChange, selected, loadi
                   </TableCell>
                   <TableCell/>
                   <TableCell>
-                    <IconButton size="small" href={`tel:998${item.request.phone.replace(/[^0-9]/g,"")}`}>
+                    <IconButton size="small" href={`tel:998${item.request.phone.replace(/[^0-9]/g, "")}`}>
                       <Icon.Phone color="primary"/>
                     </IconButton>
                   </TableCell>
@@ -104,7 +106,8 @@ RequestsTable.propTypes = {
 };
 
 RequestsTable.defaultProps = {
-  onChange: () => {},
+  onChange: () => {
+  },
   loading: false,
   items: []
 };

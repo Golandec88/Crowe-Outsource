@@ -1,6 +1,8 @@
 import Generator from "@components/forms/generator";
+import formRules from "@utils/validation-rules";
+import proptypes from "prop-types";
 
-export default function CompanyInfo() {
+export default function CompanyInfo({ form }) {
   return <>
     <Generator schema={[
       {
@@ -16,7 +18,9 @@ export default function CompanyInfo() {
           props: {
             name: "name",
             label: "Наименование организации",
-            fullWidth: true
+            fullWidth: true,
+            rules: [formRules.required],
+            value: form?.request.companyInfo.name
           }
         }]
       },
@@ -26,7 +30,7 @@ export default function CompanyInfo() {
           type: "title",
           props: {
             text: "Срок действия договора",
-            size: "small"
+            size: "small",
           }
         }, {
           type: "date",
@@ -34,6 +38,8 @@ export default function CompanyInfo() {
           props: {
             name: "trustDateFrom",
             label: "Дата (от)",
+            rules: [formRules.required],
+            value: form?.request.contractInfo.validityPeriod.startDate,
             fullWidth: true
           }
         }, {
@@ -42,6 +48,8 @@ export default function CompanyInfo() {
           props: {
             name: "trustDateOfExpire",
             label: "Дата (до)",
+            rules: [formRules.required],
+            value: form?.request.contractInfo.validityPeriod.endDate,
             fullWidth: true
           }
         }]
@@ -52,6 +60,7 @@ export default function CompanyInfo() {
           props: {
             text: "Последняя оплата",
             size: "small",
+            value: form?.request.contractInfo.validityPeriod.startDate,
           }
         }, {
           type: "date",
@@ -59,7 +68,9 @@ export default function CompanyInfo() {
           props: {
             name: "paymentDate",
             label: "Дата оплаты",
-            fullWidth: true
+            fullWidth: true,
+            rules: [formRules.required],
+            value: form?.request.contractInfo.lastPayment.paymentDate
           }
         }, {
           type: "text",
@@ -67,7 +78,9 @@ export default function CompanyInfo() {
           props: {
             name: "sum",
             label: "Сумма",
-            fullWidth: true
+            fullWidth: true,
+            rules: [formRules.required],
+            value: form?.request.contractInfo.lastPayment.amount
           }
         },
         {
@@ -76,13 +89,15 @@ export default function CompanyInfo() {
             text: "Прочая информация",
             size: "small",
           }
-        },{
+        }, {
           type: "text",
           cols: 6,
           props: {
             name: "tin",
             label: "ИНН",
-            fullWidth: true
+            fullWidth: true,
+            rules: [formRules.required],
+            value: form?.request.companyInfo.tin
           }
         }, {
           type: "text",
@@ -90,7 +105,9 @@ export default function CompanyInfo() {
           props: {
             name: "oked",
             label: "ОКЕД",
-            fullWidth: true
+            fullWidth: true,
+            rules: [formRules.required],
+            value: form?.request.companyInfo.oked
           }
         }]
       }, {
@@ -101,6 +118,8 @@ export default function CompanyInfo() {
           props: {
             name: "address",
             label: "Адресс организации",
+            rules: [formRules.required],
+            value: form?.request.companyInfo.address,
             fullWidth: true
           }
         }, {
@@ -109,6 +128,8 @@ export default function CompanyInfo() {
           props: {
             name: "regCode",
             label: "НДС регистрационный номер",
+            rules: [formRules.required],
+            value: form?.request.companyInfo.nds,
             fullWidth: true
           }
         }, {
@@ -117,6 +138,8 @@ export default function CompanyInfo() {
           props: {
             name: "account",
             label: "Банковский счёт",
+            rules: [formRules.required],
+            value: form?.request.companyInfo.bank.account,
             fullWidth: true
           }
         }, {
@@ -125,6 +148,8 @@ export default function CompanyInfo() {
           props: {
             name: "mfo",
             label: "МФО",
+            rules: [formRules.required],
+            value: form?.request.companyInfo.bank.mfo,
             fullWidth: true
           }
         }, {
@@ -133,6 +158,7 @@ export default function CompanyInfo() {
           props: {
             name: "bank",
             label: "Банк",
+            value: form?.request.companyInfo.bank.name,
             fullWidth: true
           }
         }]
@@ -144,6 +170,7 @@ export default function CompanyInfo() {
           props: {
             name: "director",
             label: "Директор",
+            value: form?.request.companyInfo.director,
             fullWidth: true
           }
         }, {
@@ -152,6 +179,7 @@ export default function CompanyInfo() {
           props: {
             name: "accountant",
             label: "Главный Бухгалтер",
+            value: form?.request.companyInfo.headAccountant,
             fullWidth: true
           }
         }, {
@@ -160,6 +188,7 @@ export default function CompanyInfo() {
           props: {
             name: "phone",
             label: "Телефон",
+            value: form?.request.companyInfo.phone,
             fullWidth: true
           }
         }, {
@@ -168,6 +197,7 @@ export default function CompanyInfo() {
           props: {
             name: "email",
             label: "EMail",
+            value: form?.request.companyInfo.email,
             fullWidth: true
           }
         }
@@ -176,3 +206,8 @@ export default function CompanyInfo() {
     ]}/>
   </>;
 }
+
+
+CompanyInfo.propTypes = {
+  form: proptypes.object
+};

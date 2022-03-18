@@ -23,7 +23,7 @@ export default function DefaultLayout() {
   return <>
     <ThemeProvider theme={createTheme(themeOptions)}>
       <Box sx={{ display: "flex", pt: "70px" }}>
-        <CssBaseline />
+        <CssBaseline/>
         <Header title="ABV Outsource CRM"/>
         <Drawer menu={menu} name={fullName} position={role}/>
         <main className={s.default_layout}>

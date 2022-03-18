@@ -41,7 +41,7 @@ export default function BasicTabs({ offset, selected, onChange }) {
           <UserInfo form={selected} onChange={onChange}/>
         </Card>
         <Card disableRadius="top">
-          <CompanyInfo/>
+          <CompanyInfo form={selected} onChange={onChange}/>
         </Card>
       </TabPanel>
       <TabPanel value={value} index={1}>
@@ -51,7 +51,7 @@ export default function BasicTabs({ offset, selected, onChange }) {
       </TabPanel>
       <TabPanel value={value} index={2}>
         <Card disableRadius="top">
-          <CompanyInfo/>
+          <CompanyInfo form={selected} onChange={onChange}/>
         </Card>
       </TabPanel>
     </Box>

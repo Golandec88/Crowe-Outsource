@@ -1,25 +1,11 @@
-import { useState } from "react";
 import { DatePicker } from "@mui/lab";
 import TextField from "@components/fields/text-field";
-import proptypes from "prop-types";
 
-export default function DatePickerField({ value, ...rest }) {
-  const [localValue, setLocalValue] = useState(value);
-
+export default function DatePickerField(props) {
   return <>
     <DatePicker
-      label="Basic example"
-      value={localValue}
-      renderInput={(params) => <TextField {...params} {...rest} />}
-      onChange={setLocalValue}
+      renderInput={(params) => <TextField {...params}/>}
+      {...props}
     />
   </>;
 }
-
-DatePickerField.propTypes = {
-  value: proptypes.string
-};
-
-DatePickerField.defaultProps = {
-  value: null
-};
