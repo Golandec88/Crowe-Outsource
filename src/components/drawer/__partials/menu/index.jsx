@@ -10,14 +10,14 @@ const iconNameFormatter = name => {
   switch(first) {
     case "UserPlus": return "Group";
     case "Pencil": return "Edit";
-    case "Clipboard": return "NoteAlt"; 
+    case "Clipboard": return "NoteAlt";
     default: return first;
   }
 };
 
-const AppMenu = ({ list, loading }) => {
-  const { pathname } = useLocation(); 
-  
+export default function AppMenu({ list, loading }) {
+  const { pathname } = useLocation();
+
   return <>
     <List className={s.menu}>
       {loading ? <>
@@ -29,10 +29,10 @@ const AppMenu = ({ list, loading }) => {
         <Skeleton className={s.skeleton} />
         <Skeleton className={s.skeleton} />
         <Skeleton className={s.skeleton} />
-      </> : list.map(({ name, iconName, link }, index) => (  
-        <Link 
-          className={`${s.menu_link} ${(link === "/dashboard" ? "/" : link) === pathname ? s.active : ""}`} 
-          to={link === "/dashboard" ? "/" : link} 
+      </> : list.map(({ name, iconName, link }, index) => (
+        <Link
+          className={`${s.menu_link} ${(link === "/dashboard" ? "/" : link) === pathname ? s.active : ""}`}
+          to={link === "/dashboard" ? "/" : link}
           key={index}
         >
           <ListItem className={s.menu_item} button>
@@ -45,7 +45,7 @@ const AppMenu = ({ list, loading }) => {
       ))}
     </List>
   </>;
-};
+}
 
 AppMenu.propTypes = {
   list: proptypes.array,
@@ -56,5 +56,3 @@ AppMenu.defaultProps = {
   list: [],
   loading: false
 };
-
-export default AppMenu;

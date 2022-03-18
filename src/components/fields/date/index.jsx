@@ -3,23 +3,23 @@ import { DatePicker } from "@mui/lab";
 import TextField from "@components/fields/text-field";
 import proptypes from "prop-types";
 
-export default function DatePickerField({ initialState, ...rest }) {
-  const [value, setValue] = useState(initialState);
+export default function DatePickerField({ value, ...rest }) {
+  const [localValue, setLocalValue] = useState(value);
 
   return <>
     <DatePicker
       label="Basic example"
-      value={value}
+      value={localValue}
       renderInput={(params) => <TextField {...params} {...rest} />}
-      onChange={(newValue) => {setValue(newValue);}}
+      onChange={setLocalValue}
     />
   </>;
 }
 
 DatePickerField.propTypes = {
-  initialState: proptypes.string
+  value: proptypes.string
 };
 
 DatePickerField.defaultProps = {
-  initialState: null
+  value: null
 };

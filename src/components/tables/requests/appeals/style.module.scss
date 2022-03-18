@@ -34,6 +34,9 @@
     overflow-y: auto !important;
     height: calc(100vh - 235px);
   }
+  .select-area {
+    cursor: pointer;
+  }
 
   .head {
     th {
@@ -55,6 +58,11 @@
   .body {
     tr {
       background: #FFFFFF;
+      transition: .3s;
+      &.active {
+        background: #f2f9ff;
+        transition: .3s;
+      }
     }
   }
 }

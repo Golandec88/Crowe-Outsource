@@ -8,7 +8,7 @@ import validationRules from "@utils/validation-rules";
 import { useNavigate } from "react-router-dom";
 import s from "./style.module.scss";
 
-const AuthForm = () => {
+export default function AuthForm() {
   const redirect = useNavigate();
   const setToken = useLocalStorage("token").setItem;
 
@@ -17,8 +17,8 @@ const AuthForm = () => {
     redirect(role === 3 ? "/requests" : "/");
   });
 
-  const submitHandler = (e) => {
-    e.preventDefault();
+  const submitHandler = event => {
+    event.preventDefault();
     auth();
   };
 
@@ -70,6 +70,4 @@ const AuthForm = () => {
       ]}/>
     </Box>
   </>;
-};
-
-export default AuthForm;
+}

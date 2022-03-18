@@ -17,8 +17,7 @@ const menu = [
   }
 ];
 
-const AppBottomMenu = () => {
-
+export default function AppBottomMenu() {
   return <>
     <List className={s.bottom_menu}>
       {menu.map((elem, index) => (
@@ -32,6 +31,4 @@ const AppBottomMenu = () => {
       ))}
     </List>
   </>;
-};
-
-export default AppBottomMenu;
+}

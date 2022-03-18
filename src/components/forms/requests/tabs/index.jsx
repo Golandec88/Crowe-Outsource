@@ -9,7 +9,7 @@ import Card from "@components/card";
 import s from "./style.module.css";
 import proptypes from "prop-types";
 
-export default function BasicTabs({ offset }) {
+export default function BasicTabs({ offset, selected, onChange }) {
   const [value, setValue] = useState(0);
 
   return <>
@@ -38,7 +38,7 @@ export default function BasicTabs({ offset }) {
 
       <TabPanel value={value} index={0}>
         <Card disableRadius="all">
-          <UserInfo/>
+          <UserInfo form={selected} onChange={onChange}/>
         </Card>
         <Card disableRadius="top">
           <CompanyInfo/>
@@ -46,7 +46,7 @@ export default function BasicTabs({ offset }) {
       </TabPanel>
       <TabPanel value={value} index={1}>
         <Card disableRadius="top">
-          <UserInfo/>
+          <UserInfo form={selected} onChange={onChange}/>
         </Card>
       </TabPanel>
       <TabPanel value={value} index={2}>
@@ -59,5 +59,7 @@ export default function BasicTabs({ offset }) {
 }
 
 BasicTabs.propTypes = {
-  offset: proptypes.number
+  offset: proptypes.number,
+  onChange: proptypes.func,
+  selected: proptypes.object
 };

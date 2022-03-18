@@ -1,7 +1,6 @@
 import Generator from "@components/forms/generator";
 
-const CompanyInfo = () => {
-
+export default function CompanyInfo() {
   return <>
     <Generator schema={[
       {
@@ -176,6 +175,4 @@ const CompanyInfo = () => {
       }
     ]}/>
   </>;
-};
-
-export default CompanyInfo;
+}

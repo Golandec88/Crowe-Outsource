@@ -13,7 +13,7 @@ import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import s from "./style.module.scss";
 
-const DefaultLayout = () => {
+export default function DefaultLayout() {
   const [themeOptions] = useState(themeConfig("light"));
   const [toastModel, setToastModel] = useState(false);
   const [message, type] = useMessageWatcher(setToastModel);
@@ -39,6 +39,4 @@ const DefaultLayout = () => {
       </Snackbar>
     </ThemeProvider>
   </>;
-};
-
-export default DefaultLayout;
+}

@@ -2,7 +2,7 @@ import AuthForm from "@forms/auth";
 import { Container, Typography } from "@mui/material";
 import s from "./style.module.scss";
 
-const Auth = () => {
+export default function Auth() {
   return <>
     <section className={s.layout}>
       <Container className={s.container}>
@@ -12,6 +12,4 @@ const Auth = () => {
       </Container>
     </section>
   </>;
-};
-
-export default Auth;
+}

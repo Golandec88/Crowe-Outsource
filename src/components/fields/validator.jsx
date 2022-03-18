@@ -2,10 +2,14 @@ import { Context } from "@forms/generator";
 import proptypes from "prop-types";
 import { cloneElement, useContext, useEffect, useState } from "react";
 
-const Validator = props => {
-  const { children, schema, ...rest } = props;
+export default function Validator({ children, schema, value, ...rest }) {
   const [error, setError] = useState(false);
+  const [localValue, setLocalValue] = useState(value);
   const { key, setValidationStatus } = useContext(Context);
+
+  useEffect(() => {
+    setLocalValue(value);
+  }, [value]);
 
   const check = (touched, value, counter = 0) => {
     if (!touched || !schema[counter]) {
@@ -16,26 +20,27 @@ const Validator = props => {
     if (typeof schema[counter](value) === "string") {
       setError(schema[counter](value));
       setValidationStatus({ [key]: { value: false, touched } });
-    } else return check(touched, value, counter + 1);
+      return;
+    }
+    return check(touched, value, counter + 1);
   };
 
-  useEffect(() => {
-    check(false);
-  }, []);
+  const onChange = (event) => {
+    if(schema) check(true, event.target.value);
+    setLocalValue(event.target.value);
+  };
 
-  if (!schema) return cloneElement(children, ...rest);
-  else return cloneElement(children, {
-    ...{
-      onChange: event => check(true, event.target.value),
-      helperText: error,
-      error: !!error
-    }, ...rest
-  });
-};
+  return cloneElement(children, Object.assign({
+    value: localValue,
+    onChange
+  }, schema ? {
+    helperText: error,
+    error: !!error,
+  } : {}, rest));
+}
 
 Validator.protopTypes = {
   children: proptypes.elementType,
-  schema: proptypes.array
+  schema: proptypes.array,
+  value: proptypes.string
 };
-
-export default Validator;

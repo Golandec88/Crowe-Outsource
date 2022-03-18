@@ -28,7 +28,7 @@ const ThField = (id, label) => {
   }
 };
 
-const RequestsTable = ({ offset, items, loading }) => {
+export default function RequestsTable({ offset, items, onChange, selected, loading }) {
   return <>
     <Grid id="container" className={`${s.container} ${offset > 135 ? s.fixed : ""}`} container>
       <Grid item xs={12}>
@@ -66,9 +66,11 @@ const RequestsTable = ({ offset, items, loading }) => {
                 </TableRow>
               </> : items.map((item, index) => (
                 <TableRow
+                  className={`${s["select-area"]} ${selected === item ? s["active"] : ""}`}
                   key={`table-tr-${index}`}
                   role="checkbox"
                   tabIndex={-1}
+                  onClick={() => onChange(item)}
                   hover
                 >
                   <TableCell>
@@ -91,12 +93,18 @@ const RequestsTable = ({ offset, items, loading }) => {
       </Grid>
     </Grid>
   </>;
-};
+}
 
 RequestsTable.propTypes = {
   offset: proptypes.number,
   items: proptypes.array,
-  loading: proptypes.bool
+  loading: proptypes.bool,
+  onChange: proptypes.func,
+  selected: proptypes.object
 };
 
-export default RequestsTable;
+RequestsTable.defaultProps = {
+  onChange: () => {},
+  loading: false,
+  items: []
+};

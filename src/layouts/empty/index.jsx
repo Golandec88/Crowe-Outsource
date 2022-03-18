@@ -3,7 +3,7 @@ import { Alert, CssBaseline, Fade, Snackbar } from "@mui/material";
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
 
-const EmptyLayout = () => {
+export default function EmptyLayout() {
   const [toastModel, setToastModel] = useState(false);
   const [message, type] = useMessageWatcher(setToastModel);
 
@@ -18,6 +18,4 @@ const EmptyLayout = () => {
       <Alert severity={type}>{message}</Alert>
     </Snackbar>
   </>;
-};
-
-export default EmptyLayout;
+}

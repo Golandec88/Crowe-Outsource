@@ -1,6 +1,8 @@
 import Generator from "@forms/generator";
+import formRules from "@utils/validation-rules";
+import proptypes from "prop-types";
 
-export default function UserInfo () {
+export default function UserInfo ({ form }) {
   return <>
     <Generator schema={[
       {
@@ -14,30 +16,38 @@ export default function UserInfo () {
         }, {
           type: "text",
           props: {
-            name: "name",
+            name: "request.companyInfo.director[0]",
             label: "Имя",
-            fullWidth: true
+            fullWidth: true,
+            rules: [formRules.required],
+            value: form?.request.companyInfo.director.split(" ")[0]
           }
         }, {
           type: "text",
           props: {
-            name: "surname",
+            name: "request.companyInfo.director[1]",
             label: "Фамилия",
-            fullWidth: true
+            rules: [formRules.required],
+            fullWidth: true,
+            value: form?.request.companyInfo.director.split(" ")[1]
           }
         }, {
           type: "text",
           props: {
-            name: "patronymic",
+            name: "request.companyInfo.director[2]",
             label: "Отчество",
-            fullWidth: true
+            rules: [formRules.required],
+            fullWidth: true,
+            value: form?.request.companyInfo.director.split(" ")[2]
           }
         }, {
           type: "text",
           props: {
-            name: "pinfl",
+            name: "passportData.pinfl",
             label: "ИНН / ПИНФЛ физ. лица",
-            fullWidth: true
+            rules: [formRules.required],
+            fullWidth: true,
+            value: form?.passportData.pinfl
           }
         }]
       },
@@ -54,6 +64,7 @@ export default function UserInfo () {
           props: {
             name: "passport",
             label: "Серия и номер",
+            rules: [formRules.required],
             fullWidth: true
           }
         }, {
@@ -61,6 +72,7 @@ export default function UserInfo () {
           props: {
             name: "dateOfBirth",
             label: "Дата рождения",
+            rules: [formRules.required],
             fullWidth: true
           }
         }, {
@@ -75,6 +87,7 @@ export default function UserInfo () {
           props: {
             name: "passportDateFrom",
             label: "Дата (от)",
+            rules: [formRules.required],
             fullWidth: true
           }
         }, {
@@ -83,6 +96,7 @@ export default function UserInfo () {
           props: {
             name: "passportExpireDate",
             label: "Дата (до)",
+            rules: [formRules.required],
             fullWidth: true
           }
         }]
@@ -118,3 +132,7 @@ export default function UserInfo () {
     ]}/>
   </>;
 }
+
+UserInfo.propTypes = {
+  form: proptypes.object
+};
