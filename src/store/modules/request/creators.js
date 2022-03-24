@@ -12,3 +12,15 @@ export const getRequests = dispatch => {
     dispatch({ type: types.SET_REQUESTS, value: data });
   });
 };
+
+export const getClassifications = dispatch => {
+  Request({
+    method: "GET",
+    url: "/crm/FileClassification/AllClassesWithSubClasses",
+    type: types.GET_CLASSIFICATIONS,
+    data: {},
+    dispatch
+  }).then(data => {
+    dispatch({ type: types.SET_CLASSIFICATIONS, value: data });
+  });
+};

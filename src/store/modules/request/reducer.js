@@ -20,6 +20,24 @@ export default (state = initialState, { type, value }) => {
         }
       });
     }
-    default: return state;
+    case types.GET_CLASSIFICATIONS: {
+      return combiner(state, {
+        classifications: {
+          items: [],
+          loading: true
+        }
+      });
+    }
+    case types.SET_CLASSIFICATIONS: {
+      return combiner(state, {
+        classifications: {
+          loading: false,
+          items: value
+        }
+      });
+    }
+
+    default:
+      return state;
   }
 };

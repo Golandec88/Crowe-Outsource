@@ -16,9 +16,8 @@ import proptypes from "prop-types";
 
 const columns = [
   { id: "tin", label: "ИНН" },
-  { id: "status", label: "Статус" },
-  { id: "notification", label: "" },
-  { id: "phone", label: "" }
+  { id: "data", label: "Дата" },
+  { id: "notification", label: "" }
 ];
 
 const ThField = (id, label) => {
@@ -71,6 +70,7 @@ export default function RequestsTable({ offset, items, onChange, selected, loadi
                   className={`${s["select-area"]} ${selected === item ? s["active"] : ""}`}
                   key={`table-tr-${index}`}
                   role="checkbox"
+                  style={{ backgroundColor: (item.request.requestStatus === 1 ? "#0FBE7B60" : "white"), }}
                   tabIndex={-1}
                   onClick={() => onChange(item)}
                   hover
@@ -79,9 +79,8 @@ export default function RequestsTable({ offset, items, onChange, selected, loadi
                     {item.request.companyInfo.tin}
                   </TableCell>
                   <TableCell>
-                    {item.request.requestStatus}
+                    {item.request.sendDate.substring(0, 10)}
                   </TableCell>
-                  <TableCell/>
                   <TableCell>
                     <IconButton size="small" href={`tel:998${item.request.phone.replace(/[^0-9]/g, "")}`}>
                       <Icon.Phone color="primary"/>

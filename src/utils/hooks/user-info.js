@@ -12,7 +12,7 @@ const useUserInfo = () => {
   const getRoles = useDispatcher(getRolesAction);
 
   useEffect(() => {
-    if(Object.keys(info.items).length === 0) getInfo();
+    if (Object.keys(info.items).length === 0) getInfo();
     getRoles();
   }, []);
 

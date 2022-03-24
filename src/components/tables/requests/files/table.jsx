@@ -10,26 +10,12 @@ import TableRow from "@mui/material/TableRow";
 import Checkbox from "@mui/material/Checkbox";
 import s from "./style.module.scss";
 
-function createData(status, type, subType, date, number) {
-  return { status, type, subType, date, number };
-}
-
-const rows = [
-  createData("300123121", "СКЛАД", "РАСХОД", "13.01.2022", "№3360"),
-  createData("300123122", "ККМ", "ЧЕКИ", "13.01.2022", "№3360"),
-  createData("300123123", "Приказы", "НАЙМ", "13.01.2022", "№3360"),
-  createData("300123124", "Банк", "ВЫПИСКА", "13.01.2022", "№3360"),
-  createData("300123125", "СКЛАД", "РАСХОД", "13.01.2022", "№3360"),
-  createData("300123126", "ККМ", "ЧЕКИ", "13.01.2022", "№3360"),
-  createData("300123127", "Приказы", "НАЙМ", "13.01.2022", "№3360"),
-  createData("300123128", "Банк", "ВЫПИСКА", "13.01.2022", "№3360"),
-];
+const SelectedRows = [];
 const headCells = [
-  { id: "status", label: "Статус", numeric: false },
   { id: "type", label: "Тип", numeric: false },
   { id: "subType", label: "Подтип", numeric: false },
   { id: "date", label: "Дата", numeric: false },
-  { id: "number", label: "Номер", numeric: false }
+  { id: "action", label: "Action", numeric: false }
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -84,8 +70,7 @@ EnhancedTableHead.propTypes = {
   rowCount: proptypes.number,
 };
 
-export default function SelectTable({ getSelectedDocs }) {
-
+export default function SelectTable({ getSelectedDocs, files, classifications }) {
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("date");
   const [selected, setSelected] = useState([]);
@@ -99,7 +84,7 @@ export default function SelectTable({ getSelectedDocs }) {
   };
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n);
+      const newSelecteds = SelectedRows.map((n) => n);
       setSelected(newSelecteds);
       getSelectedDocs(newSelecteds);
       return;
@@ -134,7 +119,29 @@ export default function SelectTable({ getSelectedDocs }) {
     setPage(0);
   };
   const isSelected = (name) => selected.indexOf(name) !== -1;
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - SelectedRows.length) : 0;
+
+  const handeleFilesById = (row) => {
+    let obj = {
+      class: null,
+      subClass: null,
+      id: null,
+      fileName: null,
+    };
+    classifications.items.classes.forEach(item => {
+      item.subClasses.forEach(id => {
+        if (row.fileClassificationId === id.id) {
+          Object.assign(obj, {
+            class: item.name,
+            subClass: id.name,
+            id: id.id,
+            fileName: row.fileName
+          });
+        }
+      });
+    });
+    return obj;
+  };
 
   return <>
     <TableContainer>
@@ -145,24 +152,24 @@ export default function SelectTable({ getSelectedDocs }) {
           orderBy={orderBy}
           onSelectAllClick={handleSelectAllClick}
           onRequestSort={handleRequestSort}
-          rowCount={rows.length}
+          rowCount={files?.length}
         />
         <TableBody>
-          {rows.slice().sort(getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+          {files?.slice().sort(getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((row, index) => {
-              const isItemSelected = isSelected(row);
+              row = handeleFilesById(row);
+              const isItemSelected = isSelected(row.fileName);
               const labelId = `enhanced-table-checkbox-${index}`;
-
               return (
                 <TableRow
-                  className={s.tableBody}
+                  className={s.textCenter}
                   hover
                   role="checkbox"
-                  onClick={(event) => handleClick(event, row)}
+                  onClick={(event) => handleClick(event, row.fileName)}
                   selected={isItemSelected}
                   aria-checked={isItemSelected}
                   tabIndex={-1}
-                  key={row.status}
+                  key={row.id}
                 >
                   <TableCell padding="checkbox">
                     <Checkbox
@@ -172,11 +179,14 @@ export default function SelectTable({ getSelectedDocs }) {
                       }}
                     />
                   </TableCell>
-                  <TableCell id={labelId}>{row.status}</TableCell>
-                  <TableCell>{row.type}</TableCell>
-                  <TableCell>{row.subType}</TableCell>
-                  <TableCell>{row.date}</TableCell>
-                  <TableCell>{row.number}</TableCell>
+                  <TableCell
+                    id={labelId}>{row.class}</TableCell>
+                  <TableCell
+                    id={labelId}>{row.subClass}</TableCell>
+                  <TableCell
+                    id={labelId}>{row.data ? row.data : "-"}</TableCell>
+                  <TableCell
+                    id={labelId}>{row.fileName}</TableCell>
                 </TableRow>
               );
             })}
@@ -191,7 +201,7 @@ export default function SelectTable({ getSelectedDocs }) {
     <TablePagination
       component="div"
       rowsPerPageOptions={[5, 10, 25]}
-      count={rows.length}
+      count={SelectedRows.length}
       rowsPerPage={rowsPerPage}
       page={page}
       onPageChange={handleChangePage}
@@ -201,5 +211,7 @@ export default function SelectTable({ getSelectedDocs }) {
 }
 
 SelectTable.propTypes = {
-  getSelectedDocs: proptypes.func
+  getSelectedDocs: proptypes.func,
+  files: proptypes.object,
+  classifications: proptypes.object
 };

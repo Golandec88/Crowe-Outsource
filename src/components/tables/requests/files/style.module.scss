@@ -33,6 +33,24 @@
 
 .container {
   width: 100%;
+  padding-right: 10px;
+  align-content: baseline;
+
+  &.fixed {
+    position: fixed;
+    top: 85px;
+    z-index: 2;
+
+    .overflow-content {
+      height: calc(100vh - 165px);
+    }
+  }
+}
+
+.textCenter {
+  td {
+    text-align: center;
+  }
 }
 
 @media(max-width: 1920px) {

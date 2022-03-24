@@ -30,7 +30,7 @@ export default function RequestsPage() {
         <BasicTabs offset={offset} selected={selected}/>
       </Paper>
       <Paper className={s.paper}>
-        <FileTable offset={offset}/>
+        <FileTable offset={offset} selected={selected}/>
       </Paper>
     </Paper>
   </>;
