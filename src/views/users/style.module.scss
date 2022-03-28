@@ -1,0 +1,27 @@
+.main {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  padding-bottom: 20px !important;
+  flex-wrap: nowrap;
+}
+
+
+.paper {
+  width: 100%;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  display: flex;
+  align-content: baseline;
+}
+
+@media(max-width: 1920px) {
+  .main {
+    flex-wrap: wrap;
+
+    .paper {
+    }
+  }
+}

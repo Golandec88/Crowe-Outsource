@@ -1,6 +1,7 @@
 import { Paper } from "@mui/material";
 import BasicTabs from "@components/forms/requests/tabs";
 import FileTable from "@components/tables/requests/files";
+import SubmitButtons from "@components/buttons/submit";
 import RequestTable from "@components/tables/requests/appeals";
 import Title from "@components/title";
 import s from "./style.module.scss";
@@ -32,6 +33,9 @@ export default function RequestsPage() {
       <Paper className={s.paper}>
         <FileTable offset={offset} selected={selected}/>
       </Paper>
+    </Paper>
+    <Paper className={s.main}>
+      <SubmitButtons size={"large"}/>
     </Paper>
   </>;
 }

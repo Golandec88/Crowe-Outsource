@@ -8,7 +8,7 @@ import {
   TableHead,
   TableRow,
   TextField,
-  Box, Skeleton
+  Box, Skeleton, Chip, Tooltip
 } from "@mui/material";
 import s from "./style.module.scss";
 import * as Icon from "@mui/icons-material";
@@ -70,13 +70,18 @@ export default function RequestsTable({ offset, items, onChange, selected, loadi
                   className={`${s["select-area"]} ${selected === item ? s["active"] : ""}`}
                   key={`table-tr-${index}`}
                   role="checkbox"
-                  style={{ backgroundColor: (item.request.requestStatus === 1 ? "#0FBE7B60" : "white"), }}
                   tabIndex={-1}
                   onClick={() => onChange(item)}
                   hover
                 >
                   <TableCell>
-                    {item.request.companyInfo.tin}
+                    <Tooltip title={(item.request.requestStatus === 1 ? "Подтверждено" : "Отклонено")}>
+                      <Chip size="small" variant={"filled"} style={{ marginRight: "10px", height: "16px" }}
+                        color={(item.request.requestStatus === 1 ? "success" : "error")}/>
+                    </Tooltip>
+                    <span>
+                      {item.request.companyInfo.tin}
+                    </span>
                   </TableCell>
                   <TableCell>
                     {item.request.sendDate.substring(0, 10)}
