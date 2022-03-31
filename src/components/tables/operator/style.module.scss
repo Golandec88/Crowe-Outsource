@@ -73,6 +73,11 @@
   }
 }
 
+.justify {
+  display: flex;
+  justify-content: space-between;
+}
+
 .skeleton {
   background-color: #00c5ff30;
   cursor: wait;

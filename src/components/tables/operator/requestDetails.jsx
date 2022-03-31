@@ -1,12 +1,45 @@
-import proptypes from "prop-types";
+import * as React from "react";
+import { useState } from "react";
 import s from "./style.module.scss";
+import proptypes from "prop-types";
 import SubmitButtons from "@components/buttons/submit";
-import { Grid, Link } from "@mui/material";
+import { Alert, Grid, Link, IconButton, Chip, Tooltip } from "@mui/material";
+import { Check, Close } from "@mui/icons-material";
 import useItemsUploader from "@hooks/items-uploader";
 import { getAllClassifications } from "@modules/manager/creators";
+import { downloadFile } from "@modules/manager/creators";
+
 
 export default function RequestDetails({ row }) {
   const [classifications] = useItemsUploader("manager", "allClassifications", getAllClassifications);
+  const [declinedDocs, setDeclinedDocs] = useState([]);
+
+  const handleDownloadFile = (fileId) => {
+    if (fileId) {
+      downloadFile(fileId).then((res) => {
+        if (typeof res.data === "string") {
+          const blob = new Blob([res.data], { type: res.headers["content-type"] });
+          const link = document.createElement("a");
+          link.href = URL.createObjectURL(blob);
+          link.download = name;
+          document.body.appendChild(link);
+          link.click();
+        }
+      });
+    }
+  };
+
+
+  const handleDeclineDoc = (event, file) => {
+    if (declinedDocs.some(item => item.fileName === file.fileName)) {
+      return "already here";
+    } else setDeclinedDocs([...declinedDocs, file]);
+  };
+  const handleAcceptDoc = (event, file) => {
+    const newList = declinedDocs.filter((item) => item.fileName !== file.fileName);
+    setDeclinedDocs(newList);
+  };
+
   return <>
     <Grid container>
       <Grid item xs={12} className={s.title} textAlign={"center"}>
@@ -39,17 +72,37 @@ export default function RequestDetails({ row }) {
         </div>
       </Grid>
       <Grid item xs={4}>
-        <p><span>Файлы заявки</span></p>
         <div className={s.details}>
+          <Alert color={"primary"} severity="info">Проверьте все документы!</Alert>
+          <p>
+            <span>Файлы заявки</span>
+          </p>
           {row?.request.attachedFiles.map((item, index) => {
             const info = classifications.items.find(o => o.id === item.fileClassificationId);
-            return <Link key={index} style={{ cursor: "pointer" }} onClick={event => console.log(event)}>
-              <p>
-                <span>{index + 1 + " "}</span> : {info?.class}&nbsp;({info?.subClass})
-              </p>
-            </Link>;
-          })
-          }
+            return <div className={s.justify} key={item.fileClassificationId + "___" + index}>
+              <div>
+                <Tooltip title={"Статус"}>
+                  <Chip size="small" variant={"filled"} style={{ marginRight: "10px", height: "16px" }}
+                    color={"success"}/>
+                </Tooltip>
+                <Link style={{ cursor: "pointer" }}
+                  onClick={() => handleDownloadFile(item.fileName)}>
+                  <span>{index + 1 + " "}</span> : {info?.class}&nbsp;({info?.subClass})
+                </Link>
+              </div>
+              <div>
+                <IconButton onClick={event => handleDeclineDoc(event, { ...info, ...item })}
+                  size="small"
+                  aria-label="decline" color="error">
+                  <Close fontSize="small"/>
+                </IconButton>
+                <IconButton onClick={event => handleAcceptDoc(event, { ...info, ...item })}
+                  size="small" aria-label="accept" color="success">
+                  <Check fontSize="small"/>
+                </IconButton>
+              </div>
+            </div>;
+          })}
         </div>
       </Grid>
       <Grid item xs={12} margin={2}>
@@ -63,4 +116,5 @@ RequestDetails.propTypes = {
   row: proptypes.object,
 
 };
+
 
