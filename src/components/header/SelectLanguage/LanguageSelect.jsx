@@ -1,8 +1,8 @@
 import React from "react";
-import { Switch } from "antd";
 import {useTranslation} from "react-i18next";
 import i18n from "i18next";
 import SwitchButton from "@components/header/SelectLanguage/SwitchButton";
+
 
 
 const LanguageSelect = () => {
@@ -18,6 +18,7 @@ const LanguageSelect = () => {
   };
   return (
     <SwitchButton onChangeLanguage={onChangeLanguage} />
+
   )
 
 
