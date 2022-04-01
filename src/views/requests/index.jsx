@@ -8,30 +8,33 @@ import useScroller from "@hooks/scroller";
 import useItemsUploader from "@hooks/items-uploader";
 import { getRequests } from "@modules/request/creators";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function RequestsPage() {
   const offset = useScroller(135);
   const [requests] = useItemsUploader("request", "requests", getRequests);
   const [selected, setSelected] = useState();
-
-  return <>
-    <Title text="Заявки"/>
-    <Paper className={s.main}>
-      <Paper className={s.paper}>
-        <RequestTable
-          offset={offset}
-          items={requests.items}
-          loading={requests.loading}
-          onChange={setSelected}
-          selected={selected}
-        />
+  {
+    const { t } = useTranslation();
+    return <>
+      <Title text={t("requests")}/>
+      <Paper className={s.main}>
+        <Paper className={s.paper}>
+          <RequestTable
+            offset={offset}
+            items={requests.items}
+            loading={requests.loading}
+            onChange={setSelected}
+            selected={selected}
+          />
+        </Paper>
+        <Paper className={s.paper}>
+          <BasicTabs offset={offset} selected={selected}/>
+        </Paper>
+        <Paper className={s.paper}>
+          <FileTable offset={offset} selected={selected}/>
+        </Paper>
       </Paper>
-      <Paper className={s.paper}>
-        <BasicTabs offset={offset} selected={selected}/>
-      </Paper>
-      <Paper className={s.paper}>
-        <FileTable offset={offset} selected={selected}/>
-      </Paper>
-    </Paper>
-  </>;
+    </>;
+  }
 }
