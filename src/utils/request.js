@@ -13,7 +13,7 @@ const Request = ({
   const token = localStorage.getItem("token");
 
   return new Promise((resolve, reject) => {
-    dispatch({ type });
+    if (dispatch) dispatch({ type });
     axios({
       headers: Object.assign(token ? {
         "Authorization": "Bearer " + token,

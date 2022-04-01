@@ -1,4 +1,4 @@
-import * as types from "./types";
+import * as types from "@modules/request/types";
 import Request from "@utils/request";
 
 export const getRequests = dispatch => {

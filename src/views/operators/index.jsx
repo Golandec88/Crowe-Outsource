@@ -1,5 +1,8 @@
+import Title from "../../components/title";
+
 export default function OperatorsPage() {
   return <>
-    <h1>Operators</h1>
+    <Title text="Заявки"/>
   </>;
 }
+ 
