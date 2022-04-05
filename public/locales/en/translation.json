@@ -1,6 +1,28 @@
 {
-  "figcaption": "Welcome to React",
-  "language" : "English",
-  "dashboard" : "Dashboard",
-  "requests": "Requests"
+  "language": "English",
+  "dashboard": "Dashboard",
+  "requests": "Requests",
+  "menu": [
+    {
+      "line": "Dashboard"
+    },
+    {
+      "line": "Requests"
+    },
+    {
+      "line": "Users"
+    },
+    {
+      "line": "Archive"
+    },
+    {
+      "line": "Operators"
+    },
+    {
+      "line": "Projects"
+    },
+    {
+      "line": "Settings"
+    }
+  ]
 }

@@ -3,6 +3,8 @@ import iconCreator from "@utils/icon-creator";
 import * as proptypes from "prop-types";
 import { Link, useLocation } from "react-router-dom";
 import s from "./style.module.scss";
+import { useTranslation } from "react-i18next";
+
 
 const iconNameFormatter = name => {
   const first = name.substring(3);
@@ -15,8 +17,13 @@ const iconNameFormatter = name => {
   }
 };
 
-export default function AppMenu({ list, loading }) {
+export default function AppMenu({ list, loading, } ) {
   const { pathname } = useLocation();
+
+  const { t } = useTranslation();
+  const menu = t("menu", { returnObjects: true });
+
+
 
   return <>
     <List className={s.menu}>
@@ -39,7 +46,7 @@ export default function AppMenu({ list, loading }) {
             <ListItemIcon className={s.icon}>
               {iconCreator(iconNameFormatter(iconName))}
             </ListItemIcon>
-            <ListItemText primary={name} />
+            <ListItemText primary={menu[index].line} />
           </ListItem>
         </Link>
       ))}

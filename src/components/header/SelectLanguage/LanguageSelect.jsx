@@ -1,13 +1,8 @@
 import React from "react";
-import {useTranslation} from "react-i18next";
 import i18n from "i18next";
 import SwitchButton from "@components/header/SelectLanguage/SwitchButton";
 
-
-
 const LanguageSelect = () => {
-  const { t } = useTranslation();
-
   const onChangeLanguage = checked => {
     // if checked is false, French should be adopted
     if (!checked) {
@@ -19,7 +14,7 @@ const LanguageSelect = () => {
   return (
     <SwitchButton onChangeLanguage={onChangeLanguage} />
 
-  )
+  );
 
 
 

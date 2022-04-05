@@ -1,11 +1,5 @@
-import { useTranslation } from "react-i18next";
-export default function DashboardPage()
-{const { t } = useTranslation();
-
+export default function DashboardPage() {
   return <>
-
-    <h1>{t("dashboard")}</h1>
-
-
+    <h1>dashboard</h1>
   </>;
 }
