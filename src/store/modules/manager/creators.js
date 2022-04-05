@@ -24,3 +24,14 @@ export const downloadFile = (id) => {
       .catch(err => reject(err));
   });
 };
+
+export const getInfoByPinfl = (tin) => {
+  return new Promise((resolve, reject) => {
+    axios.get("/user/EDOTaxOffice/GetPhysicalTaxPayerInfo", {
+      params: { tin: tin },
+      headers: { "Authorization": "Bearer " + localStorage.getItem("token") },
+    })
+      .then(res => resolve(res))
+      .catch(err => reject(err));
+  });
+};

@@ -47,9 +47,15 @@
   }
 }
 
-.textCenter {
+.textAlign {
   td {
-    text-align: center;
+    text-align: left;
+  }
+}
+
+.tableHead {
+  th {
+    font-weight: bold;
   }
 }
 

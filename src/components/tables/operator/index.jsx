@@ -41,7 +41,6 @@ function Row({ row }) {
         <TableCell>{row?.request.companyInfo.tin}</TableCell>
         <TableCell>{row?.request.sendDate.substring(0, 10)}</TableCell>
         <TableCell>{row?.request.responseCallCenterOperatorId}</TableCell>
-        <TableCell/>
       </TableRow>
       <TableRow>
         <TableCell colSpan={6} className={s.accardion}>
@@ -60,7 +59,7 @@ function Row({ row }) {
 
 export default function CollapsibleTable({ items, loading }) {
   return (
-    <TableContainer component={Paper}>
+    <TableContainer elevation={0} component={Paper}>
       <Table className={s.table} aria-label="collapsible table">
         <TableHead className={s.head}>
           <TableRow>
@@ -68,8 +67,7 @@ export default function CollapsibleTable({ items, loading }) {
             <TableCell>Название организации</TableCell>
             <TableCell>ИНН</TableCell>
             <TableCell>Дата заявки</TableCell>
-            <TableCell>responseCallCenterOperatorId</TableCell>
-            <TableCell>Actions</TableCell>
+            <TableCell>Оператор Колл-Центра</TableCell>
           </TableRow>
         </TableHead>
         <TableBody className={s.body}>
@@ -92,5 +90,4 @@ export default function CollapsibleTable({ items, loading }) {
 CollapsibleTable.propTypes = {
   loading: proptypes.bool,
   items: proptypes.array,
-  selected: proptypes.object
 };

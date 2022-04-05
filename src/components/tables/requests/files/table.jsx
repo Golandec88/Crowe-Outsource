@@ -14,8 +14,7 @@ const SelectedRows = [];
 const headCells = [
   { id: "type", label: "Тип", numeric: false },
   { id: "subType", label: "Подтип", numeric: false },
-  { id: "date", label: "Дата", numeric: false },
-  { id: "action", label: "Action", numeric: false }
+  { id: "date", label: "Дата", numeric: false }
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -39,17 +38,10 @@ function EnhancedTableHead(props) {
   return (
     <TableHead className={s.tableHead}>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-          />
-        </TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={"center"}
+            align={"left"}
             sortDirection={orderBy === (headCell.label === "date") ? order : false}
           >
             {headCell.label}
@@ -158,35 +150,25 @@ export default function SelectTable({ getSelectedDocs, files, classifications })
           {files?.slice().sort(getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((row, index) => {
               row = handeleFilesById(row);
+              console.log(row);
               const isItemSelected = isSelected(row.fileName);
               const labelId = `enhanced-table-checkbox-${index}`;
               return (
                 <TableRow
-                  className={s.textCenter}
+                  className={s.textAlign}
                   hover
-                  role="checkbox"
                   onClick={(event) => handleClick(event, row.fileName)}
                   selected={isItemSelected}
                   aria-checked={isItemSelected}
                   tabIndex={-1}
                   key={row.id}
                 >
-                  <TableCell padding="checkbox">
-                    <Checkbox
-                      checked={isItemSelected}
-                      inputProps={{
-                        "aria-labelledby": labelId,
-                      }}
-                    />
-                  </TableCell>
                   <TableCell
                     id={labelId}>{row.class}</TableCell>
                   <TableCell
                     id={labelId}>{row.subClass}</TableCell>
                   <TableCell
-                    id={labelId}>{row.data ? row.data : "-"}</TableCell>
-                  <TableCell
-                    id={labelId}>{row.fileName}</TableCell>
+                    id={labelId}>{row.data ? row.data : " - "}</TableCell>
                 </TableRow>
               );
             })}

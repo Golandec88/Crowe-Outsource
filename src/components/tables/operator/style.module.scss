@@ -25,7 +25,7 @@
       color: #FFFFFF !important;
       padding: 8px 16px;
       border: none;
-      text-align: center;
+      text-align: left;
 
       &:first-child {
         border-top-left-radius: 8px;
@@ -43,7 +43,7 @@
 
   .body {
     td {
-      text-align: center;
+      text-align: left;
     }
 
     tr {

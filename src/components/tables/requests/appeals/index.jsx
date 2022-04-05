@@ -84,7 +84,7 @@ export default function RequestsTable({ offset, items, onChange, selected, loadi
                     </span>
                   </TableCell>
                   <TableCell>
-                    {item.request.sendDate.substring(0, 10)}
+                    {item.request.sendDate ? item.request.sendDate.substring(0, 10) : " - "}
                   </TableCell>
                   <TableCell>
                     <IconButton size="small" href={`tel:998${item.request.phone.replace(/[^0-9]/g, "")}`}>

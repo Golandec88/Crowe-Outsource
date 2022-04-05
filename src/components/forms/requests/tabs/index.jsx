@@ -37,20 +37,20 @@ export default function BasicTabs({ offset, selected, onChange }) {
       </Tabs>
 
       <TabPanel value={value} index={0}>
-        <Card disableRadius="all">
+        <Card disableElevation disableRadius="all">
           <UserInfo form={selected} onChange={onChange}/>
         </Card>
-        <Card disableRadius="top">
+        <Card disableElevation disableRadius="top">
           <CompanyInfo form={selected} onChange={onChange}/>
         </Card>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <Card disableRadius="top">
+        <Card disableElevation disableRadius="top">
           <UserInfo form={selected} onChange={onChange}/>
         </Card>
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <Card disableRadius="top">
+        <Card disableElevation disableRadius="top">
           <CompanyInfo form={selected} onChange={onChange}/>
         </Card>
       </TabPanel>

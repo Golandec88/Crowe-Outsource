@@ -9,7 +9,6 @@ export default function UsersPage() {
   const [requests] = useItemsUploader("request", "requests", getRequests);
 
   return <>
-    <Title text="Users"/>
     <Paper className={s.main}>
       <Paper className={s.paper}>
         <CollapsibleTable
