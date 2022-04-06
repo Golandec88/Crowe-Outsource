@@ -3,8 +3,12 @@ import routes from "@src/router";
 import { useSelector } from "react-redux";
 import { useRoutes } from "react-router-dom";
 import "./global.css";
+import { useTranslation } from "react-i18next";
 
 export default function App() {
+  const { t } = useTranslation();
+  window.__proto__.$t = t;
+
   const localToken = useLocalStorage("token").item;
   const token = useSelector(({ user }) => {
     if(user.token) return user.token;

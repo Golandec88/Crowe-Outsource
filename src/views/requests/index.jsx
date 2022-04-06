@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Paper } from "@mui/material";
 import BasicTabs from "@components/forms/requests/tabs";
 import FileTable from "@components/tables/requests/files";
@@ -9,6 +8,8 @@ import s from "./style.module.scss";
 import useScroller from "@hooks/scroller";
 import useItemsUploader from "@hooks/items-uploader";
 import { getRequests } from "@modules/request/creators";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import Dialogs from "@components/dialog";
 
 export default function RequestsPage() {
@@ -18,6 +19,7 @@ export default function RequestsPage() {
   const [open, setOpen] = useState(false);
   const [buttonType, setButtonType] = useState(true);
   const [confirmation, setConfirmation] = useState(false);
+  const { t } = useTranslation();
 
   const handleAccept = () => {
     setButtonType(false);
@@ -38,7 +40,7 @@ export default function RequestsPage() {
   };
 
   return <>
-    <Title text="Заявки"/>
+    <Title text={t("requests")}/>
     <Dialogs dialog={open}
       closeDialog={handleClose}
       confirm={confirm}
