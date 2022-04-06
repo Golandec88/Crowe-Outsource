@@ -41,6 +41,7 @@ function Row({ row }) {
         <TableCell>{row?.request.companyInfo.tin}</TableCell>
         <TableCell>{row?.request.sendDate.substring(0, 10)}</TableCell>
         <TableCell>{row?.request.responseCallCenterOperatorId}</TableCell>
+        <TableCell/>
       </TableRow>
       <TableRow>
         <TableCell colSpan={6} className={s.accardion}>

@@ -18,7 +18,7 @@ export default function RequestsPage() {
   const [selected, setSelected] = useState();
   const [open, setOpen] = useState(false);
   const [buttonType, setButtonType] = useState(true);
-  const [confirmation, setConfirmation] = useState(false);
+  const [, setConfirmation] = useState(false);
   const { t } = useTranslation();
 
   const handleAccept = () => {
@@ -30,11 +30,11 @@ export default function RequestsPage() {
     setOpen(true);
   };
   const handleClose = () => setOpen(false);
-  const confirm = (comment) => {
+  const confirm = () => {
     setConfirmation(true);
     handleClose();
   };
-  const decline = (comment) => {
+  const decline = () => {
     setConfirmation(false);
     handleClose();
   };
@@ -68,7 +68,8 @@ export default function RequestsPage() {
         closeDialog={handleClose}
         type={buttonType}
         confirm={confirm}
-        decline={decline}/>
+        decline={decline}
+      />
     </Paper>
   </>;
 }
