@@ -5,81 +5,90 @@ import Dialog from "@mui/material/Dialog";
 import { DialogTitle, DialogContent, DialogActions, DialogContentText, TextField } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import { useTranslation } from "react-i18next";
 
+export default function Dialogs(props) {
+  const {
+    model,
+    confirm,
+    close,
+    type,
+    text
+  } = props;
 
-export default function Dialogs({
-  dialog,
-  closeDialog,
-  confirm,
-  decline,
-  type,
-  text
-}) {
-  const [getComment, setComment] = useState("");
-  const handleComments = (val) => setComment(val);
+  const { t } = useTranslation();
+  const [comment, setComment] = useState("");
+  const closeHandler = () => {
+    setComment("");
+    close();
+  };
 
   return <>
     <Dialog
-      fullWidth={"md"}
-      onClose={closeDialog}
+      fullWidth
+      onClose={closeHandler}
       aria-labelledby="customized-dialog-title"
-      open={dialog}
+      open={model}
     >
       <DialogTitle>
-        Подтвердите действие!
+        {t("confirmAction")}
         <IconButton
           aria-label="close"
-          onClick={closeDialog}
+          onClick={closeHandler}
           sx={{
             position: "absolute",
             right: 8,
             top: 8,
-            color: (theme) => theme.palette.grey[500],
+            color: theme => theme.palette.grey[500],
           }}
         >
           <CloseIcon/>
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        {text ? <DialogContentText gutterBottom>
-          Let Google help apps determine location. This means sending anonymous
-          location data to Google, even when no apps are running.
-        </DialogContentText> : null
-        }
+        <DialogContentText gutterBottom>{text}</DialogContentText>
         <TextField
           multiline
           rows={4}
-          fullWidth={true}
+          fullWidth
           id="outlined-textarea"
-          placeholder={type ? "Опишите причину отказа" : "Напишите комментарии"}
-          value={getComment}
-          onChange={event => handleComments(event.target.value)}
-          helperText={type ? "Обязательное поле для заполнения" : ""}
+          placeholder={type === "reject" ? t("rejectReason") : t("comment")}
+          value={comment}
+          onChange={event => setComment(event.target.value)}
+          helperText={"* " + t("requiredField")}
           required={type}
         />
       </DialogContent>
       <DialogActions style={{ margin: "10px" }}>
-        {type ?
-          <Button size={"medium"} variant="contained" color="error" disableElevation disabled={!getComment}
-            onClick={() => decline(getComment)}>
-            Отклонить заявку
-          </Button>
-          :
-          <Button size={"medium"} variant="contained" color="primary" disableElevation
-            onClick={() => confirm(getComment)}>
-            Подтведрить заявку
-          </Button>
-        }
+        <Button
+          size="medium"
+          variant="contained"
+          color="error"
+          disableElevation
+          onClick={closeHandler}
+        >
+          {t("close")}
+        </Button>
+        <Button
+          size="medium"
+          variant="contained"
+          color="primary"
+          disableElevation
+          disabled={!comment}
+          onClick={() => confirm(comment)}
+        >
+          {t("send")}
+        </Button>
       </DialogActions>
     </Dialog>
   </>;
 }
 
 Dialogs.propTypes = {
-  dialog: proptypes.bool.isRequired,
-  type: proptypes.bool,
-  closeDialog: proptypes.func.isRequired,
+  model: proptypes.bool.isRequired,
+  setModel: proptypes.func.isRequired,
+  type: proptypes.oneOf(["reject", "accept", "resend"]),
   confirm: proptypes.func,
-  decline: proptypes.func,
-  text: proptypes.string,
+  close: proptypes.func,
+  text: proptypes.string
 };

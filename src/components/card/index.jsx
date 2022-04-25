@@ -2,15 +2,26 @@ import proptypes from "prop-types";
 import { Box } from "@mui/material";
 import s from "./style.module.scss";
 
-export default function Card({ children, marginBottom, disableRadius }) {
-  return <Box className={`${s.card} ${marginBottom ? s.mb : ""} ${disableRadius ? s["disable-radius-" + disableRadius] : ""}`}>
-    {children}
-  </Box>;
+export default function Card(props) {
+  const { children, marginBottom, disableRadius } = props;
+
+  return <>
+    <Box className={formatClassName(marginBottom, disableRadius)}>
+      {children}
+    </Box>
+  </>;
+}
+
+function formatClassName(marginBottom, disableRadius) {
+  let result = s.card;
+  if (marginBottom)  result =+ " " + s.mb;
+  if (disableRadius) result =+ " " + s["disable-radius-" + disableRadius];
+  return result;
 }
 
 Card.propTypes = {
-  marginBottom: proptypes.bool,
   children: proptypes.node,
+  marginBottom: proptypes.bool,
   disableRadius: proptypes.oneOf(["top", "bottom", "right", "left", "all"])
 };
 

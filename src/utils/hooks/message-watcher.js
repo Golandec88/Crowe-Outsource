@@ -1,24 +1,26 @@
-import { useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { CLEAR_MESSAGE } from "@modules/global/types";
 
-const useMessageWatcher = (setModel) => {
-  const message = useSelector(({ global }) => global.message);
+export default function () {
+  const dispatch = useDispatch();
+  const { text, type } = useSelector(({ global }) => global.message);
+  const [model, setModel] = useState(false);
 
   useEffect(() => {
-    if(message.text) {
+    if(text) {
       setModel(true);
 
       const timeout = setTimeout(() => {
         setModel(false);
+        dispatch({ type: CLEAR_MESSAGE });
       }, 5000);
 
       return () => {
         clearTimeout(timeout);
       };
     }
-  }, [message]);
+  }, [text, type, setModel, dispatch]);
 
-  return [message.text, message.type];
-};
-
-export default useMessageWatcher;
+  return [text, type, model];
+}

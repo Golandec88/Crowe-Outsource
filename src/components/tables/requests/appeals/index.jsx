@@ -13,29 +13,31 @@ import {
 import s from "./style.module.scss";
 import * as Icon from "@mui/icons-material";
 import proptypes from "prop-types";
+import { useTranslation } from "react-i18next";
+import getRequestColor from "@utils/request-color";
 
 const columns = [
-  { id: "tin", label: "ИНН" },
-  { id: "data", label: "Дата" },
+  { id: "tin", label: "tin" },
+  { id: "data", label: "date" },
   { id: "notification", label: "" }
 ];
 
-const ThField = (id, label) => {
+function ThField(id, label) {
   switch (id) {
-    case "notification":
-      return <Icon.Notifications sx={{ color: "white" }}/>;
-    default:
-      return label;
+    case "notification": return <Icon.Notifications sx={{ color: "white" }}/>;
+    default: return label;
   }
-};
+}
 
-export default function RequestsTable({ offset, items, onChange, selected, loading }) {
+export default function RequestsTable(props) {
+  const { offset, items, onChange, selected, loading, statuses } = props;
+  const { t } = useTranslation();
   return <>
     <Grid id="container" className={`${s.container} ${offset > 135 ? s.fixed : ""}`} container>
       <Grid item xs={12}>
         <TextField
           className={s["text-field"]}
-          label="Поиск"
+          label={t("search") + "..."}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -51,7 +53,7 @@ export default function RequestsTable({ offset, items, onChange, selected, loadi
               <TableRow>
                 {columns.map((column, index) =>
                   <TableCell key={`table-th-${index}`}>
-                    {ThField(column.id, column.label)}
+                    {ThField(column.id, t(column.label))}
                   </TableCell>
                 )}
               </TableRow>
@@ -65,7 +67,7 @@ export default function RequestsTable({ offset, items, onChange, selected, loadi
                     </TableCell>
                   )}
                 </TableRow>
-              </> : items.map((item, index) => (
+              </> : items.length ? items.map((item, index) => (
                 <TableRow
                   className={`${s["select-area"]} ${selected === item ? s["active"] : ""}`}
                   key={`table-tr-${index}`}
@@ -75,9 +77,12 @@ export default function RequestsTable({ offset, items, onChange, selected, loadi
                   hover
                 >
                   <TableCell>
-                    <Tooltip title={(item.request.requestStatus === 1 ? "Подтверждено" : "Отклонено")}>
-                      <Chip size="small" variant={"filled"} style={{ marginRight: "10px", height: "16px" }}
-                        color={(item.request.requestStatus === 1 ? "success" : "error")}/>
+                    <Tooltip title={statuses.length ? statuses[item.request.requestStatus] : t("loading") + "..."}>
+                      <Chip
+                        size="small"
+                        variant="filled"
+                        style={{ marginRight: "10px", height: "15px", background: getRequestColor(item.request.requestStatus) }}
+                      />
                     </Tooltip>
                     <span>
                       {item.request.companyInfo.tin}
@@ -92,7 +97,11 @@ export default function RequestsTable({ offset, items, onChange, selected, loadi
                     </IconButton>
                   </TableCell>
                 </TableRow>
-              ))}
+              )) : <TableRow>
+                <TableCell className={s.empty} colSpan={3}>
+                  {t("noApplications")}...
+                </TableCell>
+              </TableRow>}
             </TableBody>
           </Table>
         </Box>
@@ -106,12 +115,13 @@ RequestsTable.propTypes = {
   items: proptypes.array,
   loading: proptypes.bool,
   onChange: proptypes.func,
-  selected: proptypes.object
+  selected: proptypes.object,
+  statuses: proptypes.array
 };
 
 RequestsTable.defaultProps = {
-  onChange: () => {
-  },
+  onChange: () => {},
   loading: false,
-  items: []
+  items: [],
+  statuses: []
 };

@@ -1,80 +1,40 @@
-import { useState } from "react";
-import { Grid, InputAdornment, MenuItem, TextField } from "@mui/material";
-import * as Icon from "@mui/icons-material";
-import s from "./style.module.scss";
+import { Grid } from "@mui/material";
 import SelectTable from "@components/tables/requests/files/table.jsx";
 import Card from "@components/card";
 import Title from "@components/title";
 import useItemsUploader from "@hooks/items-uploader";
 import { getClassifications } from "@modules/request/creators";
 import proptypes from "prop-types";
+import TableFilter from "./table-filter";
+import { useTranslation } from "react-i18next";
 
 
-export default function FileTable({ offset, selected }) {
-  const [classifications] = useItemsUploader("request", "classifications", getClassifications);
-  const [selectedDocType, setSelectedDocTypes] = useState([]);
-  const [selectedSubDoc, setSelectedSubDoc] = useState([]);
-  const setSelectedNum = useState();
-
+export default function FileTable({ selected }) {
+  const { t } = useTranslation();
+  const [{ items: classifications }] = useItemsUploader("request", "classifications", "classifications", getClassifications);
   return <>
     <Card>
       <Grid container>
         <Grid item xs={12}>
-          <Title size="small" text="Файлы пользователя"/>
-          <TextField
-            className={s.textField}
-            label="Поиск"
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <Icon.Search/>
-                </InputAdornment>
-              ),
-            }}
-          />
-          <TextField
-            className={s.textField}
-            id="outlined-select-currency"
-            select
-            label="Тип документа"
-            value={selectedDocType}
-            onChange={event => setSelectedDocTypes(event.target.value)}
-          >
-            {classifications.items.classes?.map((option, index) => (
-              <MenuItem key={option.name + index} value={option}>
-                {option.name}
-              </MenuItem>
-            ))}
-          </TextField>
+          <Title size="small" text={t("userFiles")}/>
 
-          <TextField
-            className={s.textField}
-            id="outlined-select-currency"
-            select
-            disabled={!selectedDocType.subClasses}
-            label="Подтип документа"
-            value={selectedSubDoc}
-            onChange={event => setSelectedSubDoc(event.target.value)}
-          >{selectedDocType.subClasses?.map((option, index) => (
-              <MenuItem key={option.name + index} value={option.id}>
-                {option.name}
-              </MenuItem>
-            ))}
-          </TextField>
+          <TableFilter classifications={classifications?.classes}/>
         </Grid>
 
-        <Grid item xs={12}>
-          <SelectTable getSelectedDocs={val => setSelectedNum(val)}
-            files={selected?.request.attachedFiles}
-            classifications={classifications}
-          />
-        </Grid>
+        {selected && <>
+          <Grid item xs={12}>
+            <SelectTable
+              classifications={classifications?.classes}
+              files={selected.request.attachedFiles}
+            />
+          </Grid>
+        </>}
       </Grid>
     </Card>
   </>;
 }
 
 FileTable.propTypes = {
-  offset: proptypes.number,
   selected: proptypes.object
 };
+

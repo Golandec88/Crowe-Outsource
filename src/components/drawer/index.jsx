@@ -10,8 +10,8 @@ import s from "./style.module.scss";
 
 const AppDrawer = ({ menu, name, position }) => {
   const loading = {
-    info: useSelector(({ user }) => user.info.loading),
-    menu: useSelector(({ user }) => user.menu.loading)
+    info: useSelector(({ global }) => global.loadingFields.userInfo),
+    menu: useSelector(({ global }) => global.loadingFields.menu)
   };
 
   return <>

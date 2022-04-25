@@ -6,10 +6,13 @@
   padding-bottom: 20px !important;
   flex-wrap: nowrap;
   .paper {
-    background-color: transparent !important;
+    background-color: white !important;
     box-shadow: none !important;
     display: flex;
     align-content: baseline;
+    &__transparent {
+      background-color: transparent !important;
+    }
     &:first-child {
       flex-basis: 15%;
       min-width: 350px;
@@ -23,7 +26,12 @@
     }
   }
 }
-
+.buttons {
+  justify-content: end;
+  button {
+    margin-left: 20px;
+  }
+}
 @media(max-width: 1920px) {
   .main {
     flex-wrap: wrap;
@@ -39,3 +47,4 @@
     }
   }
 }
+

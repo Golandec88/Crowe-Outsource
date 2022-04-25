@@ -17,22 +17,21 @@ export default function BasicTabs({ offset, selected, onChange }) {
       <Tabs
         value={value}
         onChange={(_, val) => setValue(val)}
-        aria-label="basic tabs example"
       >
         <Tab className={s.tab}
-             id={`simple-tab-${0}`}
-             aria-controls={`simple-tabpanel-${0}`}
-             label="Общее"
+          id={`simple-tab-${0}`}
+          aria-controls={`simple-tabpanel-${0}`}
+          label="Общее"
         />
         <Tab className={s.tab}
-             id={`simple-tab-${1}`}
-             aria-controls={`simple-tabpanel-${1}`}
-             label="Оплата"
+          id={`simple-tab-${1}`}
+          aria-controls={`simple-tabpanel-${1}`}
+          label="Оплата"
         />
         <Tab className={s.tab}
-             id={`simple-tab-${2}`}
-             aria-controls={`simple-tabpanel-${2}`}
-             label="Отчётность"
+          id={`simple-tab-${2}`}
+          aria-controls={`simple-tabpanel-${2}`}
+          label="Отчётность"
         />
       </Tabs>
 

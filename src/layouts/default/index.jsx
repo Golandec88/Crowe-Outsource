@@ -15,8 +15,7 @@ import s from "./style.module.scss";
 
 export default function DefaultLayout() {
   const [themeOptions] = useState(themeConfig("light"));
-  const [toastModel, setToastModel] = useState(false);
-  const [message, type] = useMessageWatcher(setToastModel);
+  const [message, type, toastModel] = useMessageWatcher();
   const [{ fullName }, role] = useUserInfo();
   const [menu] = useMenu();
 
@@ -30,13 +29,13 @@ export default function DefaultLayout() {
           <Outlet/>
         </main>
       </Box>
-      <Snackbar
+      {toastModel && type ? <Snackbar
         TransitionComponent={Fade}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
         open={toastModel}
       >
         <Alert severity={type}>{message}</Alert>
-      </Snackbar>
+      </Snackbar> : ""}
     </ThemeProvider>
   </>;
 }

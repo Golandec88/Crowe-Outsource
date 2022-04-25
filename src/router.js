@@ -27,6 +27,7 @@ const Router = (isAuth = false, role) => {
         { path: "users", element: <Users/> },
         { path: "archive", element: <Archive/> },
         { path: "requests", element: <Requests/>, index: role === 3 },
+        { path: "requests/:id", element: <Requests/>, index: role === 3 },
         { path: "projects", element: <Projects/> },
         { path: "settings", element: <Settings/> },
         { path: "operators", element: <Operators/> },

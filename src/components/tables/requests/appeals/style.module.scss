@@ -17,7 +17,6 @@
 
 .container {
   width: 350px !important;
-  padding-right: 10px;
   align-content: baseline;
 
   &.fixed {
@@ -42,7 +41,9 @@
   }
 
   .select-area {
-    cursor: pointer;
+    &, & * {
+      cursor: pointer;
+    }
   }
 
   .head {
@@ -68,7 +69,16 @@
 
   .body {
     td {
-      text-align: center;
+      text-align: left;
+      padding: 5px 10px;
+      &.empty {
+        text-align: center;
+      }
+      p {
+        display: flex;
+        margin: 0;
+        flex-wrap: nowrap;
+      }
     }
 
     tr {

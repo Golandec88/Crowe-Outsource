@@ -1,12 +1,12 @@
-import { Button } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
 import proptypes from "prop-types";
 import s from "./style.module.scss";
 
 export default function SignButton({ children, ...rest }) {
   return <>
-    <Button className={s.button} {...rest}>
+    <LoadingButton className={s.button} {...rest}>
       {children}
-    </Button>
+    </LoadingButton>
   </>;
 }
 

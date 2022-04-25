@@ -1,37 +1,33 @@
 import * as types from "@modules/manager/types";
 import Request from "@utils/request";
-import axios from "axios";
-
 
 export const getAllClassifications = dispatch => {
   Request({
     method: "GET",
     url: "/crm/FileClassification/GetAllClassifications",
-    type: types.GET_ALLCLASSIFICATIONS,
-    data: {},
+    type: types.GET_CLASSIFICATIONS,
+    loadingField: "classifications",
     dispatch
   }).then(data => {
-    dispatch({ type: types.SET_ALLCLASSIFICATIONS, value: data });
+    dispatch({ type: types.SET_CLASSIFICATIONS, value: data });
   });
 };
 
-export const downloadFile = (id) => {
-  return new Promise((resolve, reject) => {
-    axios.get(`/crm/Utils/DownloadFile${id ? "/" + id : ""}`, {
-      headers: { "Authorization": "Bearer " + localStorage.getItem("token") },
-    })
-      .then(res => resolve(res))
-      .catch(err => reject(err));
+export const downloadFile = id => {
+  return new Promise((resolve) => {
+    Request({
+      method: "GET",
+      url: `/crm/Utils/DownloadFile${id ? "/" + id : ""}`
+    }).then(resolve);
   });
 };
 
-export const getInfoByPinfl = (tin) => {
-  return new Promise((resolve, reject) => {
-    axios.get("/user/EDOTaxOffice/GetPhysicalTaxPayerInfo", {
-      params: { tin: tin },
-      headers: { "Authorization": "Bearer " + localStorage.getItem("token") },
-    })
-      .then(res => resolve(res))
-      .catch(err => reject(err));
+export const getInfoByPinfl = tin => {
+  return new Promise((resolve) => {
+    Request({
+      method: "GET",
+      url: "/user/EDOTaxOffice/GetPhysicalTaxPayerInfo",
+      params: { tin },
+    }).then(resolve);
   });
 };

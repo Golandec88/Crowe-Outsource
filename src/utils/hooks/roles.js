@@ -10,9 +10,8 @@ const useRoles = (id) => {
   const getRoles = useDispatcher(getRolesAction);
 
   useEffect(() => {
-    console.log(id);
     if (id) getRoles();
-  }, [roles]);
+  }, []);
 
   return {
     role: roles && roles[id],

@@ -1,10 +1,10 @@
-import Generator from "@components/forms/generator";
+import Index from "@forms/generator";
 import formRules from "@utils/validation-rules";
 import proptypes from "prop-types";
 
 export default function CompanyInfo({ form }) {
   return <>
-    <Generator schema={[
+    <Index schema={[
       {
         cols: 12,
         child: [{

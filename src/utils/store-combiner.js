@@ -1,6 +1,6 @@
-export default (state, value) => {
+export default function (store, value) {
   return {
-    ...state,
+    ...store,
     ...value
   };
-};
+}

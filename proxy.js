@@ -1,10 +1,17 @@
-module.exports = ({ API_CRM, API_USER }) => {
+module.exports = ({ API_CRM, API_USER, API_EDO }) => {
   return {
     "/crm/": {
       secure: false,
       target: API_CRM,
       pathRewrite: {
         "^/crm/": "/api/"
+      }
+    },
+    "/edo/": {
+      secure: false,
+      target: API_EDO,
+      pathRewrite: {
+        "^/edo/": "/api/"
       }
     },
     "/user/": {

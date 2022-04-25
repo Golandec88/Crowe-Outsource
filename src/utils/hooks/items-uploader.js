@@ -1,13 +1,15 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useEffect } from "react";
+import useDispatcher from "@hooks/dispatcher";
 
-export default (parent, field, creator) => {
-  const dispatch = useDispatch();
+export default (parent, field, loadingField, creator, params) => {
+  const dispatch = useDispatcher(creator, params);
   const items = useSelector(state => state[parent][field]);
+  const loading = useSelector(({ global }) => global.loadingFields[loadingField]);
 
   useEffect(() => {
-    creator(dispatch);
-  }, [creator, dispatch]);
+    dispatch();
+  }, []);
 
-  return [items, () => creator(dispatch)];
+  return [{ items, loading }, () => dispatch()];
 };

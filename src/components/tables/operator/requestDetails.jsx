@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import proptypes from "prop-types";
 import s from "./style.module.scss";
-import SubmitButtons from "@components/buttons/submit";
 import { Alert, Chip, Grid, IconButton, Link, Tooltip } from "@mui/material";
 import { Check, Close } from "@mui/icons-material";
 import useItemsUploader from "@hooks/items-uploader";
@@ -10,27 +9,20 @@ import Dialogs from "@components/dialog";
 
 
 export default function RequestDetails({ row }) {
-  const [classifications] = useItemsUploader("manager", "allClassifications", getAllClassifications);
+  const [classifications] = useItemsUploader("manager", "classifications", "classifications", getAllClassifications);
   const [checkedList, setCheckedList] = useState([]);
   const [userPassportDetails, setUserPassportDetails] = useState({});
   const [open, setOpen] = useState(false);
-  const [buttonType, setButtonType] = useState(true);
-  const [confirmation, setConfirmation] = useState(false);
+  const [buttonType] = useState(true);
+  const [, setConfirmation] = useState(false);
 
-  const handleAccept = () => {
-    setButtonType(false);
-    setOpen(true);
-  };
-  const handleDecline = () => {
-    setButtonType(true);
-    setOpen(true);
-  };
+
   const handleClose = () => setOpen(false);
-  const confirm = (comment) => {
+  const confirm = () => {
     setConfirmation(true);
     handleClose();
   };
-  const decline = (comment) => {
+  const decline = () => {
     setConfirmation(false);
     handleClose();
   };
@@ -160,14 +152,14 @@ export default function RequestDetails({ row }) {
                 </Link>
               </div>
               <div>
-                <IconButton onClick={event => {
+                <IconButton onClick={() => {
                   handleUpdate(false, index);
                 }}
                 size="small"
                 aria-label="decline" color="error">
                   <Close fontSize="small"/>
                 </IconButton>
-                <IconButton onClick={event => {
+                <IconButton onClick={() => {
                   handleUpdate(true, index);
                 }}
                 size="small" aria-label="accept" color="success">
@@ -182,7 +174,6 @@ export default function RequestDetails({ row }) {
         </div>
       </Grid>
       <Grid item xs={12} margin={2}>
-        <SubmitButtons size={"small"} accept={handleAccept} decline={handleDecline}/>
         <Dialogs dialog={open}
           closeDialog={handleClose}
           type={buttonType}

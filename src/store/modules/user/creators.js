@@ -6,6 +6,7 @@ export const getMenu = dispatch => {
     method: "GET",
     url: "/crm/StaffUserMenu",
     type: types.GET_MENU,
+    loadingField: "menu",
     dispatch
   }).then(({ value }) => {
     dispatch({
@@ -15,14 +16,15 @@ export const getMenu = dispatch => {
   });
 };
 export const authUser = (dispatch, payload, callback) => {
-  Request({
+  const params = {
     method: "POST",
     url: "/crm/StaffUser/Authenticate",
     data: payload,
     type: types.AUTH_USER,
+    loadingField: "authorization",
     dispatch
-  }).then(data => {
-    const { token, user } = data;
+  };
+  Request(params).then(({ token, user }) => {
     dispatch({ type: types.AUTH_USER_SUCCESS, value: { token, info: user } });
     callback(token, user);
   });
@@ -32,6 +34,7 @@ export const getUserInfo = (dispatch, id) => {
     method: "GET",
     url: `/crm/StaffUser${id ? "/" + id : ""}`,
     type: types.GET_USER_INFO,
+    loadingField: "userInfo",
     dispatch
   }).then(data => {
     dispatch({ type: types.SET_USER_INFO, value: data });
@@ -42,6 +45,7 @@ export const getRoles = dispatch => {
     method: "GET",
     url: "/crm/StaffUser/GetAllRoles",
     type: types.GET_ROLES,
+    loadingField: "roles",
     dispatch,
   }).then(data => {
     dispatch({ type: types.SET_ROLES, value: data });

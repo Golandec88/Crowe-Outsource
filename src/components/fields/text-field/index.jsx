@@ -3,10 +3,13 @@ import { TextField } from "@mui/material";
 import s from "./style.module.scss";
 import proptypes from "prop-types";
 
-export default function CustomTextField({ rules, rounded, value, ...rest }) {
+export default function CustomTextField(props) {
+  const { rules, rounded, value, loading, ...rest } = props;
+
   return <>
-    <Validator schema={rules ? rules : []} value={value}>
+    <Validator schema={rules ? rules : []} value={value ? value : ""}>
       <TextField
+        disabled={loading}
         className={`${s.text_field} ${rounded ? s.rounded : ""}`}
         {...rest}
       />
@@ -17,9 +20,13 @@ export default function CustomTextField({ rules, rounded, value, ...rest }) {
 CustomTextField.propTypes = {
   rules: proptypes.array,
   rounded: proptypes.bool,
-  value: proptypes.string
+  value: proptypes.oneOfType([proptypes.string, proptypes.number]),
+  loading: proptypes.bool
 };
 
 CustomTextField.defaultProps = {
-  value: ""
+  value: "",
+  rules: [],
+  loading: false,
+  rounded: false
 };
