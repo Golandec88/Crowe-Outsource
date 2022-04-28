@@ -3,7 +3,10 @@
   position: relative;
 
   .title {
-    margin: 16px auto;
+    margin: 0 auto 20px;
+    text-align: center;
+    border-top: 1px solid #e0e0e0;
+    padding-top: 20px;
   }
 
   .overflow-content {
@@ -11,7 +14,7 @@
     height: calc(100vh - 235px);
   }
 
-  .accardion {
+  .accordion {
     padding: 0;
     margin: 0;
   }
@@ -57,27 +60,76 @@
     }
   }
 
-  .history {
-    font-size: 14px;
-    margin: 8px;
-
-    span {
-      font-weight: bold;
-    }
-
-  }
-
   .details {
     padding: 0 30px;
     text-align: left;
+    .chip {
+      width: 100%;
+      margin-bottom: 5px;
+      align-items: center;
+      place-content: flex-start;
+      display: flex;
+      justify-content: space-between;
+      border-radius: 5px;
+      padding: 5px 5px 5px 15px;
+
+      &.wait {
+        background: #f6f6f6;
+        color: black;
+      }
+      &.success {
+        background: #2e7d32;
+        color: white;
+      }
+      &.error {
+        background: #c30000;
+        color: white;
+      }
+      &.downloaded {
+        background: #6311af;
+        color: white;
+      }
+      .buttons {
+        display: flex;
+        margin-left: auto;
+        flex-wrap: nowrap;
+        .button {
+          margin-left: 4px;
+          svg path {
+            color: white;
+          }
+          &[aria-label=download] svg path {
+            color: #6311af
+          }
+          &[aria-label=error] svg path {
+            color: #c30000
+          }
+          &[aria-label=success] svg path {
+            color: #2e7d32
+          }
+        }
+      }
+      &.active .buttons .button svg path {
+        color: white;
+      }
+    }
   }
 }
-
+.reply-buttons {
+  padding: 0 30px 20px !important;
+  display: flex;
+  justify-content: flex-end;
+  button {
+    margin-left: 10px;
+  }
+}
+.heading {
+  border-top: 1px solid black;
+}
 .justify {
   display: flex;
   justify-content: space-between;
 }
-
 .skeleton {
   background-color: #00c5ff30;
   cursor: wait;

@@ -1,5 +1,5 @@
-export default function (status, $ = status.toString()) {
-  switch ($) {
+export default function (status) {
+  switch (status.toString()) {
     case "0": return "#1dd1a1"; // CallCenterSubmited
     case "1": return "#2ed573"; // CallCenterInProcess
     case "2": return "#b71540"; // CallCenterRejected

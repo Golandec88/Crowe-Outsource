@@ -1,15 +1,16 @@
 import * as types from "@modules/request/types";
 import Request from "@utils/request";
 
-export const getRequests = (dispatch, status) => {
+export const getRequests = (dispatch, status, isSilent = false) => {
   Request({
     method: "POST",
     url: "/crm/Request/GetAll",
     type: types.GET_REQUESTS,
     loadingField: "requests",
     data: status,
-    dispatch
-  }).then(data => {
+    dispatch,
+    isSilent
+  }).then(({ data }) => {
     dispatch({ type: types.SET_REQUESTS, value: data });
   });
 };
@@ -20,7 +21,7 @@ export const getRequestStatuses = dispatch => {
     url: "/crm/Request/GetAllRequestStatuses",
     type: types.GET_REQUEST_STATUSES,
     dispatch
-  }).then(data => {
+  }).then(({ data }) => {
     const value = typeof data === "object" ? Object.values(data) : data;
     dispatch({ type: types.SET_REQUEST_STATUSES, value });
   });
@@ -33,19 +34,19 @@ export const getClassifications = dispatch => {
     type: types.GET_CLASSIFICATIONS,
     loadingField: "classifications",
     dispatch
-  }).then(data => {
+  }).then(({ data }) => {
     dispatch({ type: types.SET_CLASSIFICATIONS, value: data });
   });
 };
 
-export const getInfo = (dispatch, identity, callback) => {
+export const downloadFile = (id, callback) => {
   Request({
     method: "GET",
-    url: "/edo/Utils/" + identity,
-    type: types.GET_REQUEST_USER_INFO,
-    loadingField: "requestUserInfo",
-    dispatch
-  }).then(callback);
+    url: "/crm/Utils/DownloadFile/" + id,
+    use: "fetch"
+  }).then(data => {
+    data.blob().then(callback);
+  });
 };
 
 export const replyOfRequest = (dispatch, info, callback) => {

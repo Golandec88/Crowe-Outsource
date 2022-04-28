@@ -6,57 +6,36 @@ import Title from "@components/title";
 import s from "./style.module.scss";
 import useScroller from "@hooks/scroller";
 import useItemsUploader from "@hooks/items-uploader";
-import { getRequests, getRequestStatuses, replyOfRequest } from "@modules/request/creators";
-import { useState } from "react";
+import { getRequests, getRequestStatuses } from "@modules/request/creators";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import Dialogs from "@components/dialog";
-import Button from "@mui/material/Button";
-import { useDispatch } from "react-redux";
-import { setMessage } from "@modules/global/creators";
+import ReplyButtons from "@forms/requests/reply-buttons";
 
 export default function RequestsPage() {
   const { t } = useTranslation();
   const offset = useScroller(135);
   const [selected, setSelected] = useState();
-  const [open, setOpen] = useState(false);
-  const [modelType, setModelType] = useState(null);
-  const [requests] = useItemsUploader("request", "requests", "requests", getRequests, {
+  const [{ items: requests, loading }, dispatch] = useItemsUploader("request", "requests", "requests", getRequests, {
     statuses: [0, 1, 2, 3]
   });
   const [{ items: statuses }] = useItemsUploader("request", "statuses", "", getRequestStatuses);
-  const dispatch = useDispatch();
 
-  const openDialog = (type) => {
-    setModelType(type);
-    setOpen(true);
-  };
+  useEffect(() => {
+    const interval = setInterval(dispatch, 10000);
 
-  const confirmDialog = comment => {
-    replyOfRequest(dispatch, {
-      id: selected?.request.id,
-      userType: "call-center",
-      responseType: modelType,
-      comment,
-    }, () => {
-      setMessage(dispatch, t("success") + "!");
-      setOpen(false);
-      setModelType(null);
-    });
-  };
-
-  const closeDialog = () => {
-    setOpen(false);
-    setModelType(null);
-  };
+    return () => {
+      clearInterval(interval);
+    };
+  }, [dispatch]);
 
   return <>
     <Title text={t("requests")}/>
     <Paper className={s.main}>
-      <Paper className={`${s.paper} ${s.paper__transparent}`}>
+      <Paper className={`${s.paper} ${s.transparent}`}>
         <RequestTable
           offset={offset}
-          items={requests.items}
-          loading={requests.loading}
+          items={requests}
+          loading={loading}
           onChange={setSelected}
           selected={selected}
           statuses={statuses}
@@ -70,40 +49,7 @@ export default function RequestsPage() {
       </Paper>
     </Paper>
     <Paper className={`${s.main} ${s.buttons}`}>
-      <Button
-        variant="contained"
-        color="error"
-        disableElevation
-        disabled={!selected}
-        onClick={() => openDialog("decline")}
-      >
-        {t("declineRequest")}
-      </Button>
-      <Button
-        variant="contained"
-        color="secondary"
-        disableElevation
-        disabled={!selected}
-        onClick={() => openDialog("resend")}
-      >
-        {t("resendRequest")}
-      </Button>
-      <Button
-        variant="contained"
-        color="primary"
-        disableElevation
-        disabled={!selected}
-        onClick={() => openDialog("accept")}
-      >
-        {t("acceptRequest")}
-      </Button>
+      {selected && <ReplyButtons id={selected.request.id} staffType="call-center" />}
     </Paper>
-    <Dialogs
-      model={open}
-      setModel={setOpen}
-      type={modelType}
-      confirm={confirmDialog}
-      close={closeDialog}
-    />
   </>;
 }

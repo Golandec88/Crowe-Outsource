@@ -10,7 +10,7 @@
     box-shadow: none !important;
     display: flex;
     align-content: baseline;
-    &__transparent {
+    &.transparent {
       background-color: transparent !important;
     }
     &:first-child {

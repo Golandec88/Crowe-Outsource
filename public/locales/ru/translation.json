@@ -23,27 +23,33 @@
   "accept": "Подвердить",
   "send": "Отправить",
   "close": "Закрыть",
-  "menu" : [
-    {
-      "line" : "Главная"
-    },
-    {
-      "line" : "Заявки"
-    },
-    {
-      "line" : "Пользователи"
-    },
-    {
-      "line" : "Архив"
-    },
-    {
-      "line" : "Операторы"
-    },
-    {
-      "line" : "Проекты"
-    },
-    {
-      "line" : "Настройки"
-    }
-  ]
+  "companyName": "Наименование организации",
+  "requestDate": "Дата заявки",
+  "callCenterOperator": "Оператор колл-центра",
+  "requestInfo": "Информация о заявке",
+  "fullNameShort": "ФИО",
+  "passportSerialAndNumber": "Серия и номер пасспорта",
+  "pinfl": "ПИНФЛ",
+  "givenPlace": "Выдано",
+  "givenDate": "Дата выдачи",
+  "expireDate": "Дата окончания",
+  "placeOfResidence": "Адресс прописки",
+  "notFilled": "Не заполненно",
+  "organization": "Организация",
+  "address": "Адресс",
+  "director": "Директор",
+  "chefAccountant": "Главный бухгалтер",
+  "phone": "Телефон",
+  "email": "Почта",
+  "bank": "Банк",
+  "mfo": "МФО",
+  "check": "Рассчётный счёт",
+  "checkAllDocuments": "Проверьте все документы",
+  "checkCallCenter": "Узнать оператора колл-центра",
+  "fileCheckStatuses": {
+    "wait": "Ожидает проверки",
+    "success": "Проверно",
+    "downloaded": "Скачано",
+    "error": "Помечено как: \"Не корректный\""
+  }
 }

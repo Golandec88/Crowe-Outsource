@@ -11,8 +11,8 @@ export default function App() {
     if(user.token) return user.token;
     return localToken;
   });
-
   const info = useSelector(({ user }) => user.info.items);
+
 
   return useRoutes(routes(Boolean(token), info ? info.role : 4));
 }

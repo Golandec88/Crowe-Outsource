@@ -3,7 +3,7 @@ import formRules from "@utils/validation-rules";
 import proptypes from "prop-types";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { getInfo } from "@modules/request/creators";
+import { getInfo } from "@modules/user/creators";
 
 export default function UserInfo({ form }) {
   const dispatch = useDispatch();
