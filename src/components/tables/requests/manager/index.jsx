@@ -11,7 +11,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import s from "./style.module.scss";
 import proptypes from "prop-types";
-import { Chip, Skeleton, Tooltip } from "@mui/material";
+import { Chip, Grid, Tooltip } from "@mui/material";
 import RequestDetails from "./request-details.jsx";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -20,11 +20,48 @@ import useItemsUploader from "@hooks/items-uploader.js";
 import { getClassifications } from "@modules/request/creators.js";
 import { classificationType, requestType } from "@types/request.js";
 import { Campaign } from "@mui/icons-material";
-import { getStaffUserInfo } from "@modules/user/creators.js";
+import { getOperators, getStaffUserInfo } from "@modules/user/creators.js";
+import TableSkeleton from "@components/tables/skeleton";
+import { addOperatorActivity, attachClientToProject, getProjects } from "@modules/project/creators";
+import useLocalStorage from "@hooks/local-storage";
+import AttachToProject from "@components/modals/attach-to-project";
+import ReplyButtons from "@forms/requests/reply-buttons";
+import { setMessage } from "@modules/global/creators";
+import { useDispatch } from "react-redux";
 
 export default function CollapsibleTable({ items, loading, statuses }) {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+
+  const [attachModel, setAttachModel] = useState(false);
+  const [selected, setSelected] = useState();
+  const id = useLocalStorage("ABV_CRM.id").item;
+  const params = { role: "manager", id };
+
   const [{ items: classifications }] = useItemsUploader("request", "classifications", "classifications", getClassifications);
+  const [{ items: operators }] = useItemsUploader("user", "operators", "operators", getOperators);
+  const [{ items: projects }] = useItemsUploader("project", "projects", "projects", getProjects, params);
+
+  function submit(type, id) {
+    if(type === "accept") {
+      setAttachModel(true);
+      setSelected(id);
+    }
+  }
+
+  function attachToProject({ operator, project }) {
+    if(project) attachClientToProject(
+      { clients: [selected], project },
+      () => {
+        setMessage(dispatch, { text: t("successAddingClientToProject"), type: "success" });
+      });
+    if(operator) addOperatorActivity(
+      { operator, client: selected },
+      () => {
+        setMessage(dispatch, { text: t("successAttachOperatorForClient"), type: "success" });
+      });
+  }
+
   return <>
     <TableContainer elevation={0} component={Paper}>
       <Table className={s.table} aria-label="collapsible table">
@@ -38,22 +75,28 @@ export default function CollapsibleTable({ items, loading, statuses }) {
           </TableRow>
         </TableHead>
         <TableBody className={s.body}>
-          {loading ? <TableRow>
-            <TableCell key={"table-skeleton-"}>
-              <Skeleton className={s.skeleton}/>
-            </TableCell>
-          </TableRow> :
+          {loading ? <TableSkeleton /> :
             items.map((item, index) => {
               return <Row
                 key={`#row-${index}`}
+                submit={submit}
                 statuses={statuses}
                 classifications={classifications}
+                operators={operators}
+                projects={projects}
                 item={item}
               />;
             })}
         </TableBody>
       </Table>
     </TableContainer>
+    <AttachToProject
+      model={attachModel}
+      close={() => setAttachModel(false)}
+      projects={projects}
+      operators={operators}
+      confirm={attachToProject}
+    />
   </>;
 }
 
@@ -63,10 +106,12 @@ CollapsibleTable.propTypes = {
   statuses: proptypes.array
 };
 
-function Row({ item, statuses, classifications }) {
+function Row({ item, statuses, classifications, submit }) {
   const { t } = useTranslation();
 
   const [open, setOpen] = useState(false);
+  const [checkedList, setCheckList] = useState([]);
+
   const [callCenterName, setCallCenterName] = useState(item.request.responceCallCenterOperatorId);
 
   function getCallCenterName() {
@@ -112,15 +157,30 @@ function Row({ item, statuses, classifications }) {
     <TableRow>
       <TableCell colSpan={6} className={s.accordion}>
         <Collapse in={open} timeout="auto" unmountOnExit>
-          <RequestDetails item={item} classifications={classifications.classes}/>
+          <RequestDetails
+            item={item}
+            classifications={classifications}
+            checkedList={checkedList}
+            setCheckList={setCheckList}
+          />
+          <Grid className={s["reply-buttons"]} item xs={12}>
+            <ReplyButtons
+              id={item.request.id}
+              staffType="manager"
+              onChange={submit}
+              checkedList={checkedList}
+            />
+          </Grid>
         </Collapse>
       </TableCell>
     </TableRow>
+
   </>;
 }
 
 Row.propTypes = {
   statuses: proptypes.array,
   item: requestType(),
-  classifications: classificationType()
+  submit: proptypes.func,
+  classifications: proptypes.arrayOf(classificationType())
 };

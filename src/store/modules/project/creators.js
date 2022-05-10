@@ -12,3 +12,24 @@ export const getProjects = (dispatch, { role, id }) => {
     dispatch({ type: types.SET_PROJECTS, value: data });
   });
 };
+
+export const attachClientToProject = ({ clients, project }, callback) => {
+  Request({
+    method: "PATCH",
+    url: "/crm/Project/AttachClients/" + project,
+    data: {
+      clientsIds: clients
+    }
+  }).then(callback);
+};
+
+export const addOperatorActivity = ({ operator, client, comment }, callback) => {
+  Request({
+    method: "PATCH",
+    url: "/crm/OperatorActivity/AddActivity/" + operator,
+    data: {
+      clientsId: client,
+      comment: comment
+    }
+  }).then(callback);
+};

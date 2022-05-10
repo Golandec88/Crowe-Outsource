@@ -3,10 +3,9 @@ import { Paper } from "@mui/material";
 import CollapsibleTable from "@components/tables/requests/manager";
 import useItemsUploader from "@hooks/items-uploader";
 import { getRequests, getRequestStatuses } from "@modules/request/creators";
-import { useEffect } from "react";
 
 export default function UsersPage() {
-  const [{ items: requests, loading }, dispatch] = useItemsUploader(
+  const [{ items: requests, loading }] = useItemsUploader(
     "request",
     "requests",
     "requests",
@@ -19,14 +18,6 @@ export default function UsersPage() {
     false,
     getRequestStatuses
   );
-
-  useEffect(() => {
-    const interval = setInterval(dispatch, 60000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [dispatch]);
 
   return <>
     <Paper className={s.main}>

@@ -4,5 +4,6 @@ export default {
   token: null,
   info: [],
   roles: [],
-  menu: []
+  menu: [],
+  operators: []
 };

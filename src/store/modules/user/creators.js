@@ -76,4 +76,15 @@ export const getInfoByPinfl = (pinfl, callback) => {
     params: { tin: pinfl },
   }).then(callback);
 };
+export const getOperators = dispatch => {
+  Request({
+    method: "GET",
+    url: "/crm/StaffUser/GetUsersByRole/" + 2,
+    loadingField: "operators",
+    type: types.GET_OPERATORS,
+    dispatch,
+  }).then(({ data }) => {
+    dispatch({ type: types.SET_OPERATORS, value: data });
+  });
+};
 export const logout = dispatch => dispatch({ type: types.USER_CLEAR });

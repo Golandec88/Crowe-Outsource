@@ -6,15 +6,15 @@ import proptypes from "prop-types";
 
 export default function TableSkeleton({ limit, cols }) {
   return <>
-    {[...Array(limit)].map((_, row) => <>
+    {[...Array(limit)].map((_, row) =>
       <TableRow key={"#table-skeleton-row-" + row}>
-        {[...Array(cols)].map((_, col) => <>
+        {[...Array(cols)].map((_, col) =>
           <TableCell key={"#table-skeleton-col-" + col}>
             <Skeleton className={s.skeleton}/>
           </TableCell>
-        </>)}
+        )}
       </TableRow>
-    </>)}
+    )}
   </>;
 }
 

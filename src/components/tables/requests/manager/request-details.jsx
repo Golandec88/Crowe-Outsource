@@ -2,7 +2,7 @@ import { Alert, Grid, IconButton, Tooltip } from "@mui/material";
 import { downloadFile as downloadFileAction } from "@modules/request/creators.js";
 import { Check, Close, Download } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import s from "./style.module.scss";
 import proptypes from "prop-types";
 import {
@@ -12,31 +12,31 @@ import {
   requestType
 } from "@types/request.js";
 import downloadFile from "@utils/download-file.js";
-import ReplyButtons from "@forms/requests/reply-buttons";
 import { getInfoByPinfl as loadInfo } from "@modules/user/creators.js";
 
-export default function RequestDetails({ item, classifications }) {
+export default function RequestDetails({ item, classifications, checkedList, setCheckList }) {
   const { t } = useTranslation();
 
-  const [checkedList, setCheckList] = useState([]);
   const [fullName, setFullName] = useState("");
+  const [localCheckList, setLocalCheckList] = useState([]);
+
+  useEffect(() => {
+    loadInfo(item.passportData.pinfl, ({ data }) => {
+      setFullName(data.FullName);
+    });
+  }, [item]);
 
   function onChangeFile(index, value) {
-    const result = Array.from(checkedList);
+    const result = Array.from(localCheckList);
     result[index] = value;
 
-    setCheckList(result);
+    setLocalCheckList(result);
+    setCheckList([...checkedList, ...[item.request.attachedFiles[index]]]);
 
     if(value === "downloaded") {
       const id = item.request.attachedFiles[index].fileName;
       downloadFileAction(id, downloadFile);
     }
-  }
-
-  function getInfo(pinfl) {
-    loadInfo(pinfl, ({ data }) => {
-      setFullName(data.FullName);
-    });
   }
 
   return <>
@@ -80,8 +80,6 @@ export default function RequestDetails({ item, classifications }) {
               "pinfl", "givenPlace",
             ];
 
-            getInfo(passportData.pinfl);
-
             return <Formatter
               values={[fullName].concat(Object.values(passportData))}
               titles={titles}
@@ -94,16 +92,16 @@ export default function RequestDetails({ item, classifications }) {
           <p>{t("userFiles")}</p>
           {item.request.attachedFiles.map(function ({ fileName, fileClassificationId }, index) {
             return <FileItem
-              type={checkedList[index] ?? "wait"}
+              type={localCheckList[index] ?? "wait"}
               counter={index + 1}
               key={`#file-item-${index}`}
               classifications={classifications}
               info={{ name: fileName, classificationId: fileClassificationId }}
-              activeList={checkedList}
+              activeList={localCheckList}
               onChange={onChangeFile}
             />;
           })}
-          {checkedList.filter(filterCheckItems).length !== item.request.attachedFiles.length && <>
+          {localCheckList.filter(filterCheckItems).length !== item.request.attachedFiles.length && <>
             <Alert
               color="primary"
               severity="info"
@@ -114,16 +112,15 @@ export default function RequestDetails({ item, classifications }) {
           </>}
         </div>
       </Grid>
-      <Grid className={s["reply-buttons"]} item xs={12}>
-        <ReplyButtons id={item.request.id} staffType="manager" />
-      </Grid>
     </Grid>
   </>;
 }
 
 RequestDetails.propTypes = {
   item: requestType(),
-  classifications: proptypes.arrayOf(classificationType())
+  classifications: proptypes.arrayOf(classificationType()),
+  checkedList: proptypes.array,
+  setCheckList: proptypes.func
 };
 
 function Formatter({ values, titles }) {

@@ -11,6 +11,7 @@ export default {
     classifications: false,
     requests: false,
     requestUserInfo: false,
-    projects: false
+    projects: false,
+    operators: false
   }
 };

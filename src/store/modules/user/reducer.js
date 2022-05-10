@@ -13,6 +13,8 @@ export default (state = initialState, { type, value }) => {
     case types.GET_USER_INFO: return combiner(state, { info: [] });
     case types.SET_USER_INFO: return combiner(state, { info: value });
     case types.USER_CLEAR: return combiner(state, { info: {}, token: null });
+    case types.GET_OPERATORS: return combiner(state,  { operators: [] });
+    case types.SET_OPERATORS: return combiner(state,  { operators: value });
     default: return state;
   }
 };

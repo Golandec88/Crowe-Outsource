@@ -95,8 +95,9 @@ module.exports = {
       "@modules": path.resolve(__dirname, "src/store/modules"),
       "@components": path.resolve(__dirname, "src/components"),
       "@forms": path.resolve(__dirname, "src/components/forms"),
+      "@contexts": path.resolve(__dirname, "src/utils/contexts"),
       "@fields": path.resolve(__dirname, "src/components/fields"),
-      "@buttons": path.resolve(__dirname, "src/components/buttons")
+      "@buttons": path.resolve(__dirname, "src/components/buttons"),
     },
     extensions: ["", ".js", ".jsx"],
   },

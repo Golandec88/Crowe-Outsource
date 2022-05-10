@@ -35,7 +35,7 @@ export const getClassifications = dispatch => {
     loadingField: "classifications",
     dispatch
   }).then(({ data }) => {
-    dispatch({ type: types.SET_CLASSIFICATIONS, value: data });
+    dispatch({ type: types.SET_CLASSIFICATIONS, value: data.classes });
   });
 };
 
@@ -44,18 +44,16 @@ export const downloadFile = (id, callback) => {
     method: "GET",
     url: "/crm/Utils/DownloadFile/" + id,
     use: "fetch"
-  }).then(data => {
-    data.blob().then(callback);
-  });
+  }).then(data => data.blob().then(callback));
 };
 
 export const replyOfRequest = (dispatch, info, callback) => {
-  const { id, userType: user, responseType: response, comment } = info;
+  const { id, userType: user, responseType: response, comment, rejectedFilesList } = info;
 
   Request({
     method: "POST",
     url: "/crm/Request/" + getReplyUrl() + "/" + id,
-    data: { comment },
+    data: createData(),
     dispatch
   }).then(callback);
 
@@ -73,5 +71,17 @@ export const replyOfRequest = (dispatch, info, callback) => {
         case "resend": return "ManagerSendBack";
       }
     }
+  }
+  function createData() {
+    if(user === "manager") {
+      if(response === "decline" || response === "resend") {
+        return {
+          comment,
+          rejectedFiels: rejectedFilesList
+        };
+      }
+    }
+
+    return { comment };
   }
 };
