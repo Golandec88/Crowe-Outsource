@@ -2,7 +2,7 @@ import initialState from "@modules/global/store";
 import * as types from "@modules/global/types";
 import combiner from "@utils/store-combiner";
 
-export default (state = initialState, { type, value }) => {
+export default function (state = initialState, { type, value }) {
   switch (type) {
     case types.SET_MESSAGE: return combiner(state, { message: value });
     case types.CLEAR_MESSAGE: return combiner(state, { message: { type: null, text: null } });
@@ -13,4 +13,4 @@ export default (state = initialState, { type, value }) => {
     }
     default: return state;
   }
-};
+}

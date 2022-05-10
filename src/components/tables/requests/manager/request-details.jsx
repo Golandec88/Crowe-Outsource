@@ -1,5 +1,5 @@
 import { Alert, Grid, IconButton, Tooltip } from "@mui/material";
-import { downloadFile as downloadFileAction } from "@modules/request/creators";
+import { downloadFile as downloadFileAction } from "@modules/request/creators.js";
 import { Check, Close, Download } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
@@ -10,10 +10,10 @@ import {
   classificationType,
   fileCheckTypes,
   requestType
-} from "@types/request";
-import downloadFile from "@utils/download-file";
+} from "@types/request.js";
+import downloadFile from "@utils/download-file.js";
 import ReplyButtons from "@forms/requests/reply-buttons";
-import { getInfoByPinfl as loadInfo } from "@modules/user/creators";
+import { getInfoByPinfl as loadInfo } from "@modules/user/creators.js";
 
 export default function RequestDetails({ item, classifications }) {
   const { t } = useTranslation();

@@ -1,6 +1,6 @@
 import s from "./style.module.scss";
 import { Paper } from "@mui/material";
-import CollapsibleTable from "@components/tables/operator";
+import CollapsibleTable from "@components/tables/requests/manager";
 import useItemsUploader from "@hooks/items-uploader";
 import { getRequests, getRequestStatuses } from "@modules/request/creators";
 import { useEffect } from "react";
@@ -21,7 +21,7 @@ export default function UsersPage() {
   );
 
   useEffect(() => {
-    const interval = setInterval(dispatch, 10000);
+    const interval = setInterval(dispatch, 60000);
 
     return () => {
       clearInterval(interval);

@@ -8,7 +8,6 @@ import proptypes from "prop-types";
 import TableFilter from "./table-filter";
 import { useTranslation } from "react-i18next";
 
-
 export default function FileTable({ selected }) {
   const { t } = useTranslation();
   const [{ items: classifications }] = useItemsUploader("request", "classifications", "classifications", getClassifications);

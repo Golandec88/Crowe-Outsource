@@ -46,6 +46,10 @@
   "check": "Рассчётный счёт",
   "checkAllDocuments": "Проверьте все документы",
   "checkCallCenter": "Узнать оператора колл-центра",
+  "operators": "Операторы",
+  "clients": "Клиенты",
+  "createdBy": "Созданно",
+  "name": "Наименование",
   "fileCheckStatuses": {
     "wait": "Ожидает проверки",
     "success": "Проверно",

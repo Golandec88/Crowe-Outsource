@@ -12,15 +12,15 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import s from "./style.module.scss";
 import proptypes from "prop-types";
 import { Chip, Skeleton, Tooltip } from "@mui/material";
-import RequestDetails from "./requestDetails";
+import RequestDetails from "./request-details.jsx";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import getRequestColor from "@utils/request-color";
-import useItemsUploader from "@hooks/items-uploader";
-import { getClassifications } from "@modules/request/creators";
-import { classificationType, requestType } from "@types/request";
+import getRequestColor from "@utils/request-color.js";
+import useItemsUploader from "@hooks/items-uploader.js";
+import { getClassifications } from "@modules/request/creators.js";
+import { classificationType, requestType } from "@types/request.js";
 import { Campaign } from "@mui/icons-material";
-import { getStaffUserInfo } from "@modules/user/creators";
+import { getStaffUserInfo } from "@modules/user/creators.js";
 
 export default function CollapsibleTable({ items, loading, statuses }) {
   const { t } = useTranslation();
