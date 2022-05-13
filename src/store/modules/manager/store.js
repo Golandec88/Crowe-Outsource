@@ -1,3 +1,5 @@
 export default {
-  classifications: []
+  requests: [],
+  classifications: [],
+  statuses: []
 };

@@ -8,6 +8,7 @@ import Projects from "@views/projects";
 import Requests from "@views/requests";
 import Settings from "@views/settings";
 import Users from "@views/users";
+import TransactionsPage from "@views/transactions";
 import { Navigate } from "react-router-dom";
 
 const Router = (isAuth = false, role) => {
@@ -31,6 +32,7 @@ const Router = (isAuth = false, role) => {
         { path: "projects", element: <Projects/> },
         { path: "settings", element: <Settings/> },
         { path: "operators", element: <Operators/> },
+        { path: "transactions", element: <TransactionsPage/> , index : role === 1 },
         { path: "/", element: <Navigate to={role !== 3 ? "/dashboard" : "/requests"}/> }
       ]
     }),

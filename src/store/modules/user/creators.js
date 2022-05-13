@@ -11,7 +11,7 @@ export const getMenu = dispatch => {
   }).then(({ data }) => {
     dispatch({
       type: types.SET_MENU,
-      value: data.value ? data.value.items : []
+      value: data ? data.value.items : []
     });
   });
 };
@@ -76,3 +76,6 @@ export const getInfoByPinfl = (pinfl, callback) => {
   }).then(callback);
 };
 export const logout = dispatch => dispatch({ type: types.USER_CLEAR });
+
+
+

@@ -49,7 +49,7 @@ export default function RequestsPage() {
       </Paper>
     </Paper>
     <Paper className={`${s.main} ${s.buttons}`}>
-      {selected && <ReplyButtons id={selected.request.id} staffType="call-center" />}
+      {selected && <ReplyButtons id={selected.request.id} staffType="call-center"/>}
     </Paper>
   </>;
 }
