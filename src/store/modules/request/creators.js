@@ -14,7 +14,6 @@ export const getRequests = (dispatch, status, isSilent = false) => {
     dispatch({ type: types.SET_REQUESTS, value: data });
   });
 };
-
 export const getRequestStatuses = dispatch => {
   Request({
     method: "GET",
@@ -26,7 +25,6 @@ export const getRequestStatuses = dispatch => {
     dispatch({ type: types.SET_REQUEST_STATUSES, value });
   });
 };
-
 export const getClassifications = dispatch => {
   Request({
     method: "GET",
@@ -38,7 +36,6 @@ export const getClassifications = dispatch => {
     dispatch({ type: types.SET_CLASSIFICATIONS, value: data.classes });
   });
 };
-
 export const downloadFile = (id, callback) => {
   Request({
     method: "GET",
@@ -46,7 +43,26 @@ export const downloadFile = (id, callback) => {
     use: "fetch"
   }).then(data => data.blob().then(callback));
 };
-
+export const getTransactions = dispatch => {
+  Request({
+    method: "GET",
+    url: "/crm/Utils/GetTransactions",
+    type: types.GET_TRANSACTIONS,
+    loadingField: "transactions",
+    params: {
+      tin: "306865819", fromDate: "2022-05-01", toDate: "2022-05-09"
+    },
+    dispatch
+  }).then(({ data }) => {
+    const result = [];
+    for (const item of data) {
+      if (item.debit > 0 ) result.push(item);
+    }
+    dispatch({
+      type: types.SET_TRANSACTIONS, value: result
+    });
+  });
+};
 export const replyOfRequest = (dispatch, info, callback) => {
   const { id, userType: user, responseType: response, comment, rejectedFilesList } = info;
 

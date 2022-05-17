@@ -163,14 +163,14 @@ function Row({ item, statuses, classifications, submit }) {
             checkedList={checkedList}
             setCheckList={setCheckList}
           />
-          <Grid className={s["reply-buttons"]} item xs={12}>
+          {statuses[item.request.requestStatus] === "ManagerInProcess" && <Grid className={s["reply-buttons"]} item xs={12}>
             <ReplyButtons
               id={item.request.id}
               staffType="manager"
               onChange={submit}
               checkedList={checkedList}
             />
-          </Grid>
+          </Grid>}
         </Collapse>
       </TableCell>
     </TableRow>

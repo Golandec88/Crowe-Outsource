@@ -85,11 +85,13 @@ module.exports = {
   resolve: {
     alias: {
       "@src": path.resolve(__dirname, "src"),
+      "@public": path.resolve(__dirname, "public"),
       "@types": path.resolve(__dirname, "src/types"),
       "@store": path.resolve(__dirname, "src/store"),
       "@views": path.resolve(__dirname, "src/views"),
       "@utils": path.resolve(__dirname, "src/utils"),
       "@static": path.resolve(__dirname, "src/static"),
+      "@services": path.resolve(__dirname, "src/services"),
       "@hooks": path.resolve(__dirname, "src/utils/hooks"),
       "@fonts": path.resolve(__dirname, "src/static/fonts"),
       "@modules": path.resolve(__dirname, "src/store/modules"),
@@ -97,7 +99,7 @@ module.exports = {
       "@forms": path.resolve(__dirname, "src/components/forms"),
       "@contexts": path.resolve(__dirname, "src/utils/contexts"),
       "@fields": path.resolve(__dirname, "src/components/fields"),
-      "@buttons": path.resolve(__dirname, "src/components/buttons"),
+      "@buttons": path.resolve(__dirname, "src/components/buttons")
     },
     extensions: ["", ".js", ".jsx"],
   },

@@ -130,4 +130,14 @@
   display: flex;
   justify-content: space-between;
 }
-
+.subAccordion {
+  background: #295791 !important;
+  td, button {
+    color: #fff;
+  }
+}
+.addButton {
+  padding: 20px 0;
+  display: flex;
+  justify-content: center;
+}

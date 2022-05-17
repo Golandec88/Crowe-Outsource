@@ -87,4 +87,23 @@ export const getOperators = dispatch => {
     dispatch({ type: types.SET_OPERATORS, value: data });
   });
 };
+export const getOperatorActivities = (id, callback) => {
+  Request({
+    method: "GET",
+    url: "/crm/OperatorActivity/GetClientsByOperator/" + id,
+  }).then(({ data }) => callback(data));
+};
+export const registerOperator = (dispatch, form, callback) => {
+  Request({
+    method: "POST",
+    url: "/crm/StaffUser/Register",
+    data: form,
+    dispatch
+  }).then(({ data }) => {
+    Request({
+      method: "PATCH",
+      url: "/crm/StaffUser/MakeAnOperator/" + data.user.id,
+    }).then(callback);
+  });
+};
 export const logout = dispatch => dispatch({ type: types.USER_CLEAR });

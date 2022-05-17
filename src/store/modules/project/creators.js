@@ -12,7 +12,6 @@ export const getProjects = (dispatch, { role, id }) => {
     dispatch({ type: types.SET_PROJECTS, value: data });
   });
 };
-
 export const attachClientToProject = ({ clients, project }, callback) => {
   Request({
     method: "PATCH",
@@ -22,14 +21,45 @@ export const attachClientToProject = ({ clients, project }, callback) => {
     }
   }).then(callback);
 };
-
-export const addOperatorActivity = ({ operator, client, comment }, callback) => {
+export const addOperatorActivity = ({ operator, client }, callback) => {
   Request({
     method: "PATCH",
     url: "/crm/OperatorActivity/AddActivity/" + operator,
     data: {
-      clientsId: client,
-      comment: comment
+      clientsId: client
     }
+  }).then(callback);
+};
+export const getProjectClients = (dispatch, id) => {
+  Request({
+    method: "GET",
+    url: "/crm/Project/GetClients/" + id,
+    loadingField: "projectClients",
+    type: types.GET_CLIENTS,
+    dispatch
+  }).then(({ data }) => {
+    dispatch({ type: types.SET_CLIENTS, value: data });
+  });
+};
+export const getProjectOperators = (dispatch, id) => {
+  Request({
+    method: "GET",
+    url: "/crm/Project/GetOperatorsActivityByProject/" + id,
+    loadingField: "operators",
+    type: types.GET_OPERATORS,
+    dispatch
+  }).then(({ data }) => {
+    dispatch({ type: types.SET_OPERATORS, value: data.activities });
+  });
+};
+export const createProject = (dispatch, name, id, callback) => {
+  Request({
+    url: "/crm/Project",
+    method: "POST",
+    data: {
+      name,
+      managerId: id
+    },
+    dispatch
   }).then(callback);
 };

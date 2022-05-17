@@ -17,13 +17,13 @@ export default function FileTable({ selected }) {
         <Grid item xs={12}>
           <Title size="small" text={t("userFiles")}/>
 
-          <TableFilter classifications={classifications?.classes}/>
+          <TableFilter classifications={classifications}/>
         </Grid>
 
         {selected && <>
           <Grid item xs={12}>
             <SelectTable
-              classifications={classifications?.classes}
+              classifications={classifications}
               files={selected.request.attachedFiles}
             />
           </Grid>

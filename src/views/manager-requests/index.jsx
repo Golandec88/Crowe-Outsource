@@ -1,10 +1,13 @@
-import s from "./style.module.scss";
+import { useTranslation } from "react-i18next";
+import useItemsUploader from "@hooks/items-uploader.js";
+import { getRequests, getRequestStatuses } from "@modules/request/creators.js";
+import Title from "@components/title";
 import { Paper } from "@mui/material";
+import s from "@views/manager-requests/style.module.scss";
 import CollapsibleTable from "@components/tables/requests/manager";
-import useItemsUploader from "@hooks/items-uploader";
-import { getRequests, getRequestStatuses } from "@modules/request/creators";
 
-export default function UsersPage() {
+export default function DashboardPage() {
+  const { t } = useTranslation();
   const [{ items: requests, loading }] = useItemsUploader(
     "request",
     "requests",
@@ -20,6 +23,7 @@ export default function UsersPage() {
   );
 
   return <>
+    <Title text={t("requestsToManager")} />
     <Paper className={s.main}>
       <Paper className={s.paper}>
         <CollapsibleTable

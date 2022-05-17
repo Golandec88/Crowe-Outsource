@@ -1,3 +1,5 @@
 export default {
-  projects: []
+  projects: [],
+  clients: [],
+  operators: []
 };

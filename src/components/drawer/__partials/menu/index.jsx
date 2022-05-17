@@ -1,21 +1,12 @@
-import { List, ListItem, ListItemIcon, ListItemText, Skeleton } from "@mui/material";
+import { List, ListItemButton, ListItemIcon, ListItemText, Skeleton } from "@mui/material";
 import iconCreator from "@utils/icon-creator";
 import * as proptypes from "prop-types";
 import { Link, useLocation } from "react-router-dom";
 import s from "./style.module.scss";
-
-const iconNameFormatter = name => {
-  const first = name.substring(3);
-
-  switch(first) {
-    case "UserPlus": return "Group";
-    case "Pencil": return "Edit";
-    case "Clipboard": return "NoteAlt";
-    default: return first;
-  }
-};
+import { useTranslation } from "react-i18next";
 
 export default function AppMenu({ list, loading, } ) {
+  const { t } = useTranslation();
   const { pathname } = useLocation();
 
   return <>
@@ -31,16 +22,17 @@ export default function AppMenu({ list, loading, } ) {
         <Skeleton className={s.skeleton} />
       </> : list.map(({ name, iconName, link }, index) => (
         <Link
-          className={`${s.menu_link} ${(link === "/dashboard" ? "/" : link) === pathname ? s.active : ""}`}
-          to={link === "/dashboard" ? "/" : link}
+          className={`${s.menu_link} ${"/" + link === pathname ? s.active : ""}`}
+          to={link}
           key={index}
         >
-          <ListItem className={s.menu_item} button>
+          <ListItemButton className={s.menu_item}>
             <ListItemIcon className={s.icon}>
-              {iconCreator(iconNameFormatter(iconName))}
+
+              {iconCreator(formatIconName(iconName))}
             </ListItemIcon>
-            <ListItemText primary={name} />
-          </ListItem>
+            <ListItemText primary={t(name)} />
+          </ListItemButton>
         </Link>
       ))}
     </List>
@@ -56,3 +48,10 @@ AppMenu.defaultProps = {
   list: [],
   loading: false
 };
+
+function formatIconName(name) {
+  switch (name) {
+    case "Clipboard": return "AssignmentInd";
+    default: return name;
+  }
+}
