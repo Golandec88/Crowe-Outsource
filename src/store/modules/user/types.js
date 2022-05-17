@@ -10,5 +10,8 @@ export const SET_ROLES = "SET_ROLES";
 export const GET_USER_INFO = "GET_USER_INFO";
 export const SET_USER_INFO = "SET_USER_INFO";
 
+export const GET_OPERATORS = "GET_OPERATORS";
+export const SET_OPERATORS = "SET_OPERATORS";
+
 export const GET_REQUEST_USER_INFO = "GET_REQUEST_USER_INFO";
 export const USER_CLEAR = "USER_CLEAR";

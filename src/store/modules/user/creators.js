@@ -39,6 +39,7 @@ export const getUserInfo = dispatch => {
     dispatch
   }).then(({ data }) => {
     dispatch({ type: types.SET_USER_INFO, value: data });
+    localStorage.setItem("ABV_CRM.id", data.id);
   });
 };
 export const getStaffUserInfo = (id, callback) => {
@@ -74,6 +75,36 @@ export const getInfoByPinfl = (pinfl, callback) => {
     url: "/user/EDOTaxOffice/GetPhysicalTaxPayerInfo",
     params: { tin: pinfl },
   }).then(callback);
+};
+export const getOperators = dispatch => {
+  Request({
+    method: "GET",
+    url: "/crm/StaffUser/GetUsersByRole/" + 2,
+    loadingField: "operators",
+    type: types.GET_OPERATORS,
+    dispatch,
+  }).then(({ data }) => {
+    dispatch({ type: types.SET_OPERATORS, value: data });
+  });
+};
+export const getOperatorActivities = (id, callback) => {
+  Request({
+    method: "GET",
+    url: "/crm/OperatorActivity/GetClientsByOperator/" + id,
+  }).then(({ data }) => callback(data));
+};
+export const registerOperator = (dispatch, form, callback) => {
+  Request({
+    method: "POST",
+    url: "/crm/StaffUser/Register",
+    data: form,
+    dispatch
+  }).then(({ data }) => {
+    Request({
+      method: "PATCH",
+      url: "/crm/StaffUser/MakeAnOperator/" + data.user.id,
+    }).then(callback);
+  });
 };
 export const logout = dispatch => dispatch({ type: types.USER_CLEAR });
 

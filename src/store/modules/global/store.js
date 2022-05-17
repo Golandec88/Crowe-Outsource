@@ -10,6 +10,10 @@ export default {
     roles: false,
     classifications: false,
     requests: false,
-    requestUserInfo: false
+    requestUserInfo: false,
+    projects: false,
+    operators: false,
+    clients: false,
+    transactions: false
   }
 };

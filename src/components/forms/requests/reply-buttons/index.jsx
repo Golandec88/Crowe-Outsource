@@ -1,6 +1,6 @@
 import Button from "@mui/material/Button";
 import { useTranslation } from "react-i18next";
-import Dialogs from "@components/dialog";
+import Dialogs from "@components/modals/reply-dialog";
 import proptypes from "prop-types";
 import { useState } from "react";
 import { replyOfRequest } from "@modules/request/creators";
@@ -23,7 +23,7 @@ const buttons = [
   }
 ];
 
-export default function ReplyButtons({ disabled, id, staffType }) {
+export default function ReplyButtons({ disabled, id, staffType, onChange, checkedList }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -46,25 +46,26 @@ export default function ReplyButtons({ disabled, id, staffType }) {
       userType: staffType,
       responseType: modelType,
       comment,
+      rejectedFilesList: checkedList
     }, () => {
       setMessage(dispatch, t("success") + "!");
       setOpen(false);
+      onChange(modelType, id);
       setModelType(null);
     });
   };
 
   return <>
-    {buttons.map(({ type, color, text }) => <>
-      <Button
-        variant="contained"
-        color={color}
-        disableElevation
-        disabled={disabled}
-        onClick={() => openDialog(type)}
-      >
-        {t(text)}
-      </Button>
-    </>)}
+    {buttons.map(({ type, color, text }, index) => <Button
+      key={"#reply-button-" + index}
+      variant="contained"
+      color={color}
+      disableElevation
+      disabled={disabled}
+      onClick={() => openDialog(type)}
+    >
+      {t(text)}
+    </Button>)}
 
     <Dialogs
       model={open}
@@ -80,8 +81,12 @@ ReplyButtons.propTypes = {
   staffType: proptypes.oneOf(["call-center", "manager"]),
   disabled: proptypes.bool,
   id: proptypes.string,
+  onChange: proptypes.func,
+  checkedList: proptypes.array
 };
 
 ReplyButtons.defaultProps = {
-  disabled: false
+  disabled: false,
+  onChange: () => {},
+  checkedList: []
 };

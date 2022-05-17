@@ -8,7 +8,6 @@ import proptypes from "prop-types";
 import TableFilter from "./table-filter";
 import { useTranslation } from "react-i18next";
 
-
 export default function FileTable({ selected }) {
   const { t } = useTranslation();
   const [{ items: classifications }] = useItemsUploader("request", "classifications", "classifications", getClassifications);
@@ -18,13 +17,13 @@ export default function FileTable({ selected }) {
         <Grid item xs={12}>
           <Title size="small" text={t("userFiles")}/>
 
-          <TableFilter classifications={classifications?.classes}/>
+          <TableFilter classifications={classifications}/>
         </Grid>
 
         {selected && <>
           <Grid item xs={12}>
             <SelectTable
-              classifications={classifications?.classes}
+              classifications={classifications}
               files={selected.request.attachedFiles}
             />
           </Grid>

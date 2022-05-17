@@ -1,0 +1,22 @@
+.select {
+  padding: 10px 24px !important;
+  .project {
+    margin-bottom: 10px;
+  }
+  .operator {
+    margin-bottom: 10px;
+  }
+  .additionalText {
+    text-align: center;
+    font-size: 12px;
+    &.grey {
+      color: gray;
+    }
+  }
+  .link {
+    color: #6311af;
+    text-decoration: underline;
+    text-transform: lowercase;
+    cursor: pointer;
+  }
+}

@@ -9,7 +9,8 @@ export default (state = initialState, { type, value }) => {
     case types.GET_CLASSIFICATIONS: return combiner(state, { classifications: [] });
     case types.SET_CLASSIFICATIONS: return combiner(state, { classifications: value });
     case types.SET_REQUEST_STATUSES: return combiner(state, { statuses: value });
-
+    case types.GET_TRANSACTIONS: return combiner(state, { transactions: [] });
+    case types.SET_TRANSACTIONS: return combiner(state, { transactions: value });
     default: return state;
   }
 };

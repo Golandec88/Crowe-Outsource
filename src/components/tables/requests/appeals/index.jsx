@@ -8,13 +8,14 @@ import {
   TableHead,
   TableRow,
   TextField,
-  Box, Skeleton, Chip, Tooltip
+  Box, Chip, Tooltip
 } from "@mui/material";
 import s from "./style.module.scss";
 import * as Icon from "@mui/icons-material";
 import proptypes from "prop-types";
 import { useTranslation } from "react-i18next";
 import getRequestColor from "@utils/request-color";
+import TableSkeleton from "@components/tables/skeleton";
 
 const columns = [
   { id: "tin", label: "tin" },
@@ -59,15 +60,7 @@ export default function RequestsTable(props) {
               </TableRow>
             </TableHead>
             <TableBody className={s.body}>
-              {loading ? <>
-                <TableRow>
-                  {columns.map((column, index) =>
-                    <TableCell key={`table-skeleton-${index}`}>
-                      <Skeleton className={s.skeleton}/>
-                    </TableCell>
-                  )}
-                </TableRow>
-              </> : items.length ? items.map((item, index) => (
+              {loading ? <TableSkeleton cols={3} /> : items.length ? items.map((item, index) => (
                 <TableRow
                   className={`${s["select-area"]} ${selected === item ? s["active"] : ""}`}
                   key={`table-tr-${index}`}

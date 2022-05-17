@@ -14,11 +14,13 @@ import DatePicker from "@fields/date";
 
 import needValidation from "@utils/need-validation";
 import useFormValidation from "@hooks/form-validation";
+import DefaultButton from "@buttons/default";
 
 const fields = {
   "title": Title,
   "text": TextField,
   "date": DatePicker,
+  "button": DefaultButton,
   "button-sign": SignButton
 };
 

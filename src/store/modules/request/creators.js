@@ -14,7 +14,6 @@ export const getRequests = (dispatch, status, isSilent = false) => {
     dispatch({ type: types.SET_REQUESTS, value: data });
   });
 };
-
 export const getRequestStatuses = dispatch => {
   Request({
     method: "GET",
@@ -26,7 +25,6 @@ export const getRequestStatuses = dispatch => {
     dispatch({ type: types.SET_REQUEST_STATUSES, value });
   });
 };
-
 export const getClassifications = dispatch => {
   Request({
     method: "GET",
@@ -35,27 +33,43 @@ export const getClassifications = dispatch => {
     loadingField: "classifications",
     dispatch
   }).then(({ data }) => {
-    dispatch({ type: types.SET_CLASSIFICATIONS, value: data });
+    dispatch({ type: types.SET_CLASSIFICATIONS, value: data.classes });
   });
 };
-
 export const downloadFile = (id, callback) => {
   Request({
     method: "GET",
     url: "/crm/Utils/DownloadFile/" + id,
     use: "fetch"
-  }).then(data => {
-    data.blob().then(callback);
+  }).then(data => data.blob().then(callback));
+};
+export const getTransactions = (dispatch, { fromDate, toDate }) => {
+  Request({
+    method: "GET",
+    url: "/crm/Utils/GetTransactions",
+    type: types.GET_TRANSACTIONS,
+    loadingField: "transactions",
+    params: {
+      tin: "306865819", fromDate, toDate,
+    },
+    dispatch
+  }).then(({ data }) => {
+    const result = [];
+    for (const item of data) {
+      if (item.debit > 0 ) result.push(item);
+    }
+    dispatch({
+      type: types.SET_TRANSACTIONS, value: result
+    });
   });
 };
-
 export const replyOfRequest = (dispatch, info, callback) => {
-  const { id, userType: user, responseType: response, comment } = info;
+  const { id, userType: user, responseType: response, comment, rejectedFilesList } = info;
 
   Request({
     method: "POST",
     url: "/crm/Request/" + getReplyUrl() + "/" + id,
-    data: { comment },
+    data: createData(),
     dispatch
   }).then(callback);
 
@@ -73,5 +87,17 @@ export const replyOfRequest = (dispatch, info, callback) => {
         case "resend": return "ManagerSendBack";
       }
     }
+  }
+  function createData() {
+    if(user === "manager") {
+      if(response === "decline" || response === "resend") {
+        return {
+          comment,
+          rejectedFiels: rejectedFilesList
+        };
+      }
+    }
+
+    return { comment };
   }
 };

@@ -1,21 +1,17 @@
+import { Box, createTheme, CssBaseline, Fade, Snackbar, ThemeProvider, Alert } from "@mui/material";
 import Drawer from "@components/drawer";
 import Header from "@components/header";
 import useMenu from "@hooks/menu";
-import useMessageWatcher from "@hooks/message-watcher";
 import useUserInfo from "@hooks/user-info";
-import {
-  Alert, Box,
-  createTheme,
-  CssBaseline, Fade, Snackbar, ThemeProvider
-} from "@mui/material";
 import themeConfig from "@utils/theme-config";
-import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import s from "./style.module.scss";
+import useMessageWatcher from "@hooks/message-watcher";
+import { useState } from "react";
 
 export default function DefaultLayout() {
-  const [themeOptions] = useState(themeConfig("light"));
   const [message, type, toastModel] = useMessageWatcher();
+  const [themeOptions] = useState(themeConfig("light"));
   const [{ fullName }, role] = useUserInfo();
   const [menu] = useMenu();
 
@@ -29,13 +25,13 @@ export default function DefaultLayout() {
           <Outlet/>
         </main>
       </Box>
-      {toastModel && type ? <Snackbar
+      {toastModel && type && <Snackbar
         TransitionComponent={Fade}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
         open={toastModel}
       >
         <Alert severity={type}>{message}</Alert>
-      </Snackbar> : ""}
+      </Snackbar>}
     </ThemeProvider>
   </>;
 }

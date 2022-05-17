@@ -3,16 +3,13 @@ import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import s from "./style.module.scss";
-import { useTranslation } from "react-i18next";
 
 export default function SelectTable({ files, classifications }) {
   return <>
     <TableContainer>
       <Table>
-        <THead/>
         <TBody
           files={files}
           classifications={classifications}
@@ -27,22 +24,6 @@ SelectTable.propTypes = {
   classifications: proptypes.array
 };
 
-function THead() {
-  const { t } = useTranslation();
-  return <>
-    <TableHead className={s.tableHead}>
-      <TableRow>
-        <TableCell align={"left"}>
-          {t("type")}
-        </TableCell>
-        <TableCell align={"left"}>
-          {t("date")}
-        </TableCell>
-      </TableRow>
-    </TableHead>
-  </>;
-}
-
 function TBody({ files, classifications }) {
   return <>
     <TableBody>
@@ -55,8 +36,7 @@ function TBody({ files, classifications }) {
           tabIndex={-1}
           key={index}
         >
-          <TableCell>{classification}</TableCell>
-          <TableCell>{subClass}</TableCell>
+          <TableCell>{classification} - {subClass}</TableCell>
         </TableRow>;
       })}
     </TableBody>

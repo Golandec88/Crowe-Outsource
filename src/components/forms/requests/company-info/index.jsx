@@ -24,93 +24,95 @@ export default function CompanyInfo({ form }) {
           }
         }]
       },
+      // {
+      //   cols: 12,
+      //   child: [{
+      //     type: "title",
+      //     props: {
+      //       text: "Срок действия договора",
+      //       size: "small",
+      //     }
+      //   }, {
+      //     type: "date",
+      //     cols: 6,
+      //     props: {
+      //       name: "trustDateFrom",
+      //       label: "Дата (от)",
+      //       rules: [formRules.required],
+      //       value: form?.request.contractInfo.validityPeriod.startDate,
+      //       fullWidth: true
+      //     }
+      //   }, {
+      //     type: "date",
+      //     cols: 6,
+      //     props: {
+      //       name: "trustDateOfExpire",
+      //       label: "Дата (до)",
+      //       rules: [formRules.required],
+      //       value: form?.request.contractInfo.validityPeriod.endDate,
+      //       fullWidth: true
+      //     }
+      //   }]
+      // },
+      // {
+      //   cols: 12,
+      //   child: [{
+      //     type: "title",
+      //     props: {
+      //       text: "Последняя оплата",
+      //       size: "small",
+      //       value: form?.request.contractInfo.validityPeriod.startDate,
+      //     }
+      //   }, {
+      //     type: "date",
+      //     cols: 6,
+      //     props: {
+      //       name: "paymentDate",
+      //       label: "Дата оплаты",
+      //       fullWidth: true,
+      //       rules: [formRules.required],
+      //       value: form?.request.contractInfo.lastPayment.paymentDate
+      //     }
+      //   }, {
+      //     type: "text",
+      //     cols: 6,
+      //     props: {
+      //       name: "sum",
+      //       label: "Сумма",
+      //       fullWidth: true,
+      //       rules: [formRules.required],
+      //       value: form?.request.contractInfo.lastPayment.amount
+      //     }
+      //   },
+      //   {
+      //     type: "title",
+      //     props: {
+      //       text: "Прочая информация",
+      //       size: "small",
+      //     }
+      //   }, {
+      //     type: "text",
+      //     cols: 6,
+      //     props: {
+      //       name: "tin",
+      //       label: "ИНН",
+      //       fullWidth: true,
+      //       rules: [formRules.required],
+      //       value: form?.request.companyInfo.tin
+      //     }
+      //   }, {
+      //     type: "text",
+      //     cols: 6,
+      //     props: {
+      //       name: "oked",
+      //       label: "ОКЕД",
+      //       fullWidth: true,
+      //       rules: [formRules.required],
+      //       value: form?.request.companyInfo.oked
+      //     }
+      //   }]
+      // },
       {
-        cols: 12,
-        child: [{
-          type: "title",
-          props: {
-            text: "Срок действия договора",
-            size: "small",
-          }
-        }, {
-          type: "date",
-          cols: 6,
-          props: {
-            name: "trustDateFrom",
-            label: "Дата (от)",
-            rules: [formRules.required],
-            value: form?.request.contractInfo.validityPeriod.startDate,
-            fullWidth: true
-          }
-        }, {
-          type: "date",
-          cols: 6,
-          props: {
-            name: "trustDateOfExpire",
-            label: "Дата (до)",
-            rules: [formRules.required],
-            value: form?.request.contractInfo.validityPeriod.endDate,
-            fullWidth: true
-          }
-        }]
-      }, {
-        cols: 12,
-        child: [{
-          type: "title",
-          props: {
-            text: "Последняя оплата",
-            size: "small",
-            value: form?.request.contractInfo.validityPeriod.startDate,
-          }
-        }, {
-          type: "date",
-          cols: 6,
-          props: {
-            name: "paymentDate",
-            label: "Дата оплаты",
-            fullWidth: true,
-            rules: [formRules.required],
-            value: form?.request.contractInfo.lastPayment.paymentDate
-          }
-        }, {
-          type: "text",
-          cols: 6,
-          props: {
-            name: "sum",
-            label: "Сумма",
-            fullWidth: true,
-            rules: [formRules.required],
-            value: form?.request.contractInfo.lastPayment.amount
-          }
-        },
-        {
-          type: "title",
-          props: {
-            text: "Прочая информация",
-            size: "small",
-          }
-        }, {
-          type: "text",
-          cols: 6,
-          props: {
-            name: "tin",
-            label: "ИНН",
-            fullWidth: true,
-            rules: [formRules.required],
-            value: form?.request.companyInfo.tin
-          }
-        }, {
-          type: "text",
-          cols: 6,
-          props: {
-            name: "oked",
-            label: "ОКЕД",
-            fullWidth: true,
-            rules: [formRules.required],
-            value: form?.request.companyInfo.oked
-          }
-        }]
-      }, {
         cols: 12,
         child: [{
           type: "text",

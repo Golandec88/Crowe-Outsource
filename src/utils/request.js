@@ -62,5 +62,5 @@ function errCallback({ response, method, url, dispatch, callback }) {
     window.location.href = "auth";
   }
   setMessage(dispatch, formatMessage(method, url, statusText, data));
-  callback(statusText);
+  if(callback) callback(statusText);
 }

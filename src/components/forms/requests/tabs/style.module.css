@@ -1,27 +1,3 @@
-@media(max-width: 1920px) {
-  .tabs {
-    margin-bottom: 10px;
-  }
-}
-
-.tabs [role=tablist] {
-  justify-content: space-between;
-  background: #FFFFFF;
-  border-radius: 8px 8px 0 0;
-
-}
-.tabs [role=tabpanel] {
-  padding: 0 20px 20px;
-}
-.tab {
-  height: 56px !important;
-  font-weight: bold !important;
-  text-transform: uppercase !important;
-  flex-basis: 33.3%;
-}
-.tabs [role=tablist] .tab:first-child {
-  border-radius: 8px 0 0 0;
-}
-.tabs [role=tablist] .tab:last-child {
-  border-radius: 0 8px 0 0;
+.tabs {
+  padding: 10px 20px;
 }

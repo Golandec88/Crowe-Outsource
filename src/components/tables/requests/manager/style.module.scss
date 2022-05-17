@@ -1,0 +1,143 @@
+.table {
+  width: 100%;
+  position: relative;
+
+  .title {
+    margin: 0 auto 20px;
+    text-align: center;
+    border-top: 1px solid #e0e0e0;
+    padding-top: 20px;
+  }
+
+  .overflow-content {
+    overflow-y: auto !important;
+    height: calc(100vh - 235px);
+  }
+
+  .accordion {
+    padding: 0;
+    margin: 0;
+  }
+
+  .head {
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: #6311af;
+      color: #FFFFFF !important;
+      padding: 8px 16px;
+      border: none;
+      text-align: left;
+
+      &:first-child {
+        border-top-left-radius: 8px;
+      }
+
+      &:nth-child(2) {
+        text-align: left;
+      }
+
+      &:last-child {
+        border-top-right-radius: 8px;
+      }
+    }
+  }
+
+  .body {
+    td {
+      text-align: left;
+    }
+
+    tr {
+      background: #FFFFFF;
+      transition: .3s;
+
+      &.active {
+        background: #f2f9ff;
+        transition: .3s;
+      }
+    }
+  }
+
+  .details {
+    padding: 0 30px;
+    text-align: left;
+    .chip {
+      width: 100%;
+      margin-bottom: 5px;
+      align-items: center;
+      place-content: flex-start;
+      display: flex;
+      justify-content: space-between;
+      border-radius: 5px;
+      padding: 5px 5px 5px 15px;
+
+      &.wait {
+        background: #f6f6f6;
+        color: black;
+      }
+      &.success {
+        background: #2e7d32;
+        color: white;
+      }
+      &.error {
+        background: #c30000;
+        color: white;
+      }
+      &.downloaded {
+        background: #6311af;
+        color: white;
+      }
+      .buttons {
+        display: flex;
+        margin-left: auto;
+        flex-wrap: nowrap;
+        .button {
+          margin-left: 4px;
+          svg path {
+            color: white;
+          }
+          &[aria-label=download] svg path {
+            color: #6311af
+          }
+          &[aria-label=error] svg path {
+            color: #c30000
+          }
+          &[aria-label=success] svg path {
+            color: #2e7d32
+          }
+        }
+      }
+      &.active .buttons .button svg path {
+        color: white;
+      }
+    }
+  }
+}
+.reply-buttons {
+  padding: 0 30px 20px !important;
+  display: flex;
+  justify-content: flex-end;
+  button {
+    margin-left: 10px;
+  }
+}
+.heading {
+  border-top: 1px solid black;
+}
+.justify {
+  display: flex;
+  justify-content: space-between;
+}
+.subAccordion {
+  background: #295791 !important;
+  td, button {
+    color: #fff;
+  }
+}
+.addButton {
+  padding: 20px 0;
+  display: flex;
+  justify-content: center;
+}
