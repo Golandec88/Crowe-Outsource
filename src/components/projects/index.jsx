@@ -1,10 +1,8 @@
 import proptypes from "prop-types";
 import { projectType } from "@types/project";
-import Card from "@components/card";
-import { Box, DialogActions, DialogContent, DialogTitle, TextField, Tooltip } from "@mui/material";
+import { DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 import s from "./style.module.scss";
 import IconButton from "@mui/material/IconButton";
-import { Hail, SupervisorAccount } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import ClientsModal from "@components/modals/clients";
 import OperatorsModal from "@components/modals/operators";
@@ -14,8 +12,9 @@ import Dialog from "@mui/material/Dialog";
 import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch, useSelector } from "react-redux";
 import { getProjectClients, getProjectOperators } from "@modules/project/creators";
+import ProjectCard from "@components/cards/project";
 
-export default function Projects({ items, onAddProject, role }) {
+export default function Projects({ items, onAddProject, role, loading }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [selected, setSelected] = useState();
@@ -44,17 +43,18 @@ export default function Projects({ items, onAddProject, role }) {
     setProjectName(null);
   }
 
-  console.log(items);
-
   return <>
     <div className={s.container}>
-      {items.map(({ name, id }, index) => <Item
+      {items?.length ? items.map(({ name, id }, index) => <ProjectCard
         key={`#project-card-${index}`}
         onChange={onChange}
         name={name}
         role={role}
         id={id}
-      />)}
+        loading={loading}
+      />) : <>
+        {t("empty")}...
+      </>}
     </div>
     {onAddProject && <div className={s.addButton}>
       <Button
@@ -135,54 +135,10 @@ export default function Projects({ items, onAddProject, role }) {
 Projects.propTypes = {
   items: proptypes.arrayOf(projectType()),
   onAddProject: proptypes.oneOfType([proptypes.func, null]),
-  role: proptypes.oneOf(["manager", "operator"])
+  role: proptypes.oneOf(["manager", "operator"]),
+  loading: proptypes.bool
 };
 
 Projects.defaultProps = {
   items: []
-};
-
-function Item({ name, id, onChange, role }) {
-  const { t } = useTranslation();
-
-  return <>
-    <Box className={s.box}>
-      <Card>
-        <div className={s["card-container"]}>
-          <b className={s.title}>{name}</b>
-          <div className={s.buttons}>
-            <Tooltip title={t("clients")}>
-              <IconButton
-                className={s.button}
-                aria-label="clients"
-                color="primary"
-                onClick={() => onChange("clients", id)}
-              >
-                <Hail fontSize="small" />
-              </IconButton>
-            </Tooltip>
-            {role === "manager" && <>
-              <Tooltip title={t("operators")}>
-                <IconButton
-                  className={s.button}
-                  aria-label="operators"
-                  color="secondary"
-                  onClick={() => onChange("operators", id)}
-                >
-                  <SupervisorAccount fontSize="small" />
-                </IconButton>
-              </Tooltip>
-            </>}
-          </div>
-        </div>
-      </Card>
-    </Box>
-  </>;
-}
-
-Item.propTypes = {
-  name: proptypes.string,
-  onChange: proptypes.func,
-  id: proptypes.string,
-  role: proptypes.oneOf(["manager", "operator"])
 };

@@ -12,7 +12,7 @@ export default function ProjectsPage() {
   const { t } = useTranslation();
   const id = useLocalStorage("ABV_CRM.id").item;
   const params = { role: "manager", id };
-  const [{ items: projects }, update] = useItemsLoader(
+  const [{ items: projects, loading }, update] = useItemsLoader(
     "project", "projects", "projects",
     getProjects, params
   );
@@ -30,6 +30,7 @@ export default function ProjectsPage() {
       items={projects}
       onAddProject={createProject}
       role="manager"
+      loading={loading}
     />
   </>;
 }

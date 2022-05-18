@@ -162,6 +162,7 @@ function Row({ item, statuses, classifications, submit }) {
             classifications={classifications}
             checkedList={checkedList}
             setCheckList={setCheckList}
+            status={statuses[item.request.requestStatus]}
           />
           {statuses[item.request.requestStatus] === "ManagerInProcess" && <Grid className={s["reply-buttons"]} item xs={12}>
             <ReplyButtons
