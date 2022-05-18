@@ -12,25 +12,39 @@ import { useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import CloseIcon from "@mui/icons-material/Close";
+import { useDispatch, useSelector } from "react-redux";
+import { getProjectClients, getProjectOperators } from "@modules/project/creators";
 
-export default function Projects({ items, onAddProject }) {
+export default function Projects({ items, onAddProject, role }) {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const [selected, setSelected] = useState();
   const [clientsModal, setClientsModal] = useState(false);
   const [operatorsModal, setOperatorsModal] = useState(false);
   const [addProjectModal, setAddProjectModal] = useState(false);
   const [projectName, setProjectName] = useState(null);
+  const operators = useSelector(({ project }) => project.operators);
+  const operatorsLoading = useSelector(({ global }) => global.loadingFields.operators);
+  const clients = useSelector(({ project }) => project.clients);
+  const clientsLoading = useSelector(({ global }) => global.loadingFields.clients);
 
   function onChange(type, id) {
     setSelected(id);
-    if(type === "clients") setClientsModal(true);
-    if(type === "operators") setOperatorsModal(true);
+    if(type === "clients") {
+      if(role === "manager") getProjectClients(dispatch, id);
+      setClientsModal(true);
+    }
+    if(type === "operators" && role === "manager") {
+      getProjectOperators(dispatch, id);
+      setOperatorsModal(true);
+    }
   }
-
   function close() {
     setAddProjectModal(false);
     setProjectName(null);
   }
+
+  console.log(items);
 
   return <>
     <div className={s.container}>
@@ -38,10 +52,11 @@ export default function Projects({ items, onAddProject }) {
         key={`#project-card-${index}`}
         onChange={onChange}
         name={name}
+        role={role}
         id={id}
       />)}
     </div>
-    <div className={s.addButton}>
+    {onAddProject && <div className={s.addButton}>
       <Button
         size="medium"
         variant="contained"
@@ -51,15 +66,20 @@ export default function Projects({ items, onAddProject }) {
       >
         {t("addProject")}
       </Button>
-    </div>
+    </div>}
     <ClientsModal
       model={clientsModal}
       close={() => setClientsModal(false)}
+      clients={role === "manager" ? clients : selected ? items.find(item => item.id === selected).clientTins : []}
+      loading={clientsLoading}
       id={selected}
+      disableAdd={role === "operator"}
     />
     <OperatorsModal
       model={operatorsModal}
       close={() => setOperatorsModal(false)}
+      operators={operators}
+      loading={operatorsLoading}
       id={selected}
     />
     <Dialog open={addProjectModal}>
@@ -114,14 +134,15 @@ export default function Projects({ items, onAddProject }) {
 
 Projects.propTypes = {
   items: proptypes.arrayOf(projectType()),
-  onAddProject: proptypes.func
+  onAddProject: proptypes.oneOfType([proptypes.func, null]),
+  role: proptypes.oneOf(["manager", "operator"])
 };
 
 Projects.defaultProps = {
   items: []
 };
 
-function Item({ name, id, onChange }) {
+function Item({ name, id, onChange, role }) {
   const { t } = useTranslation();
 
   return <>
@@ -140,16 +161,18 @@ function Item({ name, id, onChange }) {
                 <Hail fontSize="small" />
               </IconButton>
             </Tooltip>
-            <Tooltip title={t("operators")}>
-              <IconButton
-                className={s.button}
-                aria-label="operators"
-                color="secondary"
-                onClick={() => onChange("operators", id)}
-              >
-                <SupervisorAccount fontSize="small" />
-              </IconButton>
-            </Tooltip>
+            {role === "manager" && <>
+              <Tooltip title={t("operators")}>
+                <IconButton
+                  className={s.button}
+                  aria-label="operators"
+                  color="secondary"
+                  onClick={() => onChange("operators", id)}
+                >
+                  <SupervisorAccount fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            </>}
           </div>
         </div>
       </Card>
@@ -160,5 +183,6 @@ function Item({ name, id, onChange }) {
 Item.propTypes = {
   name: proptypes.string,
   onChange: proptypes.func,
-  id: proptypes.string
+  id: proptypes.string,
+  role: proptypes.oneOf(["manager", "operator"])
 };

@@ -10,25 +10,17 @@ import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import TableSkeleton from "@components/tables/skeleton";
 import Dialog from "@mui/material/Dialog";
-import { forwardRef, useEffect } from "react";
+import { forwardRef } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { getProjectOperators } from "@modules/project/creators";
 import proptypes from "prop-types";
+import { staffUserType } from "@types/user";
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function Operators({ model, close, id }) {
+export default function Operators({ model, close, operators, loading }) {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const operators = useSelector(({ project }) => project.operators);
-  const loading = useSelector(({ global }) => global.loadingFields.operators);
-
-  useEffect(() => {
-    if(id) getProjectOperators(dispatch, id);
-  }, [dispatch, id]);
 
   return <>
     <Dialog
@@ -90,5 +82,6 @@ export default function Operators({ model, close, id }) {
 Operators.propTypes = {
   model: proptypes.bool,
   close: proptypes.func,
-  id: proptypes.string
+  operators: proptypes.arrayOf(staffUserType()),
+  loading: proptypes.bool
 };

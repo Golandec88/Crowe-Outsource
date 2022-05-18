@@ -4,9 +4,7 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { useTranslation } from "react-i18next";
 import proptypes from "prop-types";
-import { getProjectClients } from "@modules/project/creators";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect, forwardRef, useState } from "react";
+import { forwardRef, useState } from "react";
 import Table from "@mui/material/Table";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
@@ -16,21 +14,15 @@ import TableSkeleton from "@components/tables/skeleton";
 import TableContainer from "@mui/material/TableContainer";
 import s from "@components/tables/requests/manager/style.module.scss";
 import Button from "@mui/material/Button";
+import { clientType } from "@types/user";
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function Clients({ model, close, id }) {
+export default function Clients({ model, close, clients, loading, disableAdd }) {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
   const [addClientsModal, toggleClientsModal] = useState(false);
-  const clients = useSelector(({ project }) => project.clients);
-  const loading = useSelector(({ global }) => global.loadingFields.clients);
-
-  useEffect(() => {
-    if(id) getProjectClients(dispatch, id);
-  }, [dispatch, id]);
 
   return <>
     <Dialog
@@ -83,14 +75,14 @@ export default function Clients({ model, close, id }) {
         </TableContainer>
       </DialogContent>
       <DialogActions>
-        <Button
+        {!disableAdd && <Button
           size="medium"
           variant="contained"
           color="primary"
           disableElevation
         >
           {t("addClientToProject")}
-        </Button>
+        </Button>}
       </DialogActions>
     </Dialog>
     <Dialog
@@ -105,5 +97,7 @@ export default function Clients({ model, close, id }) {
 Clients.propTypes = {
   model: proptypes.bool,
   close: proptypes.func,
-  id: proptypes.string
+  loading: proptypes.bool,
+  clients: proptypes.arrayOf(clientType()),
+  disableAdd: proptypes.bool
 };

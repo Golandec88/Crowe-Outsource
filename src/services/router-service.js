@@ -40,6 +40,7 @@ function getRoutesList(role) {
       return [
         { path: "manager-requests", element: <ManagerRequests/>, index: true },
         { path: "manager-projects", element: <ManagerProjects/> },
+        { path: "operator-projects", element: <OperatorProjects/> },
         { path: "activity", element: <Activity/> },
         { path: "operators", element: <Operators/> },
         { path: "transactions", element: <Transactions/> },
@@ -69,5 +70,6 @@ function getRoutesList(role) {
         { path: "/", element: <Navigate to="requests"/> }
       ];
     }
+
   }
 }

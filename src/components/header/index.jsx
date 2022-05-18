@@ -14,12 +14,14 @@ import s from "./style.module.scss";
 
 const Header = ({ title }) => {
   const clearUserInfo = useDispatcher(logoutAction);
-  const clearLocalToken = useLocalStorage("token").removeItem;
+  const clearLocalToken = useLocalStorage("ABV_CRM.token").removeItem;
+  const clearId = useLocalStorage("ABV_CRM.id").removeItem;
   const redirect = useNavigate();
 
   const logout = () => {
     clearUserInfo();
     clearLocalToken();
+    clearId();
     redirect("/auth");
   };
 
