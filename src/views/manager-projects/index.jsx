@@ -26,6 +26,10 @@ export default function ProjectsPage() {
 
   return <>
     <Title text={t("projects")}/>
-    <Projects items={projects} onAddProject={createProject} />
+    <Projects
+      items={projects}
+      onAddProject={createProject}
+      role="manager"
+    />
   </>;
 }

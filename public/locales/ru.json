@@ -96,6 +96,8 @@
   "activity-archive": "Архив активности",
   "clients-archive": "Архив клиентов",
   "noTransactions": "Транзакций нет",
+  "control": "Управление",
+  "participation": "Присоеденится",
   "transactions-statuses": {
     "docNum": "Номер",
     "debit": "Дебит",

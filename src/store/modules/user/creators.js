@@ -39,7 +39,6 @@ export const getUserInfo = dispatch => {
     dispatch
   }).then(({ data }) => {
     dispatch({ type: types.SET_USER_INFO, value: data });
-    localStorage.setItem("ABV_CRM.id", data.id);
   });
 };
 export const getStaffUserInfo = (id, callback) => {

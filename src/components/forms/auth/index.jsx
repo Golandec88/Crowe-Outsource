@@ -12,11 +12,13 @@ import { useSelector } from "react-redux";
 export default function AuthForm() {
   const redirect = useNavigate();
   const setToken = useLocalStorage("ABV_CRM.token").setItem;
+  const setId = useLocalStorage("ABV_CRM.id").setItem;
   const loading = useSelector(({ global }) => global.loadingFields.authorization);
 
-  const auth = useDispatcher(authUser, useFormParser("auth-form"), (token, { role }) => {
+  const auth = useDispatcher(authUser, useFormParser("auth-form"), (token, { id }) => {
     setToken(token);
-    redirect(role === 3 ? "/requests" : "/");
+    setId(id);
+    redirect("/");
   });
 
   const submitHandler = event => {
