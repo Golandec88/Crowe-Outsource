@@ -47,12 +47,14 @@ export default function ReplyButtons({ disabled, id, staffType, onChange, checke
       responseType: modelType,
       comment,
       rejectedFilesList: checkedList
-    }, () => {
-      setMessage(dispatch, t("success") + "!");
+    }, callback);
+
+    function callback() {
       setOpen(false);
       onChange(modelType, id);
       setModelType(null);
-    });
+      setMessage(dispatch, { type: "info", text: t("success") + "!" });
+    }
   };
 
   return <>
