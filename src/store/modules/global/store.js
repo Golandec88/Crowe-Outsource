@@ -14,6 +14,7 @@ export default {
     projects: false,
     operators: false,
     clients: false,
-    transactions: false
+    transactions: false,
+    activities: false
   }
 };

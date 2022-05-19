@@ -105,7 +105,7 @@ export default function OperatorsPage() {
   }
   function getInfo(id) {
     toggleInfoLoading(true);
-    getOperatorActivities(id, data => {
+    getOperatorActivities(dispatch, id, data => {
       setInfo(data);
       toggleInfoLoading(false);
     });
@@ -179,7 +179,7 @@ export default function OperatorsPage() {
             <ListItemText primary={request.companyInfo.tin} />
           </ListItemButton>
         ): <>
-          <p>{t("empty")}</p>
+          <p style={{ textAlign: "center", borderTop: "3px solid #e0e0e0", margin: "0 auto", padding: "10px 0" }}>{t("empty")}</p>
         </>}
       </List>
     </Dialog>

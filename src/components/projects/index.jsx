@@ -70,7 +70,7 @@ export default function Projects({ items, onAddProject, role, loading }) {
     <ClientsModal
       model={clientsModal}
       close={() => setClientsModal(false)}
-      clients={role === "manager" ? clients : selected ? items.find(item => item.id === selected).clientTins : []}
+      clients={role === "manager" ? clients : selected ? items.find(item => item.id === selected).requests : []}
       loading={clientsLoading}
       id={selected}
       disableAdd={role === "operator"}

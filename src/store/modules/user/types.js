@@ -13,5 +13,8 @@ export const SET_USER_INFO = "SET_USER_INFO";
 export const GET_OPERATORS = "GET_OPERATORS";
 export const SET_OPERATORS = "SET_OPERATORS";
 
+export const GET_ACTIVITIES = "GET_ACTIVITIES";
+export const SET_ACTIVITIES = "SET_ACTIVITIES";
+
 export const GET_REQUEST_USER_INFO = "GET_REQUEST_USER_INFO";
 export const USER_CLEAR = "USER_CLEAR";

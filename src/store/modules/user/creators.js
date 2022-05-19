@@ -86,11 +86,17 @@ export const getOperators = dispatch => {
     dispatch({ type: types.SET_OPERATORS, value: data });
   });
 };
-export const getOperatorActivities = (id, callback) => {
+export const getOperatorActivities = (dispatch, id, callback) => {
   Request({
     method: "GET",
     url: "/crm/OperatorActivity/GetClientsByOperator/" + id,
-  }).then(({ data }) => callback(data));
+    type: types.GET_ACTIVITIES,
+    loadingField: "activities",
+    dispatch
+  }).then(({ data }) => {
+    dispatch({ type: types.SET_ACTIVITIES, value: data });
+    callback(data);
+  });
 };
 export const registerOperator = (dispatch, form, callback) => {
   Request({

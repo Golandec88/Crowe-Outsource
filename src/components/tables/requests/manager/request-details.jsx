@@ -127,6 +127,11 @@ RequestDetails.propTypes = {
   status: proptypes.string
 };
 
+RequestDetails.defaultProps = {
+  checkedList: [],
+  setCheckList: () => {}
+};
+
 function Formatter({ values, titles }) {
   const { t } = useTranslation();
 

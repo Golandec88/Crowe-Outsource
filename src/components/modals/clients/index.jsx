@@ -23,7 +23,6 @@ const Transition = forwardRef(function Transition(props, ref) {
 export default function Clients({ model, close, clients, loading, disableAdd }) {
   const { t } = useTranslation();
   const [addClientsModal, toggleClientsModal] = useState(false);
-
   return <>
     <Dialog
       fullScreen
@@ -59,11 +58,11 @@ export default function Clients({ model, close, clients, loading, disableAdd }) 
 
             <TableBody className={s.body}>
               {clients?.length ? loading ? <TableSkeleton cols={3}/> :
-                clients.map(({ tin }, index) =>
+                clients.map(({ tin, fullName, oked, ...rest }, index) =>
                   <TableRow key={`#client-${index}`}>
-                    <TableCell>{tin}</TableCell>
-                    <TableCell />
-                    <TableCell />
+                    <TableCell>{tin || rest?.companyInfo.tin}</TableCell>
+                    <TableCell>{fullName || rest?.companyInfo.name}</TableCell>
+                    <TableCell>{oked || rest?.companyInfo.oked}</TableCell>
                   </TableRow>
                 ) : <>
                 <TableRow>

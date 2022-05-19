@@ -5,5 +5,6 @@ export default {
   info: [],
   roles: [],
   menu: [],
-  operators: []
+  operators: [],
+  activities: []
 };
