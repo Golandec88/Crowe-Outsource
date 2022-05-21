@@ -20,14 +20,15 @@ import useItemsUploader from "@hooks/items-uploader.js";
 import { getClassifications } from "@modules/request/creators.js";
 import { classificationType, requestType } from "@types/request.js";
 import { Campaign } from "@mui/icons-material";
-import { getOperators, getStaffUserInfo } from "@modules/user/creators.js";
+import { getOperators, getStaffUserInfo  } from "@modules/user/creators.js";
 import TableSkeleton from "@components/tables/skeleton";
 import { addOperatorActivity, attachClientToProject, getProjects } from "@modules/project/creators";
 import useLocalStorage from "@hooks/local-storage";
 import AttachToProject from "@components/modals/attach-to-project";
 import ReplyButtons from "@forms/requests/reply-buttons";
 import { setMessage } from "@modules/global/creators";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
 
 export default function CollapsibleTable({ items, loading, statuses }) {
   const { t } = useTranslation();
@@ -41,6 +42,7 @@ export default function CollapsibleTable({ items, loading, statuses }) {
   const [{ items: classifications }] = useItemsUploader("request", "classifications", "classifications", getClassifications);
   const [{ items: operators }] = useItemsUploader("user", "operators", "operators", getOperators);
   const [{ items: projects }] = useItemsUploader("project", "projects", "projects", getProjects, params);
+  const info = useSelector(({ user }) => user.info);
 
   function submit(type, id) {
     if(type === "accept") {
@@ -48,6 +50,7 @@ export default function CollapsibleTable({ items, loading, statuses }) {
       setSelected(id);
     }
   }
+
 
   function attachToProject({ operator, project }) {
     if(project) attachClientToProject(
@@ -94,7 +97,7 @@ export default function CollapsibleTable({ items, loading, statuses }) {
       model={attachModel}
       close={() => setAttachModel(false)}
       projects={projects}
-      operators={operators}
+      operators={[info].concat(operators)}
       confirm={attachToProject}
     />
   </>;
@@ -108,7 +111,6 @@ CollapsibleTable.propTypes = {
 
 function Row({ item, statuses, classifications, submit }) {
   const { t } = useTranslation();
-
   const [open, setOpen] = useState(false);
   const [checkedList, setCheckList] = useState([]);
 
@@ -169,6 +171,7 @@ function Row({ item, statuses, classifications, submit }) {
               staffType="manager"
               onChange={submit}
               checkedList={checkedList}
+              type="request"
             />
           </Grid>}
         </Collapse>
@@ -184,3 +187,7 @@ Row.propTypes = {
   submit: proptypes.func,
   classifications: proptypes.arrayOf(classificationType())
 };
+/*
+* onClick={()=> addManagerActivity({ manager:managerId,client:clientTin },(response)=> console.log(response.data) )}
+*  const managerId = localStorage.getItem("ABV_CRM.id");
+  const clientTin = item.request.companyInfo.tin;*/

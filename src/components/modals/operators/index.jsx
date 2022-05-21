@@ -15,12 +15,14 @@ import { useTranslation } from "react-i18next";
 import proptypes from "prop-types";
 import { staffUserType } from "@types/user";
 
+
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function Operators({ model, close, operators, loading }) {
+export default function Operators({ model, close, operators, loading, }) {
   const { t } = useTranslation();
+
 
   return <>
     <Dialog

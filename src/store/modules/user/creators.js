@@ -86,6 +86,7 @@ export const getOperators = dispatch => {
     dispatch({ type: types.SET_OPERATORS, value: data });
   });
 };
+
 export const getOperatorActivities = (id, callback) => {
   Request({
     method: "GET",

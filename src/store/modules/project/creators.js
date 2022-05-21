@@ -17,7 +17,7 @@ export const attachClientToProject = ({ clients, project }, callback) => {
     method: "PATCH",
     url: "/crm/Project/AttachClients/" + project,
     data: {
-      clientsIds: clients
+      clientTins: clients
     }
   }).then(callback);
 };
@@ -26,10 +26,16 @@ export const addOperatorActivity = ({ operator, client }, callback) => {
     method: "PATCH",
     url: "/crm/OperatorActivity/AddActivity/" + operator,
     data: {
-      clientsId: client
+      clientTin: client
     }
   }).then(callback);
 };
+
+
+
+
+
+
 export const getProjectClients = (dispatch, id) => {
   Request({
     method: "GET",

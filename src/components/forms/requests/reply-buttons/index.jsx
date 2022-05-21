@@ -7,21 +7,13 @@ import { replyOfRequest } from "@modules/request/creators";
 import { setMessage } from "@modules/global/creators";
 import { useDispatch } from "react-redux";
 
-const buttons = [
-  {
-    type: "decline",
-    color: "error",
-    text: "declineRequest"
-  }, {
-    type: "resend",
-    color: "secondary",
-    text: "resendRequest"
-  }, {
-    type: "accept",
-    color: "primary",
-    text: "acceptRequest"
-  }
-];
+const buttons = [{
+  type: "decline", color: "error", text: "declineRequest"
+}, {
+  type: "resend", color: "secondary", text: "resendRequest"
+}, {
+  type: "accept", color: "primary", text: "acceptRequest"
+}];
 
 export default function ReplyButtons({ disabled, id, staffType, onChange, checkedList }) {
   const { t } = useTranslation();
@@ -42,11 +34,7 @@ export default function ReplyButtons({ disabled, id, staffType, onChange, checke
 
   const confirmDialog = comment => {
     replyOfRequest(dispatch, {
-      id,
-      userType: staffType,
-      responseType: modelType,
-      comment,
-      rejectedFilesList: checkedList
+      id, userType: staffType, responseType: modelType, comment, rejectedFilesList: checkedList
     }, () => {
       setMessage(dispatch, t("success") + "!");
       setOpen(false);
@@ -86,7 +74,6 @@ ReplyButtons.propTypes = {
 };
 
 ReplyButtons.defaultProps = {
-  disabled: false,
-  onChange: () => {},
-  checkedList: []
+  disabled: false, onChange: () => {
+  }, checkedList: []
 };

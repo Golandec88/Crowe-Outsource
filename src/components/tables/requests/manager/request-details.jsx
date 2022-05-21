@@ -14,8 +14,11 @@ import {
 import downloadFile from "@utils/download-file.js";
 import { getInfoByPinfl as loadInfo } from "@modules/user/creators.js";
 
+
+
 export default function RequestDetails({ item, classifications, checkedList, setCheckList }) {
   const { t } = useTranslation();
+
 
   const [fullName, setFullName] = useState("");
   const [localCheckList, setLocalCheckList] = useState([]);
@@ -33,7 +36,7 @@ export default function RequestDetails({ item, classifications, checkedList, set
     setLocalCheckList(result);
     setCheckList([...checkedList, ...[item.request.attachedFiles[index]]]);
 
-    if(value === "downloaded") {
+    if (value === "downloaded") {
       const id = item.request.attachedFiles[index].fileName;
       downloadFileAction(id, downloadFile);
     }
@@ -114,6 +117,7 @@ export default function RequestDetails({ item, classifications, checkedList, set
       </Grid>
     </Grid>
   </>;
+
 }
 
 RequestDetails.propTypes = {
@@ -181,12 +185,12 @@ function FileItem(props) {
   </>;
 
   function formatName(classificationId) {
-    if(!classifications?.length) return t("loading") + "...";
+    if (!classifications?.length) return t("loading") + "...";
 
     return classifications.map(function ({ subClasses, name: parentName }) {
       return subClasses.map(function ({ id, name: subName }) {
-        if(id === classificationId) {
-          if(parentName !== subName) {
+        if (id === classificationId) {
+          if (parentName !== subName) {
             return `${parentName} - ${subName}`;
           }
           return parentName;

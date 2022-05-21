@@ -16,7 +16,6 @@ export default function AttachToProject({ model, close, projects, operators, con
     project: null,
     operator: null
   });
-
   return <Dialog
     fullWidth
     onClose={close}
@@ -72,11 +71,11 @@ export default function AttachToProject({ model, close, projects, operators, con
           options={operators}
           noOptionsText={t("empty")}
           autoHighlight
-          getOptionLabel={(option) => option.fullName}
+          getOptionLabel={(option) => option.id}
           onChange={(_, { id }) => setSelected(Object.assign(selected, { operator: id }))}
           renderOption={(props, option) => {
             return <Box component="li" {...props}>
-              {option.fullName}
+              {option.role === 1 ? option.fullName + " Manager": option.fullName}
             </Box>;
           }}
           renderInput={(params ) => {
@@ -90,7 +89,6 @@ export default function AttachToProject({ model, close, projects, operators, con
           }}
         />
       </div>
-      <span className={`${s.additionalText} ${s.grey}`}>* {t("youCanDoThisLater")}</span>
     </DialogContent>
     <DialogActions>
       <Button

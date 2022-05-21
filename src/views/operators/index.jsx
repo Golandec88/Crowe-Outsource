@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import proptypes from "prop-types";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
   Avatar, DialogActions, DialogContent,
@@ -54,6 +54,10 @@ export default function OperatorsPage() {
   const [activityModal, toggleActivityModal] = useState(false);
   const [confirmModal, toggleConfirmModal] = useState({ value: false, method: null, text: null });
   const registerData = useFormParser("register-form");
+
+
+  const manager = useSelector(({ user }) => user.info);
+  const staff=[manager].concat(operators);
 
   function submitHandler(event) {
     event.preventDefault();
@@ -127,15 +131,17 @@ export default function OperatorsPage() {
         </TableHead>
         <TableBody className={s.body}>
           {loading ? <TableSkeleton /> :
-            operators?.length ? operators.map((item, index) => <Row
-              key={`#row-${index}`}
-              onChange={getInfo}
-              info={info}
-              loading={infoLoading}
-              onAddOperatorActivity={() => onAddOperatorActivity(item.id)}
-              onDeleteOperator={() => onDeleteOperator(item.id)}
-              item={item}
-            />) : <>
+            staff?.length ? staff.map((item, index) =>
+              <Row
+                key={`#row-${index}`}
+                onChange={getInfo}
+                info={info}
+                loading={infoLoading}
+                onAddOperatorActivity={() => onAddOperatorActivity(item.id)}
+                onDeleteOperator={() => onDeleteOperator(item.id)}
+                item={item}
+                staff={staff}
+              />) : <>
               <TableRow>
                 <TableCell colSpan={6}>
                   {t("empty")}
@@ -201,7 +207,6 @@ export default function OperatorsPage() {
 function Row(props) {
   const { item, onChange, onAddOperatorActivity, onDeleteOperator, info, loading } = props;
   const { t } = useTranslation();
-
   const [open, setOpen] = useState(false);
 
   return <>
@@ -268,7 +273,8 @@ Row.propTypes = {
   onDeleteOperator: proptypes.func,
   loading: proptypes.bool,
   info: operatorActivityType(),
-  item: staffUserType()
+  item: staffUserType(),
+  operators: proptypes.arrayOf(staffUserType())
 };
 
 Row.defaultProps = {

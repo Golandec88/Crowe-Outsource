@@ -32,6 +32,7 @@ export default function RequestsPage() {
     <Title text={t("requests")}/>
     <Paper className={s.main}>
       <Paper className={`${s.paper} ${s.transparent}`}>
+
         <RequestTable
           offset={offset}
           items={requests}

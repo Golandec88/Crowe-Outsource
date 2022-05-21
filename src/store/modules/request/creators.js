@@ -101,3 +101,16 @@ export const replyOfRequest = (dispatch, info, callback) => {
     return { comment };
   }
 };
+
+
+export const addManagerActivity = ({ manager, client }, callback) => {
+
+  Request({
+    method: "PATCH",
+    url: "/crm/OperatorActivity/AddActivity/" + manager,
+    data: {
+      clientTin: client,
+      comment : ""
+    }
+  }).then(callback);
+};

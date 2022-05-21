@@ -23,6 +23,7 @@ export default function Transactions() {
   });
   const columns = ["docNum", "debit", "accCo", "name", "purpose", "inn", "branch", "vdate"];
 
+
   return <>
     <Title text={t("transactions")}/>
     <LocalizationProvider dateAdapter={AdapterDateFns}>

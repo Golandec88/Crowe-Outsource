@@ -44,17 +44,17 @@ export default function Projects({ items, onAddProject, role }) {
     setProjectName(null);
   }
 
-  console.log(items);
 
   return <>
     <div className={s.container}>
-      {items.map(({ name, id }, index) => <Item
-        key={`#project-card-${index}`}
-        onChange={onChange}
-        name={name}
-        role={role}
-        id={id}
-      />)}
+      {items.map(({ name, id }, index) =>
+        <Item
+          key={`#project-card-${index}`}
+          onChange={onChange}
+          name={name}
+          role={role}
+          id={id}
+        />)}
     </div>
     {onAddProject && <div className={s.addButton}>
       <Button
@@ -82,6 +82,7 @@ export default function Projects({ items, onAddProject, role }) {
       loading={operatorsLoading}
       id={selected}
     />
+
     <Dialog open={addProjectModal}>
       <DialogTitle>
         {t("addProject")}
