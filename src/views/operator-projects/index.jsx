@@ -9,7 +9,7 @@ export default function OperatorProjects() {
   const { t } = useTranslation();
   const id = useLocalStorage("ABV_CRM.id").item;
   const params = { role: "operator", id };
-  const [{ items: projects }] = useItemsLoader(
+  const [{ items: projects, loading }] = useItemsLoader(
     "project", "projects", "projects",
     getProjects, params
   );
@@ -19,6 +19,7 @@ export default function OperatorProjects() {
     <Projects
       items={projects}
       role="operator"
+      loading={loading}
     />
   </>;
 }

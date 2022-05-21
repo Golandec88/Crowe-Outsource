@@ -14,11 +14,8 @@ import {
 import downloadFile from "@utils/download-file.js";
 import { getInfoByPinfl as loadInfo } from "@modules/user/creators.js";
 
-
-
-export default function RequestDetails({ item, classifications, checkedList, setCheckList }) {
+export default function RequestDetails({ item, classifications, checkedList, setCheckList, status }) {
   const { t } = useTranslation();
-
 
   const [fullName, setFullName] = useState("");
   const [localCheckList, setLocalCheckList] = useState([]);
@@ -36,7 +33,7 @@ export default function RequestDetails({ item, classifications, checkedList, set
     setLocalCheckList(result);
     setCheckList([...checkedList, ...[item.request.attachedFiles[index]]]);
 
-    if (value === "downloaded") {
+    if(value === "downloaded") {
       const id = item.request.attachedFiles[index].fileName;
       downloadFileAction(id, downloadFile);
     }
@@ -102,29 +99,37 @@ export default function RequestDetails({ item, classifications, checkedList, set
               info={{ name: fileName, classificationId: fileClassificationId }}
               activeList={localCheckList}
               onChange={onChangeFile}
+              status={status}
             />;
           })}
-          {localCheckList.filter(filterCheckItems).length !== item.request.attachedFiles.length && <>
-            <Alert
-              color="primary"
-              severity="info"
-              key="#files-alert"
-            >
-              {t("checkAllDocuments")}!
-            </Alert>
-          </>}
+          {
+            localCheckList.filter(filterCheckItems).length !== item.request.attachedFiles.length &&
+            status === "ManagerInProcess" && <>
+              <Alert
+                color="primary"
+                severity="info"
+                key="#files-alert"
+              >
+                {t("checkAllDocuments")}!
+              </Alert>
+            </>}
         </div>
       </Grid>
     </Grid>
   </>;
-
 }
 
 RequestDetails.propTypes = {
   item: requestType(),
   classifications: proptypes.arrayOf(classificationType()),
   checkedList: proptypes.array,
-  setCheckList: proptypes.func
+  setCheckList: proptypes.func,
+  status: proptypes.string
+};
+
+RequestDetails.defaultProps = {
+  checkedList: [],
+  setCheckList: () => {}
 };
 
 function Formatter({ values, titles }) {
@@ -147,11 +152,44 @@ Formatter.propTypes = {
 };
 
 function FileItem(props) {
-  const { type, counter, classifications, info, onChange } = props;
+  const { type, counter, classifications, info, onChange, status } = props;
   const { t } = useTranslation();
 
   return <>
-    <Tooltip placement="left" title={t("fileCheckStatuses." + type)}>
+    {status === "ManagerInProcess" ? <>
+      <Tooltip placement="left" title={t("fileCheckStatuses." + type)}>
+        <div className={`${s.chip} ${s[type]} ${type !== "wait" ? s.active : ""}`}>
+          <span>{counter}. {formatName(info.classificationId)}</span>
+          <div className={s.buttons}>
+            <IconButton
+              className={s.button}
+              size="small"
+              aria-label="download"
+              onClick={() => onChange(counter - 1, "downloaded")}
+            >
+              <Download fontSize="small"/>
+            </IconButton>
+
+            <IconButton
+              className={s.button}
+              size="small"
+              aria-label="error"
+              onClick={() => onChange(counter - 1, "error")}
+            >
+              <Close fontSize="small"/>
+            </IconButton>
+            <IconButton
+              className={s.button}
+              size="small"
+              aria-label="success"
+              onClick={() => onChange(counter - 1, "success")}
+            >
+              <Check fontSize="small"/>
+            </IconButton>
+          </div>
+        </div>
+      </Tooltip>
+    </> : <>
       <div className={`${s.chip} ${s[type]} ${type !== "wait" ? s.active : ""}`}>
         <span>{counter}. {formatName(info.classificationId)}</span>
         <div className={s.buttons}>
@@ -163,34 +201,18 @@ function FileItem(props) {
           >
             <Download fontSize="small"/>
           </IconButton>
-          <IconButton
-            className={s.button}
-            size="small"
-            aria-label="error"
-            onClick={() => onChange(counter - 1, "error")}
-          >
-            <Close fontSize="small"/>
-          </IconButton>
-          <IconButton
-            className={s.button}
-            size="small"
-            aria-label="success"
-            onClick={() => onChange(counter - 1, "success")}
-          >
-            <Check fontSize="small"/>
-          </IconButton>
         </div>
       </div>
-    </Tooltip>
+    </>}
   </>;
 
   function formatName(classificationId) {
-    if (!classifications?.length) return t("loading") + "...";
+    if(!classifications?.length) return t("loading") + "...";
 
     return classifications.map(function ({ subClasses, name: parentName }) {
       return subClasses.map(function ({ id, name: subName }) {
-        if (id === classificationId) {
-          if (parentName !== subName) {
+        if(id === classificationId) {
+          if(parentName !== subName) {
             return `${parentName} - ${subName}`;
           }
           return parentName;
@@ -205,7 +227,8 @@ FileItem.propTypes = {
   counter: proptypes.number,
   type: fileCheckTypes(),
   info: attachedFilesType(),
-  classifications: proptypes.arrayOf(classificationType())
+  classifications: proptypes.arrayOf(classificationType()),
+  status: proptypes.string
 };
 
 function filterCheckItems(item) {

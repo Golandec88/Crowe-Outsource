@@ -14,6 +14,13 @@ export const getRequests = (dispatch, status, isSilent = false) => {
     dispatch({ type: types.SET_REQUESTS, value: data });
   });
 };
+export const getRequest = (dispatch, tin, callback) => {
+  Request({
+    method: "GET",
+    url: "/crm/Request/RequestByTin/" + tin,
+    dispatch
+  }).then(({ data }) => callback(data));
+};
 export const getRequestStatuses = dispatch => {
   Request({
     method: "GET",

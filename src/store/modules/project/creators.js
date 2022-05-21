@@ -9,7 +9,7 @@ export const getProjects = (dispatch, { role, id }) => {
     loadingField: "projects",
     dispatch
   }).then(({ data }) => {
-    dispatch({ type: types.SET_PROJECTS, value: data });
+    dispatch({ type: types.SET_PROJECTS, value: data?data:[] });
   });
 };
 export const attachClientToProject = ({ clients, project }, callback) => {

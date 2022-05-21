@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import SelectTable from "@components/tables/requests/files/table.jsx";
-import Card from "@components/card";
+import Card from "@components/cards/cards";
 import Title from "@components/title";
 import useItemsUploader from "@hooks/items-uploader";
 import { getClassifications } from "@modules/request/creators";

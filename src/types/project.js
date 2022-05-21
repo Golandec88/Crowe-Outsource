@@ -8,3 +8,15 @@ export function projectType() {
     clientIds: proptypes.arrayOf(proptypes.string)
   });
 }
+
+export function activityType() {
+  return proptypes.shape({
+    projectId: proptypes.string,
+    projectName: proptypes.string,
+    projectPicGuid: proptypes.string,
+    clients: proptypes.arrayOf(proptypes.shape({
+      tin: proptypes.string,
+      fullName: proptypes.string
+    }))
+  });
+}

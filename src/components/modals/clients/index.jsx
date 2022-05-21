@@ -1,20 +1,14 @@
-import Dialog from "@mui/material/Dialog";
-import { DialogActions, DialogContent, DialogTitle, Slide } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
+import { forwardRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import proptypes from "prop-types";
-import { forwardRef, useState } from "react";
-import Table from "@mui/material/Table";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
-import TableBody from "@mui/material/TableBody";
+
+import { Dialog, Button, DialogActions, DialogContent, DialogTitle, Slide, Table, TableHead, TableRow, TableCell, TableBody, TableContainer  } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+
 import TableSkeleton from "@components/tables/skeleton";
-import TableContainer from "@mui/material/TableContainer";
-import s from "@components/tables/requests/manager/style.module.scss";
-import Button from "@mui/material/Button";
 import { clientType } from "@types/user";
+import s from "@components/tables/requests/manager/style.module.scss";
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -23,7 +17,6 @@ const Transition = forwardRef(function Transition(props, ref) {
 export default function Clients({ model, close, clients, loading, disableAdd }) {
   const { t } = useTranslation();
   const [addClientsModal, toggleClientsModal] = useState(false);
-
   return <>
     <Dialog
       fullScreen
@@ -59,11 +52,11 @@ export default function Clients({ model, close, clients, loading, disableAdd }) 
 
             <TableBody className={s.body}>
               {clients?.length ? loading ? <TableSkeleton cols={3}/> :
-                clients.map(({ tin }, index) =>
+                clients.map((item, index) =>
                   <TableRow key={`#client-${index}`}>
-                    <TableCell>{tin}</TableCell>
-                    <TableCell />
-                    <TableCell />
+                    <TableCell>{item?.tin || item?.companyInfo?.tin}</TableCell>
+                    <TableCell>{item?.fullName || item?.companyInfo?.name}</TableCell>
+                    <TableCell>{item?.oked || item?.companyInfo?.oked}</TableCell>
                   </TableRow>
                 ) : <>
                 <TableRow>

@@ -98,6 +98,7 @@
   "noTransactions": "Транзакций нет",
   "control": "Управление",
   "participation": "Присоеденится",
+  "projectName": "Наименование проекта",
   "transactions-statuses": {
     "docNum": "Номер",
     "debit": "Дебит",

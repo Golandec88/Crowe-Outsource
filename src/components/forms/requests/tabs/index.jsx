@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import UserInfo from "@forms/requests/user-info";
 import CompanyInfo from "@forms/requests/company-info";
-import Card from "@components/card";
+import Card from "@components/cards/cards";
 import s from "./style.module.css";
 import proptypes from "prop-types";
 
