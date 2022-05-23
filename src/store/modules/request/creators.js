@@ -61,6 +61,7 @@ export const getTransactions = (dispatch, { fromDate, toDate }) => {
     },
     dispatch
   }).then(({ data }) => {
+    console.log(data);
     const result = [];
     for (const item of data) {
       if (item.debit > 0 ) result.push(item);
@@ -70,6 +71,9 @@ export const getTransactions = (dispatch, { fromDate, toDate }) => {
     });
   });
 };
+
+
+
 export const replyOfRequest = (dispatch, info, callback) => {
   const { id, userType: user, responseType: response, comment, rejectedFilesList } = info;
 
