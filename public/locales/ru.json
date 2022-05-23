@@ -99,6 +99,8 @@
   "control": "Управление",
   "participation": "Присоеденится",
   "projectName": "Наименование проекта",
+  "dateFrom": "Дата (от)",
+  "dateTo": "Дата (по)",
   "transactions-statuses": {
     "docNum": "Номер",
     "debit": "Дебит",

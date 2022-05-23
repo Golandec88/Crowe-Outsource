@@ -8,10 +8,8 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
-
 import useItemsUploader from "@hooks/items-uploader";
 import TableSkeleton from "@components/tables/skeleton";
-
 
 export default function Transactions() {
   const { t } = useTranslation();
@@ -23,30 +21,37 @@ export default function Transactions() {
   });
   const columns = ["docNum", "debit", "accCo", "name", "purpose", "inn", "branch", "vdate"];
 
-
   return <>
     <Title text={t("transactions")}/>
-    <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <DatePicker
-        openTo="day"
-        views={["day", "month", "year"]}
-        value={fromDate}
-        onChange={(newValue) => {
-          setFromDate(newValue);
-        }}
-        renderInput={(params) => <TextField {...params} />}
-      />
-      <DatePicker
-        openTo="day"
-        views={["day", "month", "year"]}
-        value={toDate}
-        onChange={(newValue) => {
-          setToDate(newValue);
-        }}
-        renderInput={(params) => <TextField {...params} />}
-      />
-    </LocalizationProvider>
-    <Paper elevation={0} className={s.main}>
+    <Paper elevation={0} className={s.filters}>
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <DatePicker
+          openTo="day"
+          views={["day", "month", "year"]}
+          label={t("dateFrom")}
+          value={fromDate}
+          onChange={setFromDate}
+          renderInput={(params) =>
+            <TextField
+              {...params}
+              className={s.datepicker}
+            />}
+        />
+        <DatePicker
+          openTo="day"
+          views={["day", "month", "year"]}
+          label={t("dateTo")}
+          value={toDate}
+          onChange={setToDate}
+          renderInput={(params) =>
+            <TextField
+              {...params}
+              className={s.datepicker}
+            />}
+        />
+      </LocalizationProvider>
+    </Paper>
+    <Paper elevation={0}>
       <Table className={s.table}>
         <TableHead className={s.head}>
           <TableRow>
