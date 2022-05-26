@@ -61,7 +61,6 @@ export const getTransactions = (dispatch, { fromDate, toDate }) => {
     },
     dispatch
   }).then(({ data }) => {
-    console.log(data);
     const result = [];
     for (const item of data) {
       if (item.debit > 0 ) result.push(item);
@@ -114,14 +113,3 @@ export const replyOfRequest = (dispatch, info, callback) => {
 };
 
 
-export const addManagerActivity = ({ manager, client }, callback) => {
-
-  Request({
-    method: "PATCH",
-    url: "/crm/OperatorActivity/AddActivity/" + manager,
-    data: {
-      clientTin: client,
-      comment : ""
-    }
-  }).then(callback);
-};

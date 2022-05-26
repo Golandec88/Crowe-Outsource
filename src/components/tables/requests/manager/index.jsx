@@ -188,7 +188,4 @@ Row.propTypes = {
   submit: proptypes.func,
   classifications: proptypes.arrayOf(classificationType())
 };
-/*
-* onClick={()=> addManagerActivity({ manager:managerId,client:clientTin },(response)=> console.log(response.data) )}
-*  const managerId = localStorage.getItem("ABV_CRM.id");
-  const clientTin = item.request.companyInfo.tin;*/
+

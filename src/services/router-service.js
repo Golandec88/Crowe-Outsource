@@ -15,6 +15,7 @@ import ActivityArchive from "@views/activity-archive";
 import ClientsArchive from "@views/clients-archive";
 import OperatorProjects from "@views/operator-projects";
 import RequestsArchive from "@views/requests-archive";
+import FileShare from "@views/file-share";
 
 export default function RouterService ({ isAuth, role }) {
   const schema = [
@@ -48,6 +49,7 @@ function getRoutesList(role) {
         { path: "register", element: <RegisterUser /> },
         { path: "activity-archive", element: <ActivityArchive /> },
         { path: "clients-archive", element: <ClientsArchive /> },
+        { path: "file-share", element: <FileShare /> },
         { path: "/", element: <Navigate to="manager-requests"/> }
       ];
     }
@@ -59,6 +61,7 @@ function getRoutesList(role) {
         { path: "register", element: <RegisterUser /> },
         { path: "activity-archive", element: <ActivityArchive /> },
         { path: "clients-archive", element: <ClientsArchive /> },
+        { path: "file-share", element: <FileShare /> },
         { path: "/", element: <Navigate to="activity"/> }
       ];
     }
