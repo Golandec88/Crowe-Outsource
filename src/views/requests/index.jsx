@@ -15,10 +15,22 @@ export default function RequestsPage() {
   const { t } = useTranslation();
   const offset = useScroller(135);
   const [selected, setSelected] = useState();
-  const [{ items: requests, loading }, dispatch] = useItemsUploader("request", "requests", "requests", getRequests, {
-    statuses: [0, 1, 2, 3]
-  });
-  const [{ items: statuses }] = useItemsUploader("request", "statuses", "", getRequestStatuses);
+  const [checkedList, setCheckList] = useState([]);
+  const [{ items: requests, loading }, dispatch] = useItemsUploader(
+    "request",
+    "requests",
+    "requests",
+    getRequests,
+    {
+      statuses: [0, 1, 2, 3],
+    }
+  );
+  const [{ items: statuses }] = useItemsUploader(
+    "request",
+    "statuses",
+    "",
+    getRequestStatuses
+  );
 
   useEffect(() => {
     const interval = setInterval(dispatch, 10000);
@@ -28,29 +40,50 @@ export default function RequestsPage() {
     };
   }, [dispatch]);
 
-  return <>
-    <Title text={t("requests")}/>
-    <Paper className={s.main}>
-      <Paper className={`${s.paper} ${s.transparent}`}>
+  function submit(type, id) {
+    if (type === "accept") {
+      setAttachModel(true);
+      setSelected(id);
+    }
+  }
 
-        <RequestTable
-          offset={offset}
-          items={requests}
-          loading={loading}
-          onChange={setSelected}
-          selected={selected}
-          statuses={statuses}
-        />
+  return (
+    <>
+      <Title text={t("requests")} />
+      <Paper className={s.main}>
+        <Paper className={`${s.paper} ${s.transparent}`}>
+          <RequestTable
+            offset={offset}
+            items={requests}
+            loading={loading}
+            onChange={setSelected}
+            selected={selected}
+            statuses={statuses}
+          />
+        </Paper>
+        <Paper className={s.paper}>
+          <BasicTabs offset={offset} selected={selected} />
+        </Paper>
+        <Paper className={s.paper}>
+          <FileTable
+            selected={selected}
+            statuses={statuses}
+            checkedList={checkedList}
+            setCheckList={setCheckList}
+          />
+        </Paper>
       </Paper>
-      <Paper className={s.paper}>
-        <BasicTabs offset={offset} selected={selected}/>
+      <Paper className={`${s.main} ${s.buttons}`}>
+        {selected && selected.request.requestStatus === 1 && (
+          <ReplyButtons
+            id={selected.request.id}
+            staffType="call-center"
+            checkedList={checkedList}
+            onChange={submit}
+            type="request"
+          />
+        )}
       </Paper>
-      <Paper className={s.paper}>
-        <FileTable offset={offset} selected={selected}/>
-      </Paper>
-    </Paper>
-    <Paper className={`${s.main} ${s.buttons}`}>
-      {selected && selected.request.requestStatus === 1 && <ReplyButtons id={selected.request.id} staffType="call-center" />}
-    </Paper>
-  </>;
+    </>
+  );
 }

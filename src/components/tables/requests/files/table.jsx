@@ -5,52 +5,109 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 import s from "./style.module.scss";
+import FileItem from "./file-item";
+import { downloadFile as downloadFileAction } from "@modules/request/creators.js";
+import downloadFile from "@utils/download-file.js";
+import { useState } from "react";
 
-export default function SelectTable({ files, classifications }) {
-  return <>
-    <TableContainer>
-      <Table>
-        <TBody
-          files={files}
-          classifications={classifications}
-        />
-      </Table>
-    </TableContainer>
-  </>;
+export default function SelectTable({
+  files,
+  classifications,
+  status,
+  selected,
+  checkedList,
+  setCheckList,
+}) {
+  return (
+    <>
+      <TableContainer>
+        <Table>
+          <TBody
+            files={files}
+            classifications={classifications}
+            status={status}
+            selected={selected}
+            checkedList={checkedList}
+            setCheckList={setCheckList}
+          />
+        </Table>
+      </TableContainer>
+    </>
+  );
 }
 
 SelectTable.propTypes = {
   files: proptypes.array,
-  classifications: proptypes.array
+  classifications: proptypes.array,
+  status: proptypes.string,
+  selected: proptypes.object,
+  checkedList: proptypes.array,
+  setCheckList: proptypes.func,
 };
 
-function TBody({ files, classifications }) {
-  return <>
-    <TableBody>
-      {files.map((item, index) => {
-        const { classification, subClass } = format(item, classifications);
+function TBody({
+  files,
+  classifications,
+  status,
+  selected,
+  checkedList,
+  setCheckList,
+}) {
+  const [localCheckList, setLocalCheckList] = useState([]);
 
-        return <TableRow
-          className={s.textAlign}
-          hover
-          tabIndex={-1}
-          key={index}
-        >
-          <TableCell>{classification} - {subClass}</TableCell>
-        </TableRow>;
-      })}
-    </TableBody>
-  </>;
+  function onChangeFile(index, value) {
+    const result = Array.from(localCheckList);
+    result[index] = value;
+
+    setLocalCheckList(result);
+    setCheckList([...checkedList, ...[files[index]]]);
+
+    if (value === "downloaded") {
+      const id = files[index].fileName;
+      downloadFileAction(id, downloadFile);
+    }
+  }
+
+  return (
+    <>
+      <TableBody>
+        {files.map(({ fileName, fileClassificationId }, index) => {
+          return (
+            <TableRow className={s.textAlign} hover tabIndex={-1} key={index}>
+              <TableCell className={s.cell}>
+                <FileItem
+                  info={{
+                    name: fileName,
+                    classificationId: fileClassificationId,
+                  }}
+                  classifications={classifications}
+                  type={localCheckList[index] ?? "wait"}
+                  counter={index + 1}
+                  key={`#file-item-${index}`}
+                  status={status}
+                  onChange={onChangeFile}
+                />
+              </TableCell>
+            </TableRow>
+          );
+        })}
+      </TableBody>
+    </>
+  );
 }
 
 TBody.propTypes = {
   files: proptypes.array,
-  classifications: proptypes.array
+  classifications: proptypes.array,
+  status: proptypes.string,
+  selected: proptypes.object,
+  checkedList: proptypes.array,
+  setCheckList: proptypes.func,
 };
 
 TBody.defaultProps = {
   files: [],
-  classifications: []
+  classifications: [],
 };
 
 function format({ fileClassificationId, fileName }, classifications) {
@@ -60,12 +117,12 @@ function format({ fileClassificationId, fileName }, classifications) {
     fileName: null,
   };
   classifications.forEach(({ subClasses, name }) => {
-    subClasses.forEach(item => {
+    subClasses.forEach((item) => {
       if (fileClassificationId === item.id) {
         return Object.assign(obj, {
           classification: name,
           subClass: item.name,
-          fileName: fileName
+          fileName: fileName,
         });
       }
     });
