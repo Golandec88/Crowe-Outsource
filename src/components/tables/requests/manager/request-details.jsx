@@ -17,7 +17,6 @@ export default function RequestDetails({
   status,
 }) {
   const { t } = useTranslation();
-
   const [fullName, setFullName] = useState("");
   const [localCheckList, setLocalCheckList] = useState([]);
 
@@ -118,11 +117,8 @@ export default function RequestDetails({
         <Grid item xs={4}>
           <div className={s.details}>
             <p>{t("userFiles")}</p>
-            {item.request.attachedFiles.map(function (
-              { fileName, fileClassificationId },
-              index
-            ) {
-              return (
+            {item.request.attachedFiles.map(
+              ({ fileName, fileClassificationId }, index) => (
                 <FileItem
                   type={localCheckList[index] ?? "wait"}
                   counter={index + 1}
@@ -135,8 +131,8 @@ export default function RequestDetails({
                   onChange={onChangeFile}
                   status={status}
                 />
-              );
-            })}
+              )
+            )}
             {localCheckList.filter(filterCheckItems).length !==
               item.request.attachedFiles.length &&
               status === "ManagerInProcess" && (

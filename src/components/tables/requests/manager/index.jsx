@@ -115,8 +115,6 @@ export default function CollapsibleTable({ items, loading, statuses }) {
                     submit={submit}
                     statuses={statuses}
                     classifications={classifications}
-                    operators={operators}
-                    projects={projects}
                     item={item}
                   />
                 );

@@ -9,16 +9,15 @@ import { Check, Close, Download } from "@mui/icons-material";
 import { IconButton, Tooltip } from "@mui/material";
 import s from "./style.module.scss";
 
-export default function FileItem(
+export default function FileItem({
   type,
   counter,
   classifications,
   info,
   onChange,
-  status
-) {
+  status,
+}) {
   const { t } = useTranslation();
-  console.log(info);
 
   return (
     <>
