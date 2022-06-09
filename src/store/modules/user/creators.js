@@ -1,17 +1,17 @@
 import * as types from "@modules/user/types";
 import Request from "@utils/request";
 
-export const getMenu = dispatch => {
+export const getMenu = (dispatch) => {
   Request({
     method: "GET",
     url: "/crm/StaffUserMenu",
     type: types.GET_MENU,
     loadingField: "menu",
-    dispatch
+    dispatch,
   }).then(({ data }) => {
     dispatch({
       type: types.SET_MENU,
-      value: data ? data.value.items : []
+      value: data ? data.value.items : [],
     });
   });
 };
@@ -22,7 +22,7 @@ export const authUser = (dispatch, payload, callback) => {
     data: payload,
     type: types.AUTH_USER,
     loadingField: "authorization",
-    dispatch
+    dispatch,
   };
   Request(params).then(({ data }) => {
     const { token, user } = data;
@@ -30,13 +30,13 @@ export const authUser = (dispatch, payload, callback) => {
     callback(token, user);
   });
 };
-export const getUserInfo = dispatch => {
+export const getUserInfo = (dispatch) => {
   Request({
     method: "GET",
     url: "/crm/StaffUser",
     type: types.GET_USER_INFO,
     loadingField: "userInfo",
-    dispatch
+    dispatch,
   }).then(({ data }) => {
     dispatch({ type: types.SET_USER_INFO, value: data });
   });
@@ -45,10 +45,10 @@ export const getStaffUserInfo = (id, callback) => {
   Request({
     method: "GET",
     url: "/crm/StaffUser",
-    params: { id }
+    params: { id },
   }).then(callback);
 };
-export const getRoles = dispatch => {
+export const getRoles = (dispatch) => {
   Request({
     method: "GET",
     url: "/crm/StaffUser/GetAllRoles",
@@ -65,7 +65,7 @@ export const getInfo = (dispatch, identity, callback) => {
     url: "/edo/Utils/" + identity,
     type: types.GET_REQUEST_USER_INFO,
     loadingField: "requestUserInfo",
-    dispatch
+    dispatch,
   }).then(({ data }) => callback(data));
 };
 export const getInfoByPinfl = (pinfl, callback) => {
@@ -75,7 +75,7 @@ export const getInfoByPinfl = (pinfl, callback) => {
     params: { tin: pinfl },
   }).then(callback);
 };
-export const getOperators = dispatch => {
+export const getOperators = (dispatch) => {
   Request({
     method: "GET",
     url: "/crm/StaffUser/GetUsersByRole/" + 2,
@@ -92,7 +92,7 @@ export const getOperatorActivities = (dispatch, id, callback) => {
     url: "/crm/OperatorActivity/GetClientsByOperator/" + id,
     type: types.GET_ACTIVITIES,
     loadingField: "activities",
-    dispatch
+    dispatch,
   }).then(({ data }) => {
     dispatch({ type: types.SET_ACTIVITIES, value: data });
     callback(data);
@@ -103,7 +103,7 @@ export const registerOperator = (dispatch, form, callback) => {
     method: "POST",
     url: "/crm/StaffUser/Register",
     data: form,
-    dispatch
+    dispatch,
   }).then(({ data }) => {
     Request({
       method: "PATCH",
@@ -111,4 +111,11 @@ export const registerOperator = (dispatch, form, callback) => {
     }).then(callback);
   });
 };
-export const logout = dispatch => dispatch({ type: types.USER_CLEAR });
+export const registerUser = (form, callback) => {
+  Request({
+    method: "POST",
+    url: "/user/User/RegisterUserByAdmin",
+    data: form,
+  }).then(callback);
+};
+export const logout = (dispatch) => dispatch({ type: types.USER_CLEAR });
