@@ -89,9 +89,11 @@
   "login": "Логин",
   "password": "Пароль",
   "repeatPassword": "Повторите пароль",
+  "passwordsDoNotMatch": "Пароли не совпадают",
   "fullName": "Ф.И.О",
   "success": "Успешно",
   "register": "Регистрация",
+  "registerUser": "Регистрация пользователя",
   "archive": "Архив",
   "activity": "Активность",
   "transactions": "Транзакции",
@@ -120,5 +122,11 @@
     "success": "Проверно",
     "downloaded": "Скачано",
     "error": "Помечено как: \"Не корректный\""
+  },
+  "validation": {
+    "required": "Обязательное поле",
+    "minLength3": "Миниммум 3 символа",
+    "minLength5": "Миниммум 5 символов",
+    "tinLength": "9 либо 14 символов"
   }
 }

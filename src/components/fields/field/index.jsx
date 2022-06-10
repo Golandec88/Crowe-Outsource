@@ -1,4 +1,5 @@
 import { useState } from "react";
+import proptypes from "prop-types";
 import s from "./style.module.scss";
 
 import {
@@ -11,7 +12,7 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff, Close } from "@mui/icons-material";
 
-export default function field({
+export default function Field({
   value,
   onInput,
   type,
@@ -71,3 +72,13 @@ export default function field({
     </FormControl>
   );
 }
+
+Field.proptypes = {
+  value: proptypes.any,
+  onInput: proptypes.func,
+  type: proptypes.string,
+  error: proptypes.bool,
+  label: proptypes.string,
+  helperText: proptypes.string,
+  required: proptypes.bool,
+};

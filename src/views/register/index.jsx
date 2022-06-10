@@ -3,12 +3,15 @@ import validationRules from "@utils/validation-rules";
 import { registerUser } from "@modules/user/creators";
 import { useState } from "react";
 import s from "./style.module.scss";
+import { setMessage } from "@modules/global/creators";
+import { useDispatch } from "react-redux";
 
 import { Box, Button } from "@mui/material";
 import Field from "@components/fields/field";
 import Title from "@components/title";
 
 export default function RegisterUser() {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
   const [form, setForm] = useState({
     tin: { value: "", error: false, helperText: "" },
@@ -48,7 +51,7 @@ export default function RegisterUser() {
   const samePasswordValidation = () => {
     return form.password.value === form.repeatPassword.value
       ? true
-      : "Пароли не совпадают";
+      : t("passwordsDoNotMatch");
   };
 
   function registerNewUser(e) {
@@ -62,7 +65,14 @@ export default function RegisterUser() {
         email: form.email.value,
       };
       registerUser(request, () => {
-        console.log("yep");
+        setMessage(dispatch, { type: "info", text: t("success") + "!" });
+        setForm({
+          tin: { value: "", error: false, helperText: "" },
+          phone: { value: "", error: false, helperText: "" },
+          email: { value: "", error: false, helperText: "" },
+          password: { value: "", error: false, helperText: "" },
+          repeatPassword: { value: "", error: false, helperText: "" },
+        });
       });
     } else {
       setForm({
@@ -83,7 +93,7 @@ export default function RegisterUser() {
 
   return (
     <>
-      <Title text="Регистрация пользователя" />
+      <Title text={t("registerUser")} />
       <Box
         component="form"
         autoComplete="off"
@@ -100,7 +110,7 @@ export default function RegisterUser() {
           value={form.tin.value}
           onInput={(e) =>
             inputHadler(e, "tin", [
-              (validationRules.required, validationRules.minLength9),
+              (validationRules.required, validationRules.tinLength),
             ])
           }
           error={form.tin.error}
@@ -163,7 +173,7 @@ export default function RegisterUser() {
           helperText={form.repeatPassword.helperText}
         />
         <Button variant="contained" type="submit">
-          {t("create")}
+          {t("register")}
         </Button>
       </Box>
     </>
