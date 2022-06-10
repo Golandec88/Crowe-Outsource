@@ -72,6 +72,50 @@ export const getTransactions = (dispatch, { fromDate, toDate }) => {
 };
 
 
+export const getClientFiles = (dispatch,id,callback,rows,page) => {
+  Request({
+    method: "GET",
+    url: "/crm/FileHosting/Client/Files/"+id,
+    type: types.GET_CLIENT_FILES,
+    loadingField: "clientFiles",
+    params : {
+      pageNumber:page || 1,
+      pageSize:rows || 5
+    },
+    dispatch
+  }).then(({ data }) => callback(data));
+};
+
+export const getStaffUserSentFiles = (dispatch,id,callback,staffId,rows, page) => {
+  Request({
+    method: "GET",
+    url: "/crm/FileHosting/Staff/Files/"+id + "/" + staffId,
+    type: types.GET_STAFFUSER_FILES,
+    loadingField: "staffUserFiles",
+    params : {
+      pageNumber: page || 1,
+      pageSize: rows || 5
+    },
+    dispatch
+  }).then(({ data }) => (callback(data)));
+};
+
+
+export const getAllStaffUsersWhoSentFilesToThisRequest = (dispatch,id,callback,rows,page) => {
+  Request({
+    method: "GET",
+    url: "/crm/FileHosting/Staff/All/"+id,
+    type: types.GET_STAFFUSERS,
+    loadingField: "staffUserFiles",
+    params: {
+      pageNumber: page || 1,
+      pageSize : rows || 5,
+    },
+    dispatch
+  }).then(({ data }) => (callback(data)));
+};
+
+
 
 export const replyOfRequest = (dispatch, info, callback) => {
   const { id, userType: user, responseType: response, comment, rejectedFilesList } = info;

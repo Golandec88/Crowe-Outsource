@@ -16,7 +16,6 @@ import { getInfoByPinfl as loadInfo } from "@modules/user/creators.js";
 
 export default function RequestDetails({ item, classifications, checkedList, setCheckList, status }) {
   const { t } = useTranslation();
-
   const [fullName, setFullName] = useState("");
   const [localCheckList, setLocalCheckList] = useState([]);
 
@@ -132,7 +131,7 @@ RequestDetails.defaultProps = {
   setCheckList: () => {}
 };
 
-function Formatter({ values, titles }) {
+export  function Formatter({ values, titles }) {
   const { t } = useTranslation();
 
   return values.map((item, index) => {

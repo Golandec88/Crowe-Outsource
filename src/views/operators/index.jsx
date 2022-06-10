@@ -161,7 +161,7 @@ export default function OperatorsPage() {
         onClick={() => setAddOperatorModal(true)}
       >
         {t("addOperator")}
-      </Button>
+      </Button> 
     </div>
     <Dialog onClose={close} open={addOperatorModal}>
       <DialogTitle>{t("registerOperator")}</DialogTitle>

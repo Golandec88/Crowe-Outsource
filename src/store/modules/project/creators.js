@@ -22,7 +22,6 @@ export const attachClientToProject = ({ clients, project }, callback) => {
   }).then(callback);
 };
 export const addOperatorActivity = ({ operator, client }, callback) => {
-  console.log(client);
   Request({
     method: "PATCH",
     url: "/crm/OperatorActivity/AddActivity/" + operator,
