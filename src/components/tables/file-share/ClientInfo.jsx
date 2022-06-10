@@ -167,7 +167,6 @@ export default function ClientInfo() {
           </TableHead>
           <TableBody>
             {staffUsers && staffUsers.items.map((staff, index) => {
-              console.log(staffUsers);
               return <Accordion key={index} expanded={expanded === index} onChange={accordionHandleChange(index)}>
                 <AccordionSummary
                   expandIcon={<ExpandMoreIcon/>}
