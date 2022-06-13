@@ -8,20 +8,25 @@ import { useDispatch } from "react-redux";
 
 import { Box, Button } from "@mui/material";
 import Field from "@components/fields/field";
+import CustomValidateField from "@components/fields/custom-validate";
 import Title from "@components/title";
 
 export default function RegisterUser() {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [form, setForm] = useState({
-    tin: { value: "", error: false, helperText: "" },
-    phone: { value: "", error: false, helperText: "" },
-    email: { value: "", error: false, helperText: "" },
+    tin: "",
+    phone: "",
+    email: "",
     password: { value: "", error: false, helperText: "" },
     repeatPassword: { value: "", error: false, helperText: "" },
   });
 
-  function inputHadler(value, name, rules) {
+  function inputHadler(value, name) {
+    setForm({ ...form, [name]: value });
+  }
+
+  function inputHadlerCustom(value, name, rules) {
     let error = false;
     let helperText = "";
 
@@ -107,14 +112,9 @@ export default function RegisterUser() {
           type="number"
           label={t("pinflOrTin")}
           name="tin"
-          value={form.tin.value}
-          onInput={(e) =>
-            inputHadler(e, "tin", [
-              (validationRules.required, validationRules.tinLength),
-            ])
-          }
-          error={form.tin.error}
-          helperText={form.tin.helperText}
+          value={form.tin}
+          rules={[validationRules.required, validationRules.tinLength]}
+          onInput={inputHadler}
         />
         <Field
           className={s.field}
@@ -123,10 +123,9 @@ export default function RegisterUser() {
           type="tel"
           label={t("phone")}
           name="phone"
-          value={form.phone.value}
-          onInput={(e) => inputHadler(e, "phone", [validationRules.required])}
-          error={form.phone.error}
-          helperText={form.phone.helperText}
+          value={form.phone}
+          rules={[validationRules.required]}
+          onInput={inputHadler}
         />
         <Field
           className={s.field}
@@ -135,12 +134,11 @@ export default function RegisterUser() {
           type="email"
           label={t("email")}
           name="email"
-          value={form.email.value}
-          onInput={(e) => inputHadler(e, "email", [validationRules.required])}
-          error={form.email.error}
-          helperText={form.email.helperText}
+          value={form.email}
+          rules={[validationRules.required]}
+          onInput={inputHadler}
         />
-        <Field
+        <CustomValidateField
           className={s.field}
           required
           fullWidth
@@ -148,15 +146,12 @@ export default function RegisterUser() {
           label={t("password")}
           name="password"
           value={form.password.value}
-          onInput={(e) =>
-            inputHadler(e, "password", [
-              (validationRules.required, validationRules.minLength5),
-            ])
-          }
+          onInput={inputHadlerCustom}
+          rules={[validationRules.required, validationRules.minLength5]}
           error={form.password.error}
           helperText={form.password.helperText}
         />
-        <Field
+        <CustomValidateField
           className={s.field}
           required
           fullWidth
@@ -164,11 +159,8 @@ export default function RegisterUser() {
           label={t("repeatPassword")}
           name="repeatPassword"
           value={form.repeatPassword.value}
-          onInput={(e) =>
-            inputHadler(e, "repeatPassword", [
-              (validationRules.required, validationRules.minLength5),
-            ])
-          }
+          onInput={inputHadlerCustom}
+          rules={[validationRules.required, validationRules.minLength5]}
           error={form.repeatPassword.error}
           helperText={form.repeatPassword.helperText}
         />

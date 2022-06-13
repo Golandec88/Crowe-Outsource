@@ -1,6 +1,6 @@
 import { useState } from "react";
 import proptypes from "prop-types";
-import s from "./style.module.scss";
+import s from "@fields/field/style.module.scss";
 
 import {
   FormControl,
@@ -12,35 +12,21 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff, Close } from "@mui/icons-material";
 
-export default function Field({
+export default function CustomValidateField({
   value,
   onInput,
   type,
+  error = false,
   label,
+  helperText = "",
   required = false,
   fullWidth = false,
-  rules = [],
   name = undefined,
+  rules = [],
   ...rest
 }) {
   const [showPassword, setShowPassword] = useState(false);
   const key = Math.random();
-  const [error, setError] = useState(false);
-  const [helperText, setHelperText] = useState("");
-
-  function inputHadler(value) {
-    onInput(value, name);
-    let isValid = true;
-
-    if (rules.length) {
-      rules.forEach((item) => {
-        isValid = isValid === true ? item(value) : isValid;
-      });
-    }
-
-    setError(isValid !== true);
-    setHelperText(isValid === true ? "" : isValid);
-  }
 
   return (
     <FormControl
@@ -56,7 +42,7 @@ export default function Field({
         label={label}
         type={type === "password" && showPassword ? "text" : type}
         value={value}
-        onInput={(e) => inputHadler(e.target.value)}
+        onInput={(e) => onInput(e.target.value, name, rules)}
         name={name}
         {...rest}
         endAdornment={
@@ -73,7 +59,7 @@ export default function Field({
             {value && (
               <IconButton
                 aria-label="toggle password visibility"
-                onClick={() => inputHadler("")}
+                onClick={() => onInput("", name, rules)}
                 edge="end"
               >
                 <Close />
@@ -83,7 +69,7 @@ export default function Field({
         }
       />
       {helperText && (
-        <FormHelperText id={`outlined-weight-helper-${key}`}>
+        <FormHelperText id="outlined-weight-helper-text">
           {helperText}
         </FormHelperText>
       )}
@@ -91,13 +77,13 @@ export default function Field({
   );
 }
 
-Field.proptypes = {
+CustomValidateField.proptypes = {
   value: proptypes.any,
   onInput: proptypes.func,
   type: proptypes.string,
+  error: proptypes.bool,
   label: proptypes.string,
+  helperText: proptypes.string,
   required: proptypes.bool,
   fullWidth: proptypes.bool,
-  rules: proptypes.array,
-  name: proptypes.string,
 };

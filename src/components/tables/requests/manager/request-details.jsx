@@ -97,7 +97,7 @@ export default function RequestDetails({
               const { passportData } = item;
               const titles = [
                 "fullNameShort",
-                "passportSerialAndNumber",
+                "passportSerialNumber",
                 "placeOfResidence",
                 "givenDate",
                 "expireDate",
