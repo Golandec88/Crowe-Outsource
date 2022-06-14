@@ -1,6 +1,7 @@
 import * as types from "@modules/request/types";
 import Request from "@utils/request";
 import axios from "axios";
+import i18n from "i18next";
 
 export const getRequests = (dispatch, status, isSilent = false) => {
   Request({
@@ -63,6 +64,19 @@ export const uploadFile = (form, callback) => {
     url: "/crm/Utils/StaffUser/uploadFile",
   }).then((data) => callback(data));
 };
+export const deleteFiles = (filesIdArr, callback) => {
+  const token = localStorage.getItem("ABV_CRM.token");
+  axios({
+    method: "post",
+    data: { filenames: filesIdArr },
+    headers: {
+      Authorization: "Bearer " + token,
+      "Content-Type": "application/json-patch+json",
+    },
+    url: "/crm/Utils/DeleteFiles",
+  }).then(callback);
+};
+
 export const getTransactions = (dispatch, { fromDate, toDate }) => {
   Request({
     method: "GET",
@@ -146,4 +160,15 @@ export const addManagerActivity = ({ manager, client }, callback) => {
       comment: "",
     },
   }).then(callback);
+};
+export const getBankByMfo = (mfo, callback) => {
+  const lang = i18n.language || "ru";
+  Request({
+    method: "GET",
+    url: "/edo/Utils/bank/getByMfo",
+    params: {
+      mfo,
+      lang,
+    },
+  }).then((res) => callback(res));
 };

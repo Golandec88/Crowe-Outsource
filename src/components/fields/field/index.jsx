@@ -70,7 +70,7 @@ export default function Field({
                 {showPassword ? <VisibilityOff /> : <Visibility />}
               </IconButton>
             )}
-            {value && (
+            {value && !rest.readOnly && (
               <IconButton
                 aria-label="toggle password visibility"
                 onClick={() => inputHadler("")}

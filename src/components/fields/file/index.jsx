@@ -1,11 +1,12 @@
 import { createRef, useState } from "react";
-import { uploadFile } from "@modules/request/creators.js";
+import { uploadFile, deleteFiles } from "@modules/request/creators.js";
 
 import { IconButton, InputAdornment, OutlinedInput } from "@mui/material";
 import { Close } from "@mui/icons-material";
 
-export default function FileField({ callback, name = undefined, ...rest }) {
+export default function FileField({ addFile, deleteFile, name = "", ...rest }) {
   const [showClearBtn, setShowClearBtn] = useState(false);
+  const [id, setId] = useState("");
   const fileInput = createRef();
 
   function inputHadler(e) {
@@ -15,11 +16,18 @@ export default function FileField({ callback, name = undefined, ...rest }) {
     formData.append("file", e.target.files[0]);
 
     uploadFile(formData, (res) => {
-      callback({ [name]: res.data });
+      addFile({
+        fileName: name,
+        fileClassificationId: res.data,
+      });
+      setId(res.data);
     });
   }
+
   function clearInput() {
+    deleteFiles([id]);
     fileInput.current.value = null;
+    deleteFile({ fileName: name });
     setShowClearBtn(false);
   }
 

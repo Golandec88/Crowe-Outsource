@@ -109,7 +109,7 @@ export default function RegisterUser() {
         <Field
           required
           fullWidth
-          type="number"
+          type="text"
           label={t("pinflOrTin")}
           name="tin"
           value={form.tin}
