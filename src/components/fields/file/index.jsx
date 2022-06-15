@@ -1,12 +1,27 @@
 import { createRef, useState } from "react";
 import { uploadFile, deleteFiles } from "@modules/request/creators.js";
 
-import { IconButton, InputAdornment, OutlinedInput } from "@mui/material";
-import { Close } from "@mui/icons-material";
+import s from "./style.module.scss";
 
-export default function FileField({ addFile, deleteFile, name = "", ...rest }) {
+import {
+  FormControl,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+} from "@mui/material";
+import { Close } from "@mui/icons-material";
+import AttachFileIcon from "@mui/icons-material/AttachFile";
+
+export default function FileField({
+  addFile,
+  deleteFile,
+  id = "",
+  label = "",
+  ...rest
+}) {
   const [showClearBtn, setShowClearBtn] = useState(false);
-  const [id, setId] = useState("");
+  const [name, setName] = useState("");
   const fileInput = createRef();
 
   function inputHadler(e) {
@@ -17,39 +32,57 @@ export default function FileField({ addFile, deleteFile, name = "", ...rest }) {
 
     uploadFile(formData, (res) => {
       addFile({
-        fileName: name,
-        fileClassificationId: res.data,
+        fileName: res.data,
+        fileClassificationId: id,
       });
-      setId(res.data);
+      setName(res.data);
     });
   }
 
   function clearInput() {
-    deleteFiles([id]);
+    deleteFiles([name]);
     fileInput.current.value = null;
-    deleteFile({ fileName: name });
+    deleteFile({ fileName: name, fileClassificationId: id });
     setShowClearBtn(false);
   }
 
   return (
-    <OutlinedInput
-      inputRef={fileInput}
-      onChange={inputHadler}
-      type="file"
-      {...rest}
-      endAdornment={
-        <InputAdornment position="end">
-          {showClearBtn && (
+    <FormControl fullWidth className={s["file-field"]} variant="outlined">
+      <InputLabel htmlFor="file-field">{label}</InputLabel>
+      <OutlinedInput
+        id={"file-field-" + id}
+        inputRef={fileInput}
+        onChange={inputHadler}
+        type="file"
+        label={label}
+        {...rest}
+        startAdornment={
+          <InputAdornment position="start" sx={{ marginLeft: -2 }}>
             <IconButton
-              onClick={clearInput}
-              aria-label="toggle password visibility"
+              aria-label="file icon"
               edge="end"
+              onClick={() => {
+                fileInput.current.click();
+              }}
             >
-              <Close />
+              <AttachFileIcon />
             </IconButton>
-          )}
-        </InputAdornment>
-      }
-    />
+          </InputAdornment>
+        }
+        endAdornment={
+          <InputAdornment position="end">
+            {showClearBtn && (
+              <IconButton
+                onClick={clearInput}
+                aria-label="toggle password visibility"
+                edge="end"
+              >
+                <Close />
+              </IconButton>
+            )}
+          </InputAdornment>
+        }
+      />
+    </FormControl>
   );
 }

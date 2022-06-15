@@ -34,6 +34,12 @@ export const getRequestStatuses = (dispatch) => {
     dispatch({ type: types.SET_REQUEST_STATUSES, value });
   });
 };
+export const getAllClassifications = (callback) => {
+  Request({
+    method: "GET",
+    url: "/crm/FileClassification/GetAllClassifications",
+  }).then((res) => callback(res));
+};
 export const getClassifications = (dispatch) => {
   Request({
     method: "GET",
@@ -170,5 +176,12 @@ export const getBankByMfo = (mfo, callback) => {
       mfo,
       lang,
     },
+  }).then((res) => callback(res));
+};
+export const createRequest = (data, callback) => {
+  Request({
+    method: "POST",
+    url: "/crm/Request/Staff/Send",
+    data,
   }).then((res) => callback(res));
 };
