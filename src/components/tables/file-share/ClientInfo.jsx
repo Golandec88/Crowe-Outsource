@@ -2,7 +2,7 @@ import Title from "@components/title";
 import {
   Accordion, AccordionDetails, AccordionSummary,
   Grid,
-  IconButton, Input, Stack,
+  IconButton, Stack,
   Table,
   TableBody,
   TableCell,
@@ -18,13 +18,13 @@ import { useEffect, useState } from "react";
 import {
   downloadFile, getAllStaffUsersWhoSentFilesToThisRequest,
   getClientFiles,
-  getStaffUserSentFiles
+  getStaffUserSentFiles, staffUserUploadFiles
 } from "@modules/request/creators";
 import { useDispatch } from "react-redux";
 import DownloadFile from "@utils/download-file";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Paper from "@mui/material/Paper";
-import Button from "@mui/material/Button";
+import ConfirmationDialog from "@components/tables/file-share/ConfirmationDialog";
 
 
 
@@ -49,7 +49,8 @@ export default function ClientInfo() {
   const [staffAmountPage, setStaffAmountPage] = useState(0);
   const [staffAmountRowsPerPage, setStaffAmountRowsPerPage] = useState(5);
   const [staffId, setStaffId] = useState("");
-
+  const [staffUploadedFiles,setStaffUploadedFiles] = useState([]);
+  const [openConfirmation,setOpenConfirmation] = useState(false);
 
   const handleChangePage = (event, newPage, value) => {
     if (value === "staff") {
@@ -86,6 +87,17 @@ export default function ClientInfo() {
     setExpanded(isExpanded ? index : false);
   };
 
+  const confirmationDialogHandlerOpen = () => {
+    setOpenConfirmation(true);
+  };
+
+  const confirmationDialogHandlerClose =() => {
+    setOpenConfirmation(false);
+  };
+
+
+
+
   function Sent(data) {
     setSentFiles(data);
     setStaffRowsPerPage(data.files.pageSize);
@@ -99,12 +111,19 @@ export default function ClientInfo() {
     setStaffUsers(data);
   }
 
+  function uploadedFiles(data) {
+    setStaffUploadedFiles(data);
+  }
 
   const DownloadFileAsAction = (res) => {
     DownloadFile(res, () => {
     });
   };
 
+  const staffUserUploadFilesHandler = (item) => {
+    staffUserUploadFiles(item.target.files,uploadedFiles);
+    confirmationDialogHandlerOpen();
+  };
 
   return <>
     <Title text={"Client-Info"}/>
@@ -120,8 +139,8 @@ export default function ClientInfo() {
             {receivedFiles && receivedFiles.files.items.map((el, index) => {
               return <TableRow key={index}>
                 <Paper className={s.filesStyle}>
-                  <TableCell paddingNone sx={{ padding: "5px", borderBottom: "none" }}> {el.name} </TableCell>
-                  <TableCell paddingNone sx={{ padding: "5px", borderBottom: "none" }}>
+                  <TableCell  sx={{ padding: "5px", borderBottom: "none" }}> {el.name} </TableCell>
+                  <TableCell  sx={{ padding: "5px", borderBottom: "none" }}>
                     <Tooltip placement={"top-end"}
                       title={`${el.fileClassification.class} : ${el.fileClassification.subClass}`}>
                       <TableCell sx={{ borderBottom: "none" }}>
@@ -232,12 +251,16 @@ export default function ClientInfo() {
       </Grid>
     </Grid>
     <Stack direction="row" alignItems="center" spacing={2}>
-      <label htmlFor="contained-button-file">
-        <Input  id="contained-button-file" multiple type="file" style={{ display: "none" }}/>
-        <Button variant="contained" component="span">
-          Upload
-        </Button>
-      </label>
+      <form>
+        <label htmlFor="files">Select files:</label>
+        <input type="file" id="files" name="files" multiple onChange={(item)=> staffUserUploadFilesHandler(item)}/>
+      </form>
     </Stack>
+    {openConfirmation === true ? <ConfirmationDialog
+      openConfirmation={openConfirmation}
+      confirmationDialogHandlerClose={confirmationDialogHandlerClose}
+      staffUploadedFiles={staffUploadedFiles}
+      requestId={params.id}
+    /> : ""}
   </>;
 }

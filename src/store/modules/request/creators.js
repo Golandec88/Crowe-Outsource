@@ -1,5 +1,6 @@
 import * as types from "@modules/request/types";
 import Request from "@utils/request";
+import axios from "axios";
 
 export const getRequests = (dispatch, status, isSilent = false) => {
   Request({
@@ -114,6 +115,24 @@ export const getAllStaffUsersWhoSentFilesToThisRequest = (dispatch,id,callback,r
     dispatch
   }).then(({ data }) => (callback(data)));
 };
+
+export const staffUserUploadFiles = ( file,callback ) => {
+  const dataForm = new FormData();
+  const token = localStorage.getItem("ABV_CRM.token");
+
+  for(let i = 0; i< file.length; i++) {
+    dataForm.append("files",file[i]);
+  }
+  axios.post("/crm/FileHosting/UploadFiles", dataForm, {
+    headers : {
+      "Authorization": "Bearer " + token,
+      "Content-Type": "multipart/form-data"
+    },
+    body: dataForm,
+  }).then((data)=> callback(data.data));
+};
+
+// export const staffUserSendFiles =
 
 
 
