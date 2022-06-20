@@ -2,22 +2,28 @@ import { useEffect } from "react";
 import { t } from "i18next";
 import validationRules from "@utils/validation-rules";
 import { getBankByMfo } from "@modules/request/creators.js";
+import proptypes from "prop-types";
 
 import { Grid } from "@mui/material";
-import Field from "@components/fields/field";
+import Field from "@components/fields/field/ver2";
 
-export default function BankInfo({ callback, bank }) {
-  function inputHadler(value, name) {
-    callback({ ...bank, [name]: value }, "bank");
-  }
-
+export default function BankInfo({
+  control,
+  resetField,
+  rules,
+  watch,
+  setValue,
+  getValues,
+}) {
   useEffect(() => {
-    if (bank.mfo.length === 5) {
-      getBankByMfo(bank.mfo, (res) => {
-        if (!!res) callback({ ...bank, name: res.data.name || "" }, "bank");
+    const bankMfo = getValues("form.companyInfo.bank.mfo");
+    if (bankMfo?.length === 5) {
+      getBankByMfo(bankMfo, (res) => {
+        if (!!res && res.data?.name)
+          setValue("form.companyInfo.bank.name", res.data.name);
       });
     }
-  }, [bank.mfo]);
+  }, [watch("form.companyInfo.bank.mfo")]);
 
   return (
     <>
@@ -27,10 +33,10 @@ export default function BankInfo({ callback, bank }) {
           required
           type="text"
           label={t("mfo")}
-          name="mfo"
-          value={bank.mfo}
-          onInput={inputHadler}
-          rules={[validationRules.required]}
+          name="form.companyInfo.bank.mfo"
+          rules={{ ...rules.required }}
+          control={control}
+          resetField={resetField}
         />
       </Grid>
       <Grid item xs={12} md={6}>
@@ -39,10 +45,10 @@ export default function BankInfo({ callback, bank }) {
           required
           type="text"
           label={t("bank")}
-          name="name"
-          value={bank.name}
-          onInput={inputHadler}
-          rules={[validationRules.required]}
+          name="form.companyInfo.bank.name"
+          rules={{ ...rules.required }}
+          control={control}
+          resetField={resetField}
         />
       </Grid>
       <Grid item xs={6} md={4}>
@@ -51,12 +57,17 @@ export default function BankInfo({ callback, bank }) {
           required
           type="text"
           label={t("bankAccount")}
-          name="account"
-          value={bank.account}
-          onInput={inputHadler}
-          rules={[validationRules.required]}
+          name="form.companyInfo.bank.account"
+          rules={{ ...rules.required }}
+          control={control}
+          resetField={resetField}
         />
       </Grid>
     </>
   );
 }
+
+// BankInfo.proptypes = {
+//   callback: proptypes.func,
+//   bank: proptypes.object,
+// };

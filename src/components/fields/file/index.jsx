@@ -1,5 +1,6 @@
 import { createRef, useState } from "react";
 import { uploadFile, deleteFiles } from "@modules/request/creators.js";
+import proptypes from "prop-types";
 
 import s from "./style.module.scss";
 
@@ -18,11 +19,13 @@ export default function FileField({
   deleteFile,
   id = "",
   label = "",
+  accept = "",
   ...rest
 }) {
   const [showClearBtn, setShowClearBtn] = useState(false);
   const [name, setName] = useState("");
   const fileInput = createRef();
+  const key = Math.random();
 
   function inputHadler(e) {
     const formData = new FormData();
@@ -48,14 +51,15 @@ export default function FileField({
 
   return (
     <FormControl fullWidth className={s["file-field"]} variant="outlined">
-      <InputLabel htmlFor="file-field">{label}</InputLabel>
+      <InputLabel htmlFor={"file-field" + key}>{label}</InputLabel>
       <OutlinedInput
-        id={"file-field-" + id}
+        id={"file-field-" + key}
         inputRef={fileInput}
         onChange={inputHadler}
         type="file"
         label={label}
         {...rest}
+        inputProps={(accept = { accept })}
         startAdornment={
           <InputAdornment position="start" sx={{ marginLeft: -2 }}>
             <IconButton
@@ -86,3 +90,10 @@ export default function FileField({
     </FormControl>
   );
 }
+
+FileField.proptypes = {
+  addFile: proptypes.func,
+  deleteFile: proptypes.func,
+  id: proptypes.string,
+  label: proptypes.string,
+};

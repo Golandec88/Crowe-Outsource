@@ -1,29 +1,38 @@
 import { t } from "i18next";
-import { useEffect, useState } from "react";
-import validationRules from "@utils/validation-rules";
+import proptypes from "prop-types";
+import { getInfoByPinfl } from "@modules/user/creators.js";
 
-import Field from "@components/fields/field";
+import Field from "@components/fields/field/ver2";
 import Title from "@components/title";
 import DatePickerField from "@components/fields/date";
 import { Grid } from "@mui/material";
+import { useEffect } from "react";
 
-export default function PassportData({ callback }) {
-  const [form, setForm] = useState({
-    serialAndNumber: "",
-    registration: "",
-    givenDate: new Date(),
-    expireDate: new Date(),
-    pinfl: "",
-    givenPlace: "",
-  });
-
-  function inputHadler(value, name) {
-    setForm({ ...form, [name]: value });
-  }
-
+export default function PassportData({
+  control,
+  resetField,
+  rules,
+  watch,
+  setValue,
+  getValues,
+}) {
   useEffect(() => {
-    callback({ passportData: form });
-  }, [form]);
+    const pinfl = getValues("form.passportData.pinfl");
+    if (pinfl?.toString().length === 9 || pinfl?.toString().length === 14) {
+      getInfoByPinfl(pinfl, ({ data }) => {
+        data.Address &&
+          setValue("form.passportData.registration", data.Address);
+        data.PassSeries &&
+          data.PassNumber &&
+          setValue(
+            "form.passportData.serialAndNumber",
+            data.PassSeries + data.PassNumber
+          );
+        data.PassIssueDate &&
+          setValue("form.passportData.givenDate", data.PassIssueDate);
+      });
+    }
+  }, [watch("form.passportData.pinfl")]);
 
   return (
     <Grid
@@ -41,10 +50,14 @@ export default function PassportData({ callback }) {
           required
           type="text"
           label={t("pinfl")}
-          name="pinfl"
-          value={form.pinfl}
-          onInput={inputHadler}
-          rules={[validationRules.required, validationRules.minLength14]}
+          name="form.passportData.pinfl"
+          rules={{
+            ...rules.required,
+            ...rules.minLength14,
+            ...rules.minLength9,
+          }}
+          control={control}
+          resetField={resetField}
         />
       </Grid>
       <Grid item xs={6} md={3}>
@@ -53,25 +66,25 @@ export default function PassportData({ callback }) {
           required
           type="text"
           label={t("passportSerialNumber")}
-          name="serialAndNumber"
-          value={form.serialAndNumber}
-          onInput={inputHadler}
-          rules={[validationRules.required]}
+          name="form.passportData.serialAndNumber"
+          rules={{ ...rules.required }}
+          control={control}
+          resetField={resetField}
         />
       </Grid>
       <Grid item xs={6} lg={3}>
         <DatePickerField
-          value={form.givenDate}
-          onChange={inputHadler}
-          name="givenDate"
+          rules={{ ...rules.required }}
+          control={control}
+          name="form.passportData.givenDate"
           label={t("givenDate")}
         />
       </Grid>
       <Grid item xs={6} lg={3}>
         <DatePickerField
-          value={form.expireDate}
-          onChange={inputHadler}
-          name="expireDate"
+          rules={{ ...rules.required }}
+          control={control}
+          name="form.passportData.expireDate"
           label={t("expireDate")}
         />
       </Grid>
@@ -81,12 +94,17 @@ export default function PassportData({ callback }) {
           required
           type="text"
           label={t("placeOfResidence")}
-          name="registration"
-          value={form.registration}
-          onInput={inputHadler}
-          rules={[validationRules.required]}
+          name="form.passportData.registration"
+          rules={{ ...rules.required }}
+          control={control}
+          resetField={resetField}
         />
       </Grid>
     </Grid>
   );
 }
+
+// PassportData.proptypes = {
+//   callback: proptypes.func,
+//   passportData: proptypes.object,
+// };

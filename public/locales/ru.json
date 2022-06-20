@@ -63,6 +63,7 @@
   "create": "Создать",
   "youCanDoThisLater": "Вы можете сделать это позже",
   "empty": "Пусто",
+  "successAddingRequest": "Заявка создана",
   "successAddingClientToProject": "Успешное добавление заявки в проект",
   "successRemoveClientFromProject": "Успешное удаление клиента из проекта",
   "successAttachOperatorForClient": "Успешное закреплени оператора за клиентом",

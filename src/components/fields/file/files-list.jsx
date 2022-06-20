@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { getAllClassifications } from "@store/modules/request/creators";
+import proptypes from "prop-types";
 
 import {
   FormControl,
@@ -34,6 +35,11 @@ export default function FilesList(props) {
   ));
 }
 
+FilesList.proptypes = {
+  addFile: proptypes.func,
+  deleteFile: proptypes.func,
+};
+
 function FilesListItem({
   addFile,
   deleteFile,
@@ -56,12 +62,17 @@ function FilesListItem({
   }
 
   useEffect(() => {
-    if (localFile.hasOwnProperty("fileName")) {
-      deleteFile({ fileName: localFile.fileName });
-      localFile.fileClassificationId = classificationId;
-      addFile(localFile);
-    }
+    setLocalFile({ ...localFile, fileClassificationId: classificationId });
   }, [classificationId]);
+
+  useEffect(() => {
+    if (
+      localFile.hasOwnProperty("fileName") &&
+      localFile.hasOwnProperty("fileClassificationId")
+    ) {
+      deleteFile(localFile, "replace");
+    }
+  }, [localFile]);
 
   const showAddBtn = useMemo(() => {
     return (
@@ -132,7 +143,7 @@ function FilesListItem({
           {itemsCount - 1 !== index && (
             <IconButton
               onClick={() => {
-                localDelete({ fileName });
+                localDelete(localFile);
                 setHideElem(true);
               }}
               aria-label="add file icon"
@@ -146,3 +157,12 @@ function FilesListItem({
     )
   );
 }
+
+FilesList.proptypes = {
+  addFile: proptypes.func,
+  deleteFile: proptypes.func,
+  setCount: proptypes.func,
+  itemsCount: proptypes.number,
+  index: proptypes.number,
+  classifications: proptypes.array,
+};

@@ -1,64 +1,54 @@
 import { t } from "i18next";
 import { useEffect, useState } from "react";
 import validationRules from "@utils/validation-rules";
-import { getInfo } from "@modules/user/creators";
+import { getInfo, getInfoByTin } from "@modules/user/creators";
 import { useDispatch } from "react-redux";
+import proptypes from "prop-types";
 
-import Field from "@components/fields/field";
+import Field from "@components/fields/field/ver2";
 import Title from "@components/title";
 import { Grid } from "@mui/material";
 import BankInfo from "./bank-info";
 
-export default function PassportData({ callback }) {
+export default function CompanyInfo({
+  control,
+  resetField,
+  rules,
+  watch,
+  setValue,
+  getValues,
+}) {
   const dispatch = useDispatch();
-  const [directorTin, setDirectorTin] = useState("");
-  const [form, setForm] = useState({
-    name: "",
-    tin: "",
-    oked: "",
-    address: "",
-    director: "",
-    headAccountant: "",
-    email: "",
-    phone: "",
-    bank: {
-      mfo: "",
-      name: "",
-      account: "",
-    },
-  });
 
-  function inputHadler(value, name) {
-    setForm({ ...form, [name]: value });
-  }
+  // useEffect(() => {
+  //   const directorTin = getValues("directorTin");
+  //   if (directorTin?.length === 9)
+  //     getInfo(dispatch, directorTin, (res) => {
+  //       setValue("form.companyInfo.director", res.Name);
+  //     });
+  //   setValue("form.passportData.pinfl", directorTin);
+  // }, [watch("directorTin")]);
 
   useEffect(() => {
-    callback({ companyInfo: form });
-  }, [form]);
+    const companyTin = getValues("form.companyInfo.tin");
 
-  useEffect(() => {
-    if (directorTin.length === 9)
-      getInfo(dispatch, directorTin, (res) => {
-        setForm({ ...form, director: res.Name });
+    if (companyTin?.length === 9 || companyTin?.length === 14) {
+      getInfoByTin(companyTin, ({ data }) => {
+        data.mfo && setValue("form.companyInfo.bank.mfo", data.mfo);
+        data.name && setValue("form.companyInfo.name", data.name);
+        data.oked && setValue("form.companyInfo.oked", data.oked);
+        data.address && setValue("form.companyInfo.address", data.address);
+        data.director && setValue("form.companyInfo.director", data.director);
+        data.accountant &&
+          setValue("form.companyInfo.headAccountant", data.accountant);
+        data.director && setValue("form.companyInfo.director", data.director);
+        data.account && setValue("form.companyInfo.bank.account", data.account);
+        data.directorTin && setValue("directorTin", data.directorTin);
+        data.directorPinfl &&
+          setValue("form.passportData.pinfl", data.directorPinfl);
       });
-  }, [directorTin]);
-
-  useEffect(() => {
-    if (form.tin.length === 9 || form.tin.length === 14)
-      getInfo(dispatch, form.tin, (res) => {
-        setForm({
-          ...form,
-          name: res.Name ? res.Name : form.name,
-          oked: res.Oked ? res.Oked : form.oked,
-          address: res.Address ? res.Address : form.address,
-          bank: {
-            ...form.bank,
-            mfo: res.Mfo ? res.Mfo : form.bank.mfo,
-            account: res.Account ? res.Account : form.bank.account,
-          },
-        });
-      });
-  }, [form.tin]);
+    }
+  }, [watch("form.companyInfo.tin")]);
 
   return (
     <Grid
@@ -76,10 +66,10 @@ export default function PassportData({ callback }) {
           required
           type="text"
           label={t("tin")}
-          name="tin"
-          value={form.tin}
-          onInput={inputHadler}
-          rules={[validationRules.required, validationRules.minLength9]}
+          name="form.companyInfo.tin"
+          rules={{ ...rules.required, ...rules.minLength9 }}
+          control={control}
+          resetField={resetField}
         />
       </Grid>
       <Grid item xs={12} md={6}>
@@ -88,10 +78,10 @@ export default function PassportData({ callback }) {
           required
           type="text"
           label={t("companyName")}
-          name="name"
-          value={form.name}
-          onInput={inputHadler}
-          rules={[validationRules.required]}
+          name="form.companyInfo.name"
+          rules={{ ...rules.required }}
+          control={control}
+          resetField={resetField}
         />
       </Grid>
       <Grid item xs={12} md={3}>
@@ -100,10 +90,10 @@ export default function PassportData({ callback }) {
           required
           type="text"
           label={t("oked")}
-          name="oked"
-          value={form.oked}
-          onInput={inputHadler}
-          rules={[validationRules.required]}
+          name="form.companyInfo.oked"
+          rules={{ ...rules.required }}
+          control={control}
+          resetField={resetField}
         />
       </Grid>
       <Grid item xs={12}>
@@ -112,14 +102,21 @@ export default function PassportData({ callback }) {
           required
           type="text"
           label={t("address")}
-          name="address"
-          value={form.address}
-          onInput={inputHadler}
-          rules={[validationRules.required]}
+          name="form.companyInfo.address"
+          rules={{ ...rules.required }}
+          control={control}
+          resetField={resetField}
         />
       </Grid>
 
-      <BankInfo callback={inputHadler} bank={form.bank} />
+      <BankInfo
+        rules={rules}
+        control={control}
+        resetField={resetField}
+        watch={watch}
+        setValue={setValue}
+        getValues={getValues}
+      />
 
       <Grid item xs={4} md={2}>
         <Field
@@ -128,9 +125,9 @@ export default function PassportData({ callback }) {
           type="text"
           label={t("directorTin")}
           name="directorTin"
-          value={directorTin}
-          onInput={setDirectorTin}
-          rules={[validationRules.required, validationRules.minLength9]}
+          rules={{ ...rules.required, ...rules.minLength9 }}
+          control={control}
+          resetField={resetField}
         />
       </Grid>
       <Grid item xs={12} md={5}>
@@ -139,10 +136,10 @@ export default function PassportData({ callback }) {
           required
           type="text"
           label={t("director")}
-          name="director"
-          value={form.director}
-          onInput={inputHadler}
-          rules={[validationRules.required]}
+          name="form.companyInfo.director"
+          rules={{ ...rules.required }}
+          control={control}
+          resetField={resetField}
         />
       </Grid>
       <Grid item xs={12} md={5}>
@@ -150,9 +147,9 @@ export default function PassportData({ callback }) {
           fullWidth
           type="text"
           label={t("chefAccountant")}
-          name="headAccountant"
-          value={form.headAccountant}
-          onInput={inputHadler}
+          name="form.companyInfo.headAccountant"
+          control={control}
+          resetField={resetField}
         />
       </Grid>
       <Grid item xs={12} md={6}>
@@ -161,9 +158,9 @@ export default function PassportData({ callback }) {
           required
           type="tel"
           label={t("phone")}
-          name="phone"
-          value={form.phone}
-          onInput={inputHadler}
+          name="form.companyInfo.phone"
+          control={control}
+          resetField={resetField}
         />
       </Grid>
       <Grid item xs={12} md={6}>
@@ -172,11 +169,16 @@ export default function PassportData({ callback }) {
           required
           type="email"
           label={t("email")}
-          name="email"
-          value={form.email}
-          onInput={inputHadler}
+          name="form.companyInfo.email"
+          control={control}
+          resetField={resetField}
         />
       </Grid>
     </Grid>
   );
 }
+
+// CompanyInfo.proptypes = {
+//   callback: proptypes.func,
+//   companyInfo: proptypes.object,
+// };

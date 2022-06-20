@@ -40,6 +40,12 @@ export const getAllClassifications = (callback) => {
     url: "/crm/FileClassification/GetAllClassifications",
   }).then((res) => callback(res));
 };
+export const getMainClassificationsId = (callback) => {
+  Request({
+    method: "GET",
+    url: "/crm/FileClassification/MainClassificationsId",
+  }).then((res) => callback(res));
+};
 export const getClassifications = (dispatch) => {
   Request({
     method: "GET",
@@ -176,9 +182,10 @@ export const getBankByMfo = (mfo, callback) => {
       mfo,
       lang,
     },
-  }).then((res) => callback(res));
+  }).then(callback());
 };
 export const createRequest = (data, callback) => {
+  console.log(data);
   Request({
     method: "POST",
     url: "/crm/Request/Staff/Send",

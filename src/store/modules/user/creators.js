@@ -75,6 +75,13 @@ export const getInfoByPinfl = (pinfl, callback) => {
     params: { tin: pinfl },
   }).then(callback);
 };
+export const getInfoByTin = (tin, callback) => {
+  Request({
+    method: "GET",
+    url: "/edo/Utils/InfoByTin",
+    params: { tin },
+  }).then(callback);
+};
 export const getOperators = (dispatch) => {
   Request({
     method: "GET",
