@@ -49,7 +49,7 @@ export default function ActivityTable({ items, loading, classifications }) {
           </TableRow>
         </TableHead>
         <TableBody className={s.body}>
-          {loading ? <TableSkeleton cols={4} /> :
+          {loading ? <TableSkeleton cols={4} /> : items?.length ?
             items.map(project =>
               project.clients.map((client, index) =>
                 <Row
@@ -64,7 +64,11 @@ export default function ActivityTable({ items, loading, classifications }) {
                   selected={selected}
                   classifications={classifications}
                 />
-              ))}
+              )): <>
+              <TableRow>
+                <TableCell colSpan={4}>{t("empty")}</TableCell>
+              </TableRow>
+            </>}
         </TableBody>
       </Table>
     </TableContainer>

@@ -22,16 +22,18 @@ export default function DashboardPage() {
     getRequestStatuses
   );
 
-  return <>
-    <Title text={t("requestsToManager")} />
-    <Paper className={s.main}>
-      <Paper className={s.paper}>
-        <CollapsibleTable
-          loading={loading}
-          items={requests}
-          statuses={statuses}
-        />
+  return (
+    <>
+      <Title text={t("requestsToManager")} />
+      <Paper className={s.main}>
+        <Paper className={s.paper}>
+          <CollapsibleTable
+            loading={loading}
+            items={requests}
+            statuses={statuses}
+          />
+        </Paper>
       </Paper>
-    </Paper>
-  </>;
+    </>
+  );
 }
