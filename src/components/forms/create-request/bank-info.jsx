@@ -5,7 +5,7 @@ import { getBankByMfo } from "@modules/request/creators.js";
 import proptypes from "prop-types";
 
 import { Grid } from "@mui/material";
-import Field from "@components/fields/field/ver2";
+import Field from "@components/fields/field";
 
 export default function BankInfo({
   control,

@@ -4,7 +4,7 @@ import { getInfoByTin } from "@modules/user/creators";
 import validationRules from "@utils/use-form-validation-rules";
 import proptypes from "prop-types";
 
-import Field from "@components/fields/field/ver2";
+import Field from "@components/fields/field";
 import Title from "@components/title";
 import { Grid } from "@mui/material";
 import BankInfo from "./bank-info";

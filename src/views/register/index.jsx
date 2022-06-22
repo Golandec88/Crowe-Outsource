@@ -1,173 +1,120 @@
-import { useTranslation } from "react-i18next";
-import validationRules from "@utils/validation-rules";
+import validationRules from "@utils/use-form-validation-rules";
 import { registerUser } from "@modules/user/creators";
-import { useState } from "react";
 import s from "./style.module.scss";
-import { setMessage } from "@modules/global/creators";
 import { useDispatch } from "react-redux";
+import { t } from "i18next";
+import { useForm } from "react-hook-form";
 
-import { Box, Button } from "@mui/material";
+import { Box, Button, Paper } from "@mui/material";
 import Field from "@components/fields/field";
-import CustomValidateField from "@components/fields/custom-validate";
 import Title from "@components/title";
 
 export default function RegisterUser() {
-  const dispatch = useDispatch();
-  const { t } = useTranslation();
-  const [form, setForm] = useState({
-    tin: "",
-    phone: "",
-    email: "",
-    password: { value: "", error: false, helperText: "" },
-    repeatPassword: { value: "", error: false, helperText: "" },
+  const { handleSubmit, control, resetField, getValues, reset } = useForm({
+    mode: "onChange",
+    reValidateMode: "onChange",
   });
+  const dispatch = useDispatch();
 
-  function inputHadler(value, name) {
-    setForm({ ...form, [name]: value });
-  }
-
-  function inputHadlerCustom(value, name, rules) {
-    let error = false;
-    let helperText = "";
-
-    if (rules && rules.length) {
-      rules.forEach((rule) => {
-        const ruleValue = rule(value);
-
-        error = error ? true : ruleValue !== true;
-        helperText = helperText
-          ? helperText
-          : ruleValue !== true
-          ? ruleValue
-          : "";
-      });
-    }
-
-    setForm({
-      ...form,
-      [name]: {
-        value,
-        error,
-        helperText,
-      },
-    });
-  }
-
-  const samePasswordValidation = () => {
-    return form.password.value === form.repeatPassword.value
-      ? true
-      : t("passwordsDoNotMatch");
-  };
-
-  function registerNewUser(e) {
-    e.preventDefault();
-    const passValidation = samePasswordValidation();
-    if (passValidation === true) {
-      const request = {
-        tin: form.tin.value,
-        password: form.password.value,
-        phone: form.phone.value,
-        email: form.email.value,
-      };
-      registerUser(request, () => {
-        setMessage(dispatch, { type: "info", text: t("success") + "!" });
-        setForm({
-          tin: { value: "", error: false, helperText: "" },
-          phone: { value: "", error: false, helperText: "" },
-          email: { value: "", error: false, helperText: "" },
-          password: { value: "", error: false, helperText: "" },
-          repeatPassword: { value: "", error: false, helperText: "" },
-        });
-      });
-    } else {
-      setForm({
-        ...form,
-        password: {
-          value: form.password.value,
-          error: true,
-          helperText: passValidation,
-        },
-        repeatPassword: {
-          value: form.repeatPassword.value,
-          error: true,
-          helperText: passValidation,
-        },
-      });
-    }
+  function registerNewUser(data) {
+    const form = data;
+    delete form.repeatPassword;
+    registerUser(form, () => reset(), dispatch);
   }
 
   return (
     <>
       <Title text={t("registerUser")} />
-      <Box
-        component="form"
-        autoComplete="off"
-        name="register-form"
-        onSubmit={registerNewUser}
-        className={s.form}
-      >
-        <Field
-          required
-          fullWidth
-          type="text"
-          label={t("pinflOrTin")}
-          name="tin"
-          value={form.tin}
-          rules={[validationRules.required, validationRules.tinLength]}
-          onInput={inputHadler}
-        />
-        <Field
-          className={s.field}
-          required
-          fullWidth
-          type="tel"
-          label={t("phone")}
-          name="phone"
-          value={form.phone}
-          rules={[validationRules.required]}
-          onInput={inputHadler}
-        />
-        <Field
-          className={s.field}
-          required
-          fullWidth
-          type="email"
-          label={t("email")}
-          name="email"
-          value={form.email}
-          rules={[validationRules.required]}
-          onInput={inputHadler}
-        />
-        <CustomValidateField
-          className={s.field}
-          required
-          fullWidth
-          type="password"
-          label={t("password")}
-          name="password"
-          value={form.password.value}
-          onInput={inputHadlerCustom}
-          rules={[validationRules.required, validationRules.minLength5]}
-          error={form.password.error}
-          helperText={form.password.helperText}
-        />
-        <CustomValidateField
-          className={s.field}
-          required
-          fullWidth
-          type="password"
-          label={t("repeatPassword")}
-          name="repeatPassword"
-          value={form.repeatPassword.value}
-          onInput={inputHadlerCustom}
-          rules={[validationRules.required, validationRules.minLength5]}
-          error={form.repeatPassword.error}
-          helperText={form.repeatPassword.helperText}
-        />
-        <Button variant="contained" type="submit">
-          {t("register")}
-        </Button>
-      </Box>
+      <Paper sx={{ mb: 3, p: 3 }}>
+        <Box
+          component="form"
+          autoComplete="off"
+          name="register-form"
+          onSubmit={handleSubmit(registerNewUser)}
+          className={s.form}
+        >
+          <Field
+            required
+            fullWidth
+            type="text"
+            label={t("pinflOrTin")}
+            name="tin"
+            rules={{
+              ...validationRules.required,
+              ...validationRules.maxLength14,
+              ...validationRules.minLength9,
+            }}
+            control={control}
+            resetField={resetField}
+          />
+          <Field
+            className={s.field}
+            required
+            fullWidth
+            type="tel"
+            label={t("phone")}
+            name="phone"
+            rules={{
+              ...validationRules.required,
+            }}
+            control={control}
+            resetField={resetField}
+            mask="+998(00)000 00 00"
+          />
+          <Field
+            className={s.field}
+            required
+            fullWidth
+            type="email"
+            label={t("email")}
+            name="email"
+            rules={{
+              ...validationRules.required,
+            }}
+            control={control}
+            resetField={resetField}
+          />
+          <Field
+            className={s.field}
+            required
+            fullWidth
+            type="password"
+            label={t("password")}
+            name="password"
+            control={control}
+            resetField={resetField}
+            rules={{
+              validate: (value) =>
+                value === getValues("repeatPassword") ||
+                "" === getValues("repeatPassword") ||
+                t("passwordsDoNotMatch"),
+              ...validationRules.required,
+              ...validationRules.minLength5,
+            }}
+          />
+          <Field
+            className={s.field}
+            required
+            fullWidth
+            type="password"
+            label={t("repeatPassword")}
+            name="repeatPassword"
+            control={control}
+            resetField={resetField}
+            rules={{
+              validate: (value) =>
+                value === getValues("password") ||
+                getValues("password") === "" ||
+                t("passwordsDoNotMatch"),
+              ...validationRules.required,
+              ...validationRules.minLength5,
+            }}
+          />
+          <Button variant="contained" type="submit">
+            {t("register")}
+          </Button>
+        </Box>
+      </Paper>
     </>
   );
 }

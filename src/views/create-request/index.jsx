@@ -5,14 +5,13 @@ import {
   createRequest,
   getMainClassificationsId,
 } from "@modules/request/creators";
-import { setMessage } from "@modules/global/creators";
 import validationRules from "@utils/use-form-validation-rules";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 import s from "./style.module.scss";
 
 import Title from "@components/title";
-import Field from "@components/fields/field/ver2";
+import Field from "@components/fields/field";
 import FileField from "@components/fields/file";
 import FilesList from "@components/fields/file/files-list";
 import { Box, Button, Grid, Paper } from "@mui/material";
