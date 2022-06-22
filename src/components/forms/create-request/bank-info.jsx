@@ -31,10 +31,10 @@ export default function BankInfo({
         <Field
           fullWidth
           required
-          type="text"
+          type="number"
           label={t("mfo")}
           name="form.companyInfo.bank.mfo"
-          rules={{ ...rules.required }}
+          rules={{ ...rules.required, ...rules.length5 }}
           control={control}
           resetField={resetField}
         />
@@ -55,10 +55,10 @@ export default function BankInfo({
         <Field
           fullWidth
           required
-          type="text"
+          type="number"
           label={t("bankAccount")}
           name="form.companyInfo.bank.account"
-          rules={{ ...rules.required }}
+          rules={{ ...rules.required, ...rules.length20 }}
           control={control}
           resetField={resetField}
         />
@@ -67,7 +67,11 @@ export default function BankInfo({
   );
 }
 
-// BankInfo.proptypes = {
-//   callback: proptypes.func,
-//   bank: proptypes.object,
-// };
+BankInfo.proptypes = {
+  control: proptypes.object,
+  resetField: proptypes.func,
+  rules: proptypes.object,
+  watch: proptypes.func,
+  setValue: proptypes.func,
+  getValues: proptypes.func,
+};

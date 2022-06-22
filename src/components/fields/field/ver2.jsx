@@ -2,6 +2,7 @@ import s from "./style.module.scss";
 import { Visibility, VisibilityOff, Close } from "@mui/icons-material";
 import { Controller } from "react-hook-form";
 import { useState } from "react";
+import { IMaskInput } from "react-imask";
 import {
   FormControl,
   FormHelperText,
@@ -16,10 +17,11 @@ export default function Field({
   resetField,
   type = "text",
   label,
-  name = undefined,
+  name,
   required = false,
   rules = {},
   fullWidth = false,
+  mask,
   ...rest
 }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -46,7 +48,11 @@ export default function Field({
             type={type === "password" && showPassword ? "text" : type}
             value={value}
             onChange={onChange}
+            inputProps={{
+              mask,
+            }}
             {...rest}
+            inputComponent={mask ? TextMaskCustom : "input"}
             endAdornment={
               <InputAdornment position="end">
                 {value && type === "password" && (
@@ -90,4 +96,23 @@ export default function Field({
 //   fullWidth: proptypes.bool,
 //   rules: proptypes.array,
 //   name: proptypes.string,
+// };
+
+const TextMaskCustom = React.forwardRef(function TextMaskCustom(props, ref) {
+  const { onChange, mask, ...other } = props;
+
+  return (
+    <IMaskInput
+      {...other}
+      mask={mask}
+      inputRef={ref}
+      onAccept={(value) => onChange({ target: { name: props.name, value } })}
+      overwrite
+    />
+  );
+});
+
+// TextMaskCustom.propTypes = {
+//   name: PropTypes.string.isRequired,
+//   onChange: PropTypes.func.isRequired,
 // };

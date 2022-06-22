@@ -182,13 +182,13 @@ export const getBankByMfo = (mfo, callback) => {
       mfo,
       lang,
     },
-  }).then(callback());
+  }).then((res) => callback(res));
 };
-export const createRequest = (data, callback) => {
-  console.log(data);
+export const createRequest = (data, callback, dispatch) => {
   Request({
     method: "POST",
     url: "/crm/Request/Staff/Send",
     data,
-  }).then((res) => callback(res));
+    dispatch,
+  }).then(callback);
 };
