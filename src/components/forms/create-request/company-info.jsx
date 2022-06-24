@@ -1,11 +1,10 @@
 import { t } from "i18next";
-import { useEffect, useState } from "react";
-import validationRules from "@utils/validation-rules";
-import { getInfo, getInfoByTin } from "@modules/user/creators";
-import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { getInfoByTin } from "@modules/user/creators";
+import validationRules from "@utils/use-form-validation-rules";
 import proptypes from "prop-types";
 
-import Field from "@components/fields/field/ver2";
+import Field from "@components/fields/field";
 import Title from "@components/title";
 import { Grid } from "@mui/material";
 import BankInfo from "./bank-info";
@@ -13,26 +12,14 @@ import BankInfo from "./bank-info";
 export default function CompanyInfo({
   control,
   resetField,
-  rules,
   watch,
   setValue,
   getValues,
 }) {
-  const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   const directorTin = getValues("directorTin");
-  //   if (directorTin?.length === 9)
-  //     getInfo(dispatch, directorTin, (res) => {
-  //       setValue("form.companyInfo.director", res.Name);
-  //     });
-  //   setValue("form.passportData.pinfl", directorTin);
-  // }, [watch("directorTin")]);
-
   useEffect(() => {
     const companyTin = getValues("form.companyInfo.tin");
 
-    if (companyTin?.length === 9 || companyTin?.length === 14) {
+    if (companyTin?.length === 9) {
       getInfoByTin(companyTin, ({ data }) => {
         data.mfo && setValue("form.companyInfo.bank.mfo", data.mfo);
         data.name && setValue("form.companyInfo.name", data.name);
@@ -64,10 +51,10 @@ export default function CompanyInfo({
         <Field
           fullWidth
           required
-          type="text"
+          type="number"
           label={t("tin")}
           name="form.companyInfo.tin"
-          rules={{ ...rules.required, ...rules.minLength9 }}
+          rules={{ ...validationRules.required, ...validationRules.length9 }}
           control={control}
           resetField={resetField}
         />
@@ -79,7 +66,7 @@ export default function CompanyInfo({
           type="text"
           label={t("companyName")}
           name="form.companyInfo.name"
-          rules={{ ...rules.required }}
+          rules={{ ...validationRules.required }}
           control={control}
           resetField={resetField}
         />
@@ -88,10 +75,10 @@ export default function CompanyInfo({
         <Field
           fullWidth
           required
-          type="text"
+          type="number"
           label={t("oked")}
           name="form.companyInfo.oked"
-          rules={{ ...rules.required }}
+          rules={{ ...validationRules.required, ...validationRules.length5 }}
           control={control}
           resetField={resetField}
         />
@@ -103,14 +90,14 @@ export default function CompanyInfo({
           type="text"
           label={t("address")}
           name="form.companyInfo.address"
-          rules={{ ...rules.required }}
+          rules={{ ...validationRules.required }}
           control={control}
           resetField={resetField}
         />
       </Grid>
 
       <BankInfo
-        rules={rules}
+        rules={validationRules}
         control={control}
         resetField={resetField}
         watch={watch}
@@ -122,10 +109,10 @@ export default function CompanyInfo({
         <Field
           fullWidth
           required
-          type="text"
+          type="number"
           label={t("directorTin")}
           name="directorTin"
-          rules={{ ...rules.required, ...rules.minLength9 }}
+          rules={{ ...validationRules.required, ...validationRules.length9 }}
           control={control}
           resetField={resetField}
         />
@@ -137,7 +124,7 @@ export default function CompanyInfo({
           type="text"
           label={t("director")}
           name="form.companyInfo.director"
-          rules={{ ...rules.required }}
+          rules={{ ...validationRules.required }}
           control={control}
           resetField={resetField}
         />
@@ -161,6 +148,7 @@ export default function CompanyInfo({
           name="form.companyInfo.phone"
           control={control}
           resetField={resetField}
+          mask="+998(00)000 00 00"
         />
       </Grid>
       <Grid item xs={12} md={6}>
@@ -178,7 +166,10 @@ export default function CompanyInfo({
   );
 }
 
-// CompanyInfo.proptypes = {
-//   callback: proptypes.func,
-//   companyInfo: proptypes.object,
-// };
+CompanyInfo.proptypes = {
+  control: proptypes.object,
+  resetField: proptypes.func,
+  watch: proptypes.func,
+  setValue: proptypes.func,
+  getValues: proptypes.func,
+};

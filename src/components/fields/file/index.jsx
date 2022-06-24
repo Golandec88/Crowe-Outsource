@@ -96,4 +96,5 @@ FileField.proptypes = {
   deleteFile: proptypes.func,
   id: proptypes.string,
   label: proptypes.string,
+  accept: proptypes.string,
 };

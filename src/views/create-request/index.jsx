@@ -5,63 +5,35 @@ import {
   createRequest,
   getMainClassificationsId,
 } from "@modules/request/creators";
-import { setMessage } from "@modules/global/creators";
-import validationRules from "@utils/validation-rules";
-import { Controller, useForm } from "react-hook-form";
+import validationRules from "@utils/use-form-validation-rules";
+import { useForm } from "react-hook-form";
 
 import s from "./style.module.scss";
 
 import Title from "@components/title";
-import Field from "@components/fields/field/ver2";
+import Field from "@components/fields/field";
 import FileField from "@components/fields/file";
 import FilesList from "@components/fields/file/files-list";
-import {
-  Box,
-  Button,
-  FormControl,
-  Grid,
-  InputLabel,
-  OutlinedInput,
-  Paper,
-} from "@mui/material";
+import { Box, Button, Grid, Paper } from "@mui/material";
 import CompanyInfo from "@components/forms/create-request/company-info";
 import PassportData from "@components/forms/create-request/passport-data";
 
 export default function CreateRequest() {
-  const { handleSubmit, watch, control, resetField, setValue, getValues } =
-    useForm();
+  const {
+    handleSubmit,
+    watch,
+    control,
+    resetField,
+    setValue,
+    getValues,
+    reset,
+  } = useForm({
+    mode: "onChange",
+    reValidateMode: "onChange",
+  });
   const [files, setFiles] = useState([]);
-
-  // useEffect(() => {
-  //   console.log(watch("directorTin"));
-  // }, [watch("directorTin")]);
-  console.log(watch("form"));
-  // console.log(watch("directorTin"));
   const dispatch = useDispatch();
   const [mainClassifications, setClassifications] = useState({});
-  const localValidation = {
-    required: {
-      required: t("validation.required"),
-    },
-    minLength5: {
-      minLength: {
-        value: 5,
-        message: t("validation.minLength5"),
-      },
-    },
-    minLength9: {
-      minLength: {
-        value: 9,
-        message: t("validation.minLength9"),
-      },
-    },
-    minLength14: {
-      minLength: {
-        value: 14,
-        message: t("validation.minLength14"),
-      },
-    },
-  };
 
   useEffect(() => {
     getMainClassificationsId((res) => {
@@ -81,13 +53,7 @@ export default function CreateRequest() {
   }
 
   function createNewRequest(data) {
-    createRequest(
-      { ...data.form, files },
-      setMessage(dispatch, {
-        text: t("successAddingRequest"),
-        type: "success",
-      })
-    );
+    createRequest({ ...data.form, files }, dispatch, () => reset());
   }
 
   return (
@@ -104,7 +70,6 @@ export default function CreateRequest() {
           <CompanyInfo
             control={control}
             resetField={resetField}
-            rules={localValidation}
             watch={watch}
             setValue={setValue}
             getValues={getValues}
@@ -133,7 +98,7 @@ export default function CreateRequest() {
                 label={t("password")}
                 name="form.pinflKeyPassword"
                 rules={{
-                  ...localValidation.required,
+                  ...validationRules.required,
                 }}
                 resetField={resetField}
                 type="password"
@@ -146,7 +111,6 @@ export default function CreateRequest() {
           <PassportData
             control={control}
             resetField={resetField}
-            rules={localValidation}
             watch={watch}
             setValue={setValue}
             getValues={getValues}
@@ -166,6 +130,7 @@ export default function CreateRequest() {
                 resetField={resetField}
                 type="tel"
                 fullWidth
+                mask="+998(00)000 00 00"
               />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -196,7 +161,7 @@ export default function CreateRequest() {
                 label={t("password")}
                 name="form.tinKeyPassword"
                 rules={{
-                  ...localValidation.required,
+                  ...validationRules.required,
                 }}
                 resetField={resetField}
                 type="password"

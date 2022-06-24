@@ -1,4 +1,4 @@
-import { Alert, Grid } from "@mui/material";
+import { Alert, Grid, OutlinedInput, TextField } from "@mui/material";
 import { downloadFile as downloadFileAction } from "@modules/request/creators.js";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
@@ -44,7 +44,7 @@ export default function RequestDetails({
       <h2 className={s.title}>
         {t("requestInfo")} № <span>{item.request.id}</span>
       </h2>
-      <Grid container>
+      <Grid container sx={{ pb: 2, px: "10px" }}>
         <Grid item xs={4}>
           <div className={s.details}>
             {(function () {
@@ -116,7 +116,7 @@ export default function RequestDetails({
         </Grid>
         <Grid item xs={4}>
           <div className={s.details}>
-            <p>{t("userFiles")}</p>
+            <h4 sx={{ mt: 0 }}>{t("userFiles")}</h4>
             {item.request.attachedFiles.map(
               ({ fileName, fileClassificationId }, index) => (
                 <FileItem
@@ -169,11 +169,19 @@ function Formatter({ values, titles }) {
     return render(titles[index], item, `#${titles[index]}-${index}`);
   });
 
-  function render(title, field, key) {
+  function render(label, value, key) {
     return (
-      <p key={key}>
-        {t(title)}: <b>{field ? field : t("notFilled")}</b>
-      </p>
+      <TextField
+        variant="outlined"
+        key={key}
+        id={key}
+        label={t(label)}
+        type="text"
+        value={value || t("notFilled")}
+        readOnly
+        fullWidth
+        sx={{ mb: 2 }}
+      />
     );
   }
 }

@@ -118,11 +118,12 @@ export const registerOperator = (dispatch, form, callback) => {
     }).then(callback);
   });
 };
-export const registerUser = (form, callback) => {
+export const registerUser = (form, callback, dispatch) => {
   Request({
     method: "POST",
     url: "/user/User/RegisterUserByAdmin",
     data: form,
+    dispatch,
   }).then(callback);
 };
 export const logout = (dispatch) => dispatch({ type: types.USER_CLEAR });

@@ -46,8 +46,8 @@ export default function DatePickerField({
 }
 
 DatePickerField.proptypes = {
-  value: proptypes.any,
-  onChange: proptypes.func,
+  rules: proptypes.object,
+  control: proptypes.func,
   label: proptypes.string,
   name: proptypes.string,
 };

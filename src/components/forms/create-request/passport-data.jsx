@@ -1,8 +1,9 @@
 import { t } from "i18next";
 import proptypes from "prop-types";
 import { getInfoByPinfl } from "@modules/user/creators.js";
+import validationRules from "@utils/use-form-validation-rules";
 
-import Field from "@components/fields/field/ver2";
+import Field from "@components/fields/field";
 import Title from "@components/title";
 import DatePickerField from "@components/fields/date";
 import { Grid } from "@mui/material";
@@ -11,14 +12,37 @@ import { useEffect } from "react";
 export default function PassportData({
   control,
   resetField,
-  rules,
   watch,
   setValue,
   getValues,
 }) {
+  function getIsoDate(date) {
+    let newDate = "";
+    if (!!date) {
+      try {
+        newDate = new Date(date).toISOString();
+      } catch {
+        newDate = date;
+      }
+    }
+    return newDate;
+  }
+  function getExpireDate(date) {
+    const year = new Date(date).getFullYear() + 10;
+    let newDate = new Date(date);
+    newDate.setFullYear(year);
+
+    if (!!date) {
+      try {
+        newDate = newDate.toISOString();
+      } catch {}
+    }
+    return newDate;
+  }
+
   useEffect(() => {
     const pinfl = getValues("form.passportData.pinfl");
-    if (pinfl?.toString().length === 9 || pinfl?.toString().length === 14) {
+    if (pinfl?.toString().length === 14) {
       getInfoByPinfl(pinfl, ({ data }) => {
         data.Address &&
           setValue("form.passportData.registration", data.Address);
@@ -28,8 +52,16 @@ export default function PassportData({
             "form.passportData.serialAndNumber",
             data.PassSeries + data.PassNumber
           );
-        data.PassIssueDate &&
-          setValue("form.passportData.givenDate", data.PassIssueDate);
+        if (!!data.PassIssueDate) {
+          setValue(
+            "form.passportData.givenDate",
+            getIsoDate(data.PassIssueDate)
+          );
+          setValue(
+            "form.passportData.expireDate",
+            getExpireDate(data.PassIssueDate)
+          );
+        }
       });
     }
   }, [watch("form.passportData.pinfl")]);
@@ -48,13 +80,12 @@ export default function PassportData({
         <Field
           fullWidth
           required
-          type="text"
+          type="number"
           label={t("pinfl")}
           name="form.passportData.pinfl"
           rules={{
-            ...rules.required,
-            ...rules.minLength14,
-            ...rules.minLength9,
+            ...validationRules.required,
+            ...validationRules.length14,
           }}
           control={control}
           resetField={resetField}
@@ -67,14 +98,14 @@ export default function PassportData({
           type="text"
           label={t("passportSerialNumber")}
           name="form.passportData.serialAndNumber"
-          rules={{ ...rules.required }}
+          rules={{ ...validationRules.required }}
           control={control}
           resetField={resetField}
+          mask="aa0000000"
         />
       </Grid>
       <Grid item xs={6} lg={3}>
         <DatePickerField
-          rules={{ ...rules.required }}
           control={control}
           name="form.passportData.givenDate"
           label={t("givenDate")}
@@ -82,7 +113,6 @@ export default function PassportData({
       </Grid>
       <Grid item xs={6} lg={3}>
         <DatePickerField
-          rules={{ ...rules.required }}
           control={control}
           name="form.passportData.expireDate"
           label={t("expireDate")}
@@ -95,7 +125,7 @@ export default function PassportData({
           type="text"
           label={t("placeOfResidence")}
           name="form.passportData.registration"
-          rules={{ ...rules.required }}
+          rules={{ ...validationRules.required }}
           control={control}
           resetField={resetField}
         />
@@ -104,7 +134,10 @@ export default function PassportData({
   );
 }
 
-// PassportData.proptypes = {
-//   callback: proptypes.func,
-//   passportData: proptypes.object,
-// };
+PassportData.proptypes = {
+  control: proptypes.object,
+  resetField: proptypes.func,
+  watch: proptypes.func,
+  setValue: proptypes.func,
+  getValues: proptypes.func,
+};
