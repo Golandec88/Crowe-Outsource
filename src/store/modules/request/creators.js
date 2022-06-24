@@ -2,6 +2,7 @@ import * as types from "@modules/request/types";
 import Request from "@utils/request";
 import axios from "axios";
 
+
 export const getRequests = (dispatch, status, isSilent = false) => {
   Request({
     method: "POST",
@@ -132,7 +133,15 @@ export const staffUserUploadFiles = ( file,callback ) => {
   }).then((data)=> callback(data.data));
 };
 
-// export const staffUserSendFiles =
+export const staffUserSendFiles = (id,files,dispatch) => {
+  Request ( {
+    method: "POST",
+    url: "/crm/FileHosting/StaffUser/Send/"+id,
+    data : { filesInfo: files },
+    dispatch
+  });
+};
+
 
 
 

@@ -1,14 +1,18 @@
 import Title from "@components/title";
 import {
-  Accordion, AccordionDetails, AccordionSummary,
+  Accordion,
+  AccordionDetails,
+  AccordionSummary, Button,
   Grid,
-  IconButton, Stack,
+  IconButton,
   Table,
   TableBody,
-  TableCell,
-  TableHead, TablePagination,
+  TableCell, TableFooter,
+  TableHead,
+  TablePagination,
   TableRow,
-  Tooltip, Typography
+  Tooltip,
+  Typography
 } from "@mui/material";
 import s from "@components/tables/requests/appeals/style.module.scss";
 import { Download } from "@mui/icons-material";
@@ -16,17 +20,18 @@ import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
-  downloadFile, getAllStaffUsersWhoSentFilesToThisRequest,
+  downloadFile,
+  getAllStaffUsersWhoSentFilesToThisRequest,
   getClientFiles,
-  getStaffUserSentFiles, staffUserUploadFiles
+  getStaffUserSentFiles,
+  staffUserSendFiles,
+  staffUserUploadFiles
 } from "@modules/request/creators";
 import { useDispatch } from "react-redux";
 import DownloadFile from "@utils/download-file";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Paper from "@mui/material/Paper";
-import ConfirmationDialog from "@components/tables/file-share/ConfirmationDialog";
-
-
+import ConfirmationDialog from "@components/tables/file-share/ConfirmationDialog.jsx";
+import ClearIcon from "@mui/icons-material/Clear";
 
 export default function ClientInfo() {
   const { t } = useTranslation();
@@ -49,8 +54,9 @@ export default function ClientInfo() {
   const [staffAmountPage, setStaffAmountPage] = useState(0);
   const [staffAmountRowsPerPage, setStaffAmountRowsPerPage] = useState(5);
   const [staffId, setStaffId] = useState("");
-  const [staffUploadedFiles,setStaffUploadedFiles] = useState([]);
-  const [openConfirmation,setOpenConfirmation] = useState(false);
+  const [staffUploadedFiles, setStaffUploadedFiles] = useState([]);
+  const [openConfirmation, setOpenConfirmation] = useState(false);
+  const [filesToSend] = useState([]);
 
   const handleChangePage = (event, newPage, value) => {
     if (value === "staff") {
@@ -79,7 +85,6 @@ export default function ClientInfo() {
       setStaffAmountRowsPerPage(parseInt(event.target.value, 10));
       getAllStaffUsersWhoSentFilesToThisRequest(dispatch, params.id, getStaffUsers, event.target.value, staffAmountPage);
     }
-
   };
 
 
@@ -91,12 +96,9 @@ export default function ClientInfo() {
     setOpenConfirmation(true);
   };
 
-  const confirmationDialogHandlerClose =() => {
+  const confirmationDialogHandlerClose = () => {
     setOpenConfirmation(false);
   };
-
-
-
 
   function Sent(data) {
     setSentFiles(data);
@@ -121,48 +123,64 @@ export default function ClientInfo() {
   };
 
   const staffUserUploadFilesHandler = (item) => {
-    staffUserUploadFiles(item.target.files,uploadedFiles);
-    confirmationDialogHandlerOpen();
+    staffUserUploadFiles(item.target.files, uploadedFiles);
+    confirmationDialogHandlerOpen(item);
   };
+
+
+  const onSubmit = (selected, selectedSub) => {
+    selectedSub.forEach((item, index) => {
+      staffUploadedFiles[index].fileClassificationId = item.id;
+      let newObj = staffUploadedFiles[index];
+      filesToSend.push(newObj);
+    });
+    staffUserSendFiles(params.id, filesToSend, dispatch);
+    setOpenConfirmation(false);
+  };
+
 
   return <>
     <Title text={"Client-Info"}/>
-    <Grid container>
+    <Grid item container>
       <Grid item xs={6}>
         <Table className={s.table}>
           <TableHead className={s.head}>
             <TableRow>
               <TableCell>Received</TableCell>
+              <TableCell style={{ borderTopRightRadius: 0 }}></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {receivedFiles && receivedFiles.files.items.map((el, index) => {
-              return <TableRow key={index}>
-                <Paper className={s.filesStyle}>
-                  <TableCell  sx={{ padding: "5px", borderBottom: "none" }}> {el.name} </TableCell>
-                  <TableCell  sx={{ padding: "5px", borderBottom: "none" }}>
+              return <TableRow key={index} className={s.files}>
+                <TableCell sx={{ padding: "5px" }} style={{ padding: 20 }}> {el.name} </TableCell>
+                <TableCell sx={{ padding: "5px" }} style={{ padding: 20 }}>
+                  <IconButton
+                    color={"error"}
+                  >
+                    <ClearIcon/>
+                  </IconButton>
+                  <IconButton
+                    className={s.button}
+                    size="small"
+                    aria-label="download"
+                    onClick={() => downloadFile(el.guid, DownloadFileAsAction)}
+                    color={"primary"}
+                  >
                     <Tooltip placement={"top-end"}
-                      title={`${el.fileClassification.class} : ${el.fileClassification.subClass}`}>
-                      <TableCell sx={{ borderBottom: "none" }}>
-                        <IconButton
-                          paddingNone
-                          className={s.button}
-                          size="small"
-                          aria-label="download"
-                          onClick={() => downloadFile(el.guid, DownloadFileAsAction)}
-                        >
-                          <Download fontSize="small"/>
-                        </IconButton>
-                      </TableCell>
+                      title={`${el.fileClassification.class} : ${el.fileClassification.subClass} ${el.size.size} ${el.size.measure}`}>
+                      <Download fontSize="small"/>
                     </Tooltip>
-                  </TableCell>
-
-                </Paper>
+                  </IconButton>
+                </TableCell>
               </TableRow>;
             })}
-            <Stack spacing={2}>
+          </TableBody>
+          <TableFooter>
+            <TableRow>
               <TablePagination
-                count={receivedFiles ? receivedFiles.files.totalCount : ""}
+                align={"center"}
+                count={receivedFiles ? receivedFiles.files.totalCount : 0}
                 page={userPage}
                 rowsPerPageOptions={[5, 10, 15, 20]}
                 onPageChange={(event, page) => handleChangePage(event, page, "user")}
@@ -172,69 +190,104 @@ export default function ClientInfo() {
                 nextIconButtonProps={{ color: "secondary" }}
                 showFirstButton={true}
                 showLastButton={true}
+                className={s.tablePagination}
               />
-            </Stack>
-          </TableBody>
+            </TableRow>
+          </TableFooter>
         </Table>
       </Grid>
       <Grid item xs={6}>
         <Table className={s.table}>
           <TableHead className={s.head}>
             <TableRow>
-              <TableCell>Sent</TableCell>
+              <TableCell style={{ borderTopLeftRadius: 0 }}>Sent</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {staffUsers && staffUsers.items.map((staff, index) => {
-              return <Accordion key={index} expanded={expanded === index} onChange={accordionHandleChange(index)}>
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon/>}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
-                  onClick={() => {
-                    getStaffUserSentFiles(dispatch, params.id, Sent, staff.id, staffRowsPerPage, staffPage);
-                    setStaffId(staff.id);
-                  }
-                  }
-                >
-                  <Typography>{staff.fullName} </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  {sentFiles && sentFiles.files.items?.length ? sentFiles.files.items.map((files, index) => {
-                    return <Typography key={index} className={s.filesStyle}>
-                      {files.name}
-                      <Tooltip placement={"top-end"}
-                        title={`${files.fileClassification.class} : ${files.fileClassification.subClass} ${files.size.size} ${files.size.measure}`}>
-                        <IconButton
-                          size="small"
-                          aria-label="download"
-                          onClick={() => downloadFile(files.guid, DownloadFileAsAction)}
-                        >
-                          <Download fontSize="small"/>
-                        </IconButton>
-                      </Tooltip>
-                    </Typography>;
-                  }) : "No Info"}
-                </AccordionDetails>
-                <Stack spacing={2}>
-                  <TablePagination
-                    count={sentFiles ? sentFiles.files.totalCount : ""}
-                    page={staffPage}
-                    rowsPerPageOptions={[5, 10, 15, 20]}
-                    onPageChange={(event, page) => handleChangePage(event, page, "staff")}
-                    rowsPerPage={staffRowsPerPage}
-                    onRowsPerPageChange={(event) => handleChangeRowsPerPage(event, "staff")}
-                    backIconButtonProps={{ color: "secondary" }}
-                    nextIconButtonProps={{ color: "secondary" }}
-                    showFirstButton={true}
-                    showLastButton={true}
-                  />
-                </Stack>
-              </Accordion>;
+              return <TableRow key={index}>
+                <TableCell style={{ padding: 0 }}>
+                  <Accordion
+                    expanded={expanded === index}
+                    onChange={accordionHandleChange(index)}
+                    className={s.accordion}>
+                    <AccordionSummary
+                      className={s.accordionSummary}
+                      expandIcon={<ExpandMoreIcon/>}
+                      aria-controls="panel1a-content"
+                      id="panel1a-header"
+                      onClick={() => {
+                        getStaffUserSentFiles(dispatch, params.id, Sent, staff.id, staffRowsPerPage, staffPage);
+                        setStaffId(staff.id);
+                      }}
+                    >
+                      <Typography>{staff.fullName} </Typography>
+                    </AccordionSummary>
+
+                    {sentFiles && sentFiles.files.items?.length ? sentFiles.files.items.map((files, index) => {
+                      return <AccordionDetails key={index} className={s.files}>
+                        <Typography >
+                          {files.name}
+                        </Typography>
+                        <div>
+                          <IconButton
+                            color={"error"}
+                          >
+                            <ClearIcon/>
+                          </IconButton>
+                          <IconButton
+                            size="small"
+                            aria-label="download"
+                            onClick={() => downloadFile(files.guid, DownloadFileAsAction)}
+                          >
+                            <Tooltip placement={"top-end"}
+                              title={`${files.fileClassification.class} : ${files.fileClassification.subClass} ${files.size.size} ${files.size.measure}`}>
+                              <Download fontSize="small"/>
+                            </Tooltip>
+                          </IconButton>
+                        </div>
+                      </AccordionDetails>;
+                    }) : "No Info"}
+                    <Table>
+                      <TableBody>
+                        <TableRow>
+                          <TablePagination
+                            count={sentFiles ? sentFiles.files.totalCount : 0}
+                            page={staffPage}
+                            rowsPerPageOptions={[5, 10, 15, 20]}
+                            onPageChange={(event, page) => handleChangePage(event, page, "staff")}
+                            rowsPerPage={staffRowsPerPage}
+                            onRowsPerPageChange={(event) => handleChangeRowsPerPage(event, "staff")}
+                            backIconButtonProps={{ color: "secondary" }}
+                            nextIconButtonProps={{ color: "secondary" }}
+                            showFirstButton={true}
+                            showLastButton={true}
+                          />
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </Accordion>
+                </TableCell>
+              </TableRow>;
             })}
-            <Stack spacing={2}>
+          </TableBody>
+        </Table>
+        <Table>
+          <TableFooter>
+            <TableRow className={s.footer}>
+              <TableCell style={{ borderBottom: "none" }}>
+                <form className={s.form}>
+                  <Button variant={"contained"} type={"button"}><label htmlFor="files">UPLOAD</label></Button>
+                  <input
+                    type="file"
+                    id="files"
+                    name="files"
+                    multiple
+                    onChange={(item) => staffUserUploadFilesHandler(item)}></input>
+                </form>
+              </TableCell>
               <TablePagination
-                count={staffUsers ? staffUsers.totalCount : ""}
+                count={staffUsers ? staffUsers.totalCount : 0}
                 page={staffAmountPage}
                 rowsPerPageOptions={[5, 10, 15, 20]}
                 onPageChange={(event, page) => handleChangePage(event, page, "staffCount")}
@@ -244,23 +297,20 @@ export default function ClientInfo() {
                 nextIconButtonProps={{ color: "secondary" }}
                 showFirstButton={true}
                 showLastButton={true}
+                className={s.tablePagination}
               />
-            </Stack>
-          </TableBody>
+            </TableRow>
+          </TableFooter>
         </Table>
       </Grid>
     </Grid>
-    <Stack direction="row" alignItems="center" spacing={2}>
-      <form>
-        <label htmlFor="files">Select files:</label>
-        <input type="file" id="files" name="files" multiple onChange={(item)=> staffUserUploadFilesHandler(item)}/>
-      </form>
-    </Stack>
-    {openConfirmation === true ? <ConfirmationDialog
+
+    <ConfirmationDialog
       openConfirmation={openConfirmation}
       confirmationDialogHandlerClose={confirmationDialogHandlerClose}
       staffUploadedFiles={staffUploadedFiles}
       requestId={params.id}
-    /> : ""}
+      onSubmit={onSubmit}
+    />
   </>;
 }

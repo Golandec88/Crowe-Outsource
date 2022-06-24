@@ -41,7 +41,7 @@ export default function FileShare() {
 
   return <>
     <Title text={t("fileShare")}/>
-    <Grid id="container" className={`${s.container} ${offset > 135 ? s.fixed : ""}`} container xs={12}>
+    <Grid id="container" className={`${s.container} ${offset > 135 ? s.fixed : ""}`} container item xs={12}>
       <Grid item xs={12}>
         <Autocomplete
           disablePortal
@@ -50,7 +50,7 @@ export default function FileShare() {
           renderInput={(params) => <TextField {...params} label="Tin" />}
         />
       </Grid>
-      <Grid className={s.table} item xs={12}>
+      <Grid className={s.table} item xs={12} >
         <ClientsTable
           items={requests}
           statuses={statuses}

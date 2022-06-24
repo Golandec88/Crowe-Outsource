@@ -46,10 +46,10 @@ export default function ClientsTable({ items, loading },onChange,selected ) {
                   tabIndex={-1}
                   onClick={()=> handleChange(item.request.id)}
                   hover>
-                  <TableCell>
+                  <TableCell style={{ textAlign:"center" }}>
                     {item.request.companyInfo.name}
                   </TableCell>
-                  <TableCell>
+                  <TableCell style={{ textAlign:"center" }}>
                     {item.request.companyInfo.tin}
                   </TableCell>
                 </TableRow>
