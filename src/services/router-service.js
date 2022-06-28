@@ -70,6 +70,7 @@ function getRoutesList(role) {
         { path: "register", element: <RegisterUser /> },
         { path: "activity-archive", element: <ActivityArchive /> },
         { path: "clients-archive", element: <ClientsArchive /> },
+        { path: "create-request", element: <CreateRequest /> },
         { path: "/", element: <Navigate to="activity" /> },
       ];
     }
@@ -79,6 +80,7 @@ function getRoutesList(role) {
         { path: "requests", element: <Requests />, index: true },
         { path: "register", element: <RegisterUser /> },
         { path: "requests-archive", element: <RequestsArchive /> },
+        { path: "create-request", element: <CreateRequest /> },
         { path: "/", element: <Navigate to="requests" /> },
       ];
     }
