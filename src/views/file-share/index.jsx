@@ -7,7 +7,7 @@ import { getRequests, getRequestStatuses } from "@modules/request/creators";
 import { Autocomplete } from "@mui/material";
 import ClientsTable from "@components/tables/file-share/clientsTable";
 import useScroller from "@hooks/scroller";
-import { useEffect, useState } from "react";
+import { useEffect,useState } from "react";
 
 
 
@@ -20,15 +20,7 @@ export default function FileShare() {
     getRequests,
     { statuses: [4] }
   );
-  const clientTin = [];
-
-  useEffect(() => {
-    requests.map((el) => {
-      clientTin.push(el.request.companyInfo.tin);
-    });
-  }, [requests]);
-
-
+  const [clientTin,setClientTin] = useState([]);
   const [{ items: statuses }] = useItemsUploader(
     "request",
     "statuses",
@@ -37,6 +29,19 @@ export default function FileShare() {
   );
   const offset = useScroller(135);
   const [selected, setSelected] = useState();
+  const [selectedClient,setSelectedClient] = useState();
+
+  useEffect(() => {
+    requests.forEach((el) => {
+      clientTin.push(el.request.companyInfo.tin);
+    });
+  }, [clientTin]);
+
+
+  const selectClientHandler = (newValue) => {
+    setSelectedClient(newValue);
+    setClientTin([]);
+  };
 
 
   return <>
@@ -48,6 +53,8 @@ export default function FileShare() {
           options={clientTin}
           sx={{ width: 300 }}
           renderInput={(params) => <TextField {...params} label="Tin" />}
+          onChange={(event,newValue) =>selectClientHandler(newValue)}
+
         />
       </Grid>
       <Grid className={s.table} item xs={12} >
@@ -57,6 +64,7 @@ export default function FileShare() {
           selected={selected}
           onChange = {setSelected}
           loading = {loading}
+          selectedClient={selectedClient}
         />
       </Grid>
     </Grid>

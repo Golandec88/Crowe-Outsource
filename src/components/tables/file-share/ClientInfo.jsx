@@ -20,6 +20,9 @@ import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
+  deleteClientSentFiles,
+  deleteStaffSentFiles,
+  deleteUploadedFiles,
   downloadFile,
   getAllStaffUsersWhoSentFilesToThisRequest,
   getClientFiles,
@@ -32,14 +35,18 @@ import DownloadFile from "@utils/download-file";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ConfirmationDialog from "@components/tables/file-share/ConfirmationDialog.jsx";
 import ClearIcon from "@mui/icons-material/Clear";
+import useUserInfo from "@hooks/user-info";
 
 export default function ClientInfo() {
   const { t } = useTranslation();
   const params = useParams();
   const dispatch = useDispatch();
+  const [{ id } ] = useUserInfo();
+  
+
 
   useEffect(() => {
-    getClientFiles(dispatch, params.id, Receiver);
+    getClientFiles(dispatch, params.id, Receiver,userRowsPerPage,userPage);
     getAllStaffUsersWhoSentFilesToThisRequest(dispatch, params.id, getStaffUsers);
   }, []);
 
@@ -88,15 +95,23 @@ export default function ClientInfo() {
   };
 
 
-  const accordionHandleChange = (index) => (event, isExpanded) => {
+  const accordionHandleChange = (index, staff) => (event, isExpanded) => {
     setExpanded(isExpanded ? index : false);
+    getStaffUserSentFiles(dispatch, params.id, Sent, staff.id, staffRowsPerPage, staffPage);
+    setStaffId(staff.id);
   };
 
   const confirmationDialogHandlerOpen = () => {
     setOpenConfirmation(true);
   };
 
+
   const confirmationDialogHandlerClose = () => {
+    let guids = [];
+    staffUploadedFiles.forEach((item) => {
+      guids.push(item.guid);
+    });
+    deleteUploadedFiles(guids,dispatch);
     setOpenConfirmation(false);
   };
 
@@ -138,6 +153,15 @@ export default function ClientInfo() {
     setOpenConfirmation(false);
   };
 
+  const onStaffDelete = (guid) => {
+    deleteStaffSentFiles(id,params.id,guid,dispatch);
+    getStaffUserSentFiles(dispatch, params.id, Sent, id, staffRowsPerPage, staffPage);
+  };
+
+  const onClientDelete = (guid) => {
+    deleteClientSentFiles(params.id,guid,dispatch);
+    getClientFiles(dispatch, params.id, Receiver,userRowsPerPage,userPage);
+  };
 
   return <>
     <Title text={"Client-Info"}/>
@@ -157,6 +181,7 @@ export default function ClientInfo() {
                 <TableCell sx={{ padding: "5px" }} style={{ padding: 20 }}>
                   <IconButton
                     color={"error"}
+                    onClick={(event)=> onClientDelete(el.guid,event)}
                   >
                     <ClearIcon/>
                   </IconButton>
@@ -209,29 +234,25 @@ export default function ClientInfo() {
                 <TableCell style={{ padding: 0 }}>
                   <Accordion
                     expanded={expanded === index}
-                    onChange={accordionHandleChange(index)}
+                    onChange={accordionHandleChange(index, staff)}
                     className={s.accordion}>
                     <AccordionSummary
                       className={s.accordionSummary}
                       expandIcon={<ExpandMoreIcon/>}
                       aria-controls="panel1a-content"
                       id="panel1a-header"
-                      onClick={() => {
-                        getStaffUserSentFiles(dispatch, params.id, Sent, staff.id, staffRowsPerPage, staffPage);
-                        setStaffId(staff.id);
-                      }}
                     >
-                      <Typography>{staff.fullName} </Typography>
+                      <Typography>{staff.fullName}</Typography>
                     </AccordionSummary>
-
                     {sentFiles && sentFiles.files.items?.length ? sentFiles.files.items.map((files, index) => {
                       return <AccordionDetails key={index} className={s.files}>
-                        <Typography >
+                        <Typography>
                           {files.name}
                         </Typography>
                         <div>
                           <IconButton
                             color={"error"}
+                            onClick={(event)=> onStaffDelete(files.guid,event)}
                           >
                             <ClearIcon/>
                           </IconButton>

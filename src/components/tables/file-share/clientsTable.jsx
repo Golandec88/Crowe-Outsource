@@ -15,9 +15,10 @@ import { useNavigate } from "react-router-dom";
 
 
 
-export default function ClientsTable({ items, loading },onChange,selected ) {
-  const { t } = useTranslation();
+export default function ClientsTable(props) {
+  const { items,loading,statuses,onChange,selected,selectedClient }= props;
 
+  const { t } = useTranslation();
   const columns = ["name" , "tin"];
   const navigate = useNavigate();
   function handleChange (id) {
@@ -69,47 +70,14 @@ ClientsTable.propTypes = {
   loading: proptypes.bool,
   onChange: proptypes.func,
   selected: proptypes.object,
-  statuses: proptypes.array
+  statuses: proptypes.array,
+  selectedClient: proptypes.string
 };
 
 ClientsTable.defaultProps = {
   onChange: () => {},
   loading: false,
   items: [],
-  statuses: []
+  statuses: [],
+
 };
-
-
-
-// const [staffModal, setStaffModal] = useState(false);
-// function open() {
-//   setStaffModal(true);
-// }
-// function close() {
-//   setStaffModal(false);
-// }
-// <Dialog
-//   open={staffModal}
-//   fullScreen={true}
-//   TransitionComponent={Transition}
-// >
-//   <DialogTitle>
-//     {t("clientInfo")}
-//     <IconButton
-//       aria-label="close"
-//       onClick={close}
-//       sx={{
-//         position: "absolute",
-//         right: 8,
-//         top: 8,
-//         color: theme => theme.palette.grey[500],
-//       }}
-//     >
-//       <CloseIcon/>
-//     </IconButton>
-//   </DialogTitle>
-//   <DialogContent>
-//
-//
-//   </DialogContent>
-// </Dialog>;

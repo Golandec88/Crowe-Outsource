@@ -91,7 +91,7 @@ export const getClientFiles = (dispatch,id,callback,rows,page) => {
 export const getStaffUserSentFiles = (dispatch,id,callback,staffId,rows, page) => {
   Request({
     method: "GET",
-    url: "/crm/FileHosting/Staff/Files/"+id + "/" + staffId,
+    url: "/crm/FileHosting/Staff/Files/"+ id + "/" + staffId,
     type: types.GET_STAFFUSER_FILES,
     loadingField: "staffUserFiles",
     params : {
@@ -138,6 +138,33 @@ export const staffUserSendFiles = (id,files,dispatch) => {
     method: "POST",
     url: "/crm/FileHosting/StaffUser/Send/"+id,
     data : { filesInfo: files },
+    dispatch
+  });
+};
+
+export const deleteUploadedFiles = ( guids,index,dispatch) => {
+  Request ( {
+    method:"DELETE",
+    url: "/crm/FileHosting/Files",
+    data : { filesGuids : guids },
+    dispatch
+  });
+};
+
+export const deleteStaffSentFiles = (staffId,reqId,guids,dispatch) => {
+  Request({
+    method: "DELETE",
+    url : "/crm/FileHosting/Staff/" + staffId + "/" + reqId,
+    data : { filesGuids : [guids] } ,
+    dispatch
+  });
+};
+
+export const deleteClientSentFiles = (reqId,guids,dispatch) => {
+  Request ({
+    method: "DELETE",
+    url: "/crm/FileHosting/Client/" + reqId,
+    data: { filesGuids : [guids] },
     dispatch
   });
 };

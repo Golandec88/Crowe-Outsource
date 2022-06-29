@@ -21,7 +21,7 @@ export default function ConfirmationDialog(props) {
   const [selected, setSelected] = useState([]);
   const [selectedSub, setSelectedSub] = useState([]);
 
-  const handler = (index, value, type) => {
+  const handlerClassification = (index, value, type) => {
     switch (type) {
       case "sub": {
         const newValue = Array.from(selectedSub);
@@ -44,7 +44,6 @@ export default function ConfirmationDialog(props) {
       <DialogContent className={s.dialog}>
         {
           staffUploadedFiles?.length && staffUploadedFiles.map((item, index) =>
-
             <Grid key={index} container justifyContent={"space-between"} className={s.grid}>
               <Grid item xs>
                 <ListItem className={s.listItem}>{item.name}</ListItem>
@@ -55,7 +54,7 @@ export default function ConfirmationDialog(props) {
                     label={"Класс"}
                     fullWidth={true}
                     select
-                    onChange={({ target }) => handler(index, target.value)}
+                    onChange={({ target }) => handlerClassification(index, target.value)}
                     className={s.select}
                   >
                     {classifications.map(({ name }) => <MenuItem key={name} value={name}>{name}</MenuItem>)}
@@ -70,7 +69,7 @@ export default function ConfirmationDialog(props) {
                       label={"Тип"}
                       fullWidth={true}
                       select
-                      onChange={({ target }) => handler(index, target.value, "sub")}
+                      onChange={({ target }) => handlerClassification(index, target.value, "sub")}
                       className={s.select}
                     >
                       {classifications.map(element => {
@@ -86,7 +85,7 @@ export default function ConfirmationDialog(props) {
           )}
       </DialogContent>
       <DialogActions>
-        <Button variant="outlined" onClick={() => confirmationDialogHandlerClose()}>Cancel</Button>
+        <Button variant="outlined" onClick={(item,index) => confirmationDialogHandlerClose(item,index)}>Cancel</Button>
         <Button variant="outlined" onClick={() => onSubmit(selected, selectedSub)}>Send</Button>
       </DialogActions>
     </Dialog>
