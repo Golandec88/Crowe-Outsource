@@ -82,6 +82,7 @@
   "projects": "Проекты",
   "phoneNumber": "Номер телефона",
   "addOperatorActivity": "Добавить клиента оператору",
+  "operatorActivity": "Активности оператора",
   "deleteOperator": "Удалить оператора из системы",
   "selectClientToAttach": "Выберите клиента для закрепления",
   "cancel": "Отмена",
