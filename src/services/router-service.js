@@ -15,6 +15,8 @@ import ActivityArchive from "@views/activity-archive";
 import ClientsArchive from "@views/clients-archive";
 import OperatorProjects from "@views/operator-projects";
 import RequestsArchive from "@views/requests-archive";
+import FileShare from "@views/file-share";
+import ClientInfo from "@components/tables/file-share/ClientInfo";
 import CreateRequest from "@views/create-request";
 
 export default function RouterService({ isAuth, role }) {
@@ -39,7 +41,7 @@ export default function RouterService({ isAuth, role }) {
 
 function PrivateRoute(route, isAuth) {
   if (isAuth) return route;
-  return { path: route.path, element: <Navigate to="/auth" /> };
+  return { path: route.path, element: <Navigate to="/auth"/> };
 }
 
 function getRoutesList(role) {
@@ -57,8 +59,10 @@ function getRoutesList(role) {
         { path: "register", element: <RegisterUser /> },
         { path: "activity-archive", element: <ActivityArchive /> },
         { path: "clients-archive", element: <ClientsArchive /> },
+        { path: "file-share", element: <FileShare /> },
+        { path: "client-info/:id", element: <ClientInfo /> },
+        { path: "/", element: <Navigate to="manager-requests"/> },
         { path: "create-request", element: <CreateRequest /> },
-        { path: "/", element: <Navigate to="manager-requests" /> },
       ];
     }
     case 2: {
@@ -71,6 +75,9 @@ function getRoutesList(role) {
         { path: "activity-archive", element: <ActivityArchive /> },
         { path: "clients-archive", element: <ClientsArchive /> },
         { path: "/", element: <Navigate to="activity" /> },
+        { path: "file-share", element: <FileShare /> },
+        { path: "client-info", element: <ClientInfo /> },
+        { path: "/", element: <Navigate to="activity"/> }
       ];
     }
     case 3: {

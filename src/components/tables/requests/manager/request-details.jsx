@@ -162,7 +162,7 @@ RequestDetails.defaultProps = {
   setCheckList: () => {},
 };
 
-function Formatter({ values, titles }) {
+export  function Formatter({ values, titles }) {
   const { t } = useTranslation();
 
   return values.map((item, index) => {

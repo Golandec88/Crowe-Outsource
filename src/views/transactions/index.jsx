@@ -3,13 +3,16 @@ import { useTranslation } from "react-i18next";
 import Title from "@components/title";
 import { TableBody, TableCell, TableHead, TableRow, Table, Paper, TextField } from "@mui/material";
 import s from "@components/tables/requests/appeals/style.module.scss";
-import { useState } from "react";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-
+import { useState } from "react";
 import useItemsUploader from "@hooks/items-uploader";
 import TableSkeleton from "@components/tables/skeleton";
+import Button from "@mui/material/Button";
+import { SearchRounded } from "@mui/icons-material";
+import { useDispatch } from "react-redux";
+
 
 export default function Transactions() {
   const { t } = useTranslation();
@@ -20,6 +23,8 @@ export default function Transactions() {
     toDate
   });
   const columns = ["docNum", "debit", "accCo", "name", "purpose", "inn", "branch", "vdate"];
+  const dispatch = useDispatch();
+
 
   return <>
     <Title text={t("transactions")}/>
@@ -49,6 +54,9 @@ export default function Transactions() {
               className={s.datepicker}
             />}
         />
+        <Button variant="string"  onClick={() => getTransactions(dispatch,{ fromDate,toDate })}>
+          <SearchRounded />
+        </Button>
       </LocalizationProvider>
     </Paper>
     <Paper elevation={0}>
