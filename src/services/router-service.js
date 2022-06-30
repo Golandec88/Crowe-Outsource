@@ -18,6 +18,7 @@ import RequestsArchive from "@views/requests-archive";
 import FileShare from "@views/file-share";
 import ClientInfo from "@components/tables/file-share/ClientInfo";
 import CreateRequest from "@views/create-request";
+import History from "@views/history";
 
 export default function RouterService({ isAuth, role }) {
   const schema = [
@@ -41,7 +42,7 @@ export default function RouterService({ isAuth, role }) {
 
 function PrivateRoute(route, isAuth) {
   if (isAuth) return route;
-  return { path: route.path, element: <Navigate to="/auth"/> };
+  return { path: route.path, element: <Navigate to="/auth" /> };
 }
 
 function getRoutesList(role) {
@@ -61,8 +62,9 @@ function getRoutesList(role) {
         { path: "clients-archive", element: <ClientsArchive /> },
         { path: "file-share", element: <FileShare /> },
         { path: "client-info/:id", element: <ClientInfo /> },
-        { path: "/", element: <Navigate to="manager-requests"/> },
         { path: "create-request", element: <CreateRequest /> },
+        { path: "history", element: <History /> },
+        { path: "/", element: <Navigate to="manager-requests"/> },
       ];
     }
     case 2: {
@@ -74,7 +76,8 @@ function getRoutesList(role) {
         { path: "register", element: <RegisterUser /> },
         { path: "activity-archive", element: <ActivityArchive /> },
         { path: "clients-archive", element: <ClientsArchive /> },
-        { path: "/", element: <Navigate to="activity" /> },
+        { path: "create-request", element: <CreateRequest /> },
+        { path: "history", element: <History /> },
         { path: "file-share", element: <FileShare /> },
         { path: "client-info", element: <ClientInfo /> },
         { path: "/", element: <Navigate to="activity"/> }
@@ -86,6 +89,8 @@ function getRoutesList(role) {
         { path: "requests", element: <Requests />, index: true },
         { path: "register", element: <RegisterUser /> },
         { path: "requests-archive", element: <RequestsArchive /> },
+        { path: "create-request", element: <CreateRequest /> },
+        { path: "history", element: <History /> },
         { path: "/", element: <Navigate to="requests" /> },
       ];
     }

@@ -37,7 +37,7 @@ export const addOperatorActivity = ({ operator, client }, callback) => {
     method: "PATCH",
     url: "/crm/OperatorActivity/AddActivity/" + operator,
     data: {
-      clientTin: client,
+      requestId: client,
     },
   }).then(callback);
 };

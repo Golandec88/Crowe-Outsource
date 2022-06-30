@@ -213,7 +213,7 @@ function Row({ item, statuses, classifications, submit }) {
               setCheckList={setCheckList}
               status={statuses[item.request.requestStatus]}
             />
-            {statuses[item.request.requestStatus] === 1 && (
+            {item.request.requestStatus === 6 && (
               <Grid className={s["reply-buttons"]} item xs={12}>
                 <ReplyButtons
                   id={item.request.id}
