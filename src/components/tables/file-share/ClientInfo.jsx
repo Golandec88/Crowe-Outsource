@@ -4,7 +4,7 @@ import {
   AccordionDetails,
   AccordionSummary, Button,
   Grid,
-  IconButton,
+  IconButton, Skeleton,
   Table,
   TableBody,
   TableCell, TableFooter,
@@ -36,17 +36,18 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ConfirmationDialog from "@components/tables/file-share/ConfirmationDialog.jsx";
 import ClearIcon from "@mui/icons-material/Clear";
 import useUserInfo from "@hooks/user-info";
+import TableSkeleton from "@components/tables/skeleton";
+
 
 export default function ClientInfo() {
   const { t } = useTranslation();
   const params = useParams();
   const dispatch = useDispatch();
-  const [{ id } ] = useUserInfo();
-  
+  const [{ id }] = useUserInfo();
 
 
   useEffect(() => {
-    getClientFiles(dispatch, params.id, Receiver,userRowsPerPage,userPage);
+    getClientFiles(dispatch, params.id, Receiver, userRowsPerPage, userPage);
     getAllStaffUsersWhoSentFilesToThisRequest(dispatch, params.id, getStaffUsers);
   }, []);
 
@@ -63,12 +64,13 @@ export default function ClientInfo() {
   const [staffId, setStaffId] = useState("");
   const [staffUploadedFiles, setStaffUploadedFiles] = useState([]);
   const [openConfirmation, setOpenConfirmation] = useState(false);
-  const [filesToSend] = useState([]);
+  const [filesToSend, setFilesToSend] = useState([]);
 
   const handleChangePage = (event, newPage, value) => {
     if (value === "staff") {
       setStaffPage(newPage);
       getStaffUserSentFiles(dispatch, params.id, Sent, staffId, staffRowsPerPage, newPage + 1);
+
     } else if (value === "user") {
       setUserPage(newPage);
       getClientFiles(dispatch, params.id, Receiver, userRowsPerPage, newPage + 1);
@@ -76,7 +78,6 @@ export default function ClientInfo() {
       setStaffAmountPage(newPage);
       getAllStaffUsersWhoSentFilesToThisRequest(dispatch, params.id, getStaffUsers, staffAmountRowsPerPage, newPage + 1);
     }
-
   };
 
   const handleChangeRowsPerPage = (event, value) => {
@@ -111,7 +112,7 @@ export default function ClientInfo() {
     staffUploadedFiles.forEach((item) => {
       guids.push(item.guid);
     });
-    deleteUploadedFiles(guids,dispatch);
+    deleteUploadedFiles(guids, dispatch);
     setOpenConfirmation(false);
   };
 
@@ -150,38 +151,42 @@ export default function ClientInfo() {
       filesToSend.push(newObj);
     });
     staffUserSendFiles(params.id, filesToSend, dispatch);
+    getAllStaffUsersWhoSentFilesToThisRequest(dispatch, params.id, getStaffUsers);
+    setFilesToSend([]);
     setOpenConfirmation(false);
   };
 
-  const onStaffDelete = (guid) => {
-    deleteStaffSentFiles(id,params.id,guid,dispatch);
-    getStaffUserSentFiles(dispatch, params.id, Sent, id, staffRowsPerPage, staffPage);
+
+  const onStaffDelete = (files) => {
+    deleteStaffSentFiles(id, params.id, files.guid, dispatch);
+
   };
 
   const onClientDelete = (guid) => {
-    deleteClientSentFiles(params.id,guid,dispatch);
-    getClientFiles(dispatch, params.id, Receiver,userRowsPerPage,userPage);
+    deleteClientSentFiles(params.id, guid, dispatch);
+    getClientFiles(dispatch, params.id, Receiver, userRowsPerPage, userPage);
   };
 
+
   return <>
-    <Title text={"Client-Info"}/>
+    <Title text={t("Client-Info")}/>
     <Grid item container>
       <Grid item xs={6}>
         <Table className={s.table}>
           <TableHead className={s.head}>
             <TableRow>
-              <TableCell>Received</TableCell>
+              <TableCell>{t("Received")}</TableCell>
               <TableCell style={{ borderTopRightRadius: 0 }}></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {receivedFiles && receivedFiles.files.items.map((el, index) => {
+            {receivedFiles && receivedFiles?.length ? receivedFiles.files.items.map((el, index) => {
               return <TableRow key={index} className={s.files}>
                 <TableCell sx={{ padding: "5px" }} style={{ padding: 20 }}> {el.name} </TableCell>
                 <TableCell sx={{ padding: "5px" }} style={{ padding: 20 }}>
                   <IconButton
                     color={"error"}
-                    onClick={(event)=> onClientDelete(el.guid,event)}
+                    onClick={(event) => onClientDelete(el.guid, event)}
                   >
                     <ClearIcon/>
                   </IconButton>
@@ -199,9 +204,9 @@ export default function ClientInfo() {
                   </IconButton>
                 </TableCell>
               </TableRow>;
-            })}
+            }) : <TableSkeleton cols={2} limit={5}/>}
           </TableBody>
-          <TableFooter>
+          {receivedFiles && receivedFiles?.length ? <TableFooter>
             <TableRow>
               <TablePagination
                 align={"center"}
@@ -216,21 +221,23 @@ export default function ClientInfo() {
                 showFirstButton={true}
                 showLastButton={true}
                 className={s.tablePagination}
+
               />
             </TableRow>
-          </TableFooter>
+          </TableFooter> :
+            <TableSkeleton cols={2} limit={1}/>}
         </Table>
       </Grid>
       <Grid item xs={6}>
         <Table className={s.table}>
           <TableHead className={s.head}>
             <TableRow>
-              <TableCell style={{ borderTopLeftRadius: 0 }}>Sent</TableCell>
+              <TableCell style={{ borderTopLeftRadius: 0 }}>{t("Sent")}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {staffUsers && staffUsers.items.map((staff, index) => {
-              return <TableRow key={index}>
+              return <TableRow key={staff.id}>
                 <TableCell style={{ padding: 0 }}>
                   <Accordion
                     expanded={expanded === index}
@@ -244,31 +251,34 @@ export default function ClientInfo() {
                     >
                       <Typography>{staff.fullName}</Typography>
                     </AccordionSummary>
-                    {sentFiles && sentFiles.files.items?.length ? sentFiles.files.items.map((files, index) => {
-                      return <AccordionDetails key={index} className={s.files}>
-                        <Typography>
-                          {files.name}
-                        </Typography>
-                        <div>
-                          <IconButton
-                            color={"error"}
-                            onClick={(event)=> onStaffDelete(files.guid,event)}
-                          >
-                            <ClearIcon/>
-                          </IconButton>
-                          <IconButton
-                            size="small"
-                            aria-label="download"
-                            onClick={() => downloadFile(files.guid, DownloadFileAsAction)}
-                          >
-                            <Tooltip placement={"top-end"}
-                              title={`${files.fileClassification.class} : ${files.fileClassification.subClass} ${files.size.size} ${files.size.measure}`}>
-                              <Download fontSize="small"/>
-                            </Tooltip>
-                          </IconButton>
-                        </div>
-                      </AccordionDetails>;
-                    }) : "No Info"}
+                    {sentFiles && sentFiles.files.items?.length
+                      ? sentFiles.files.items.map((files) => {
+                        return <AccordionDetails key={files.guid} className={s.files}>
+                          <Typography>
+                            {files.name}
+                          </Typography>
+                          <div>
+                            <IconButton
+                              color={"error"}
+                              onClick={(event) => onStaffDelete(files, event)}
+                            >
+                              <ClearIcon/>
+                            </IconButton>
+                            <IconButton
+                              size="small"
+                              aria-label="download"
+                              onClick={() => downloadFile(files.guid, DownloadFileAsAction)}
+                            >
+                              <Tooltip placement={"top-end"}
+                                title={`${files.fileClassification.class} : ${files.fileClassification.subClass} ${files.size.size} ${files.size.measure}`}>
+                                <Download fontSize="small"/>
+                              </Tooltip>
+                            </IconButton>
+                          </div>
+                        </AccordionDetails>;
+                      }) : <AccordionDetails>
+                        <Skeleton/>
+                      </AccordionDetails>}
                     <Table>
                       <TableBody>
                         <TableRow>
@@ -298,7 +308,7 @@ export default function ClientInfo() {
             <TableRow className={s.footer}>
               <TableCell style={{ borderBottom: "none" }}>
                 <form className={s.form}>
-                  <Button variant={"contained"} type={"button"}><label htmlFor="files">UPLOAD</label></Button>
+                  <Button variant={"contained"} type={"button"}><label htmlFor="files">{t("UPLOAD")}</label></Button>
                   <input
                     type="file"
                     id="files"
@@ -319,6 +329,7 @@ export default function ClientInfo() {
                 showFirstButton={true}
                 showLastButton={true}
                 className={s.tablePagination}
+
               />
             </TableRow>
           </TableFooter>

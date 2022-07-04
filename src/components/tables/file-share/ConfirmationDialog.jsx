@@ -13,9 +13,11 @@ import useItemsUploader from "@hooks/items-uploader";
 import FormControl from "@mui/material/FormControl";
 import s from "./style.module.css";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 
 export default function ConfirmationDialog(props) {
+  const { t } = useTranslation();
   const { openConfirmation, confirmationDialogHandlerClose, staffUploadedFiles, onSubmit } = props;
   const [{ items: classifications }] = useItemsUploader("request", "classifications", "classifications", getClassifications);
   const [selected, setSelected] = useState([]);
@@ -40,7 +42,7 @@ export default function ConfirmationDialog(props) {
 
   return <>
     <Dialog onClose={confirmationDialogHandlerClose} open={openConfirmation} maxWidth={"xl"}>
-      <DialogTitle>Uploaded Files</DialogTitle>
+      <DialogTitle>{t("UploadedFiles")}</DialogTitle>
       <DialogContent className={s.dialog}>
         {
           staffUploadedFiles?.length && staffUploadedFiles.map((item, index) =>
@@ -51,7 +53,7 @@ export default function ConfirmationDialog(props) {
               <Grid item xs>
                 <FormControl size={"medium"} sx={{ m: 1, width: 250 }}>
                   <TextField
-                    label={"Класс"}
+                    label={t("docClass")}
                     fullWidth={true}
                     select
                     onChange={({ target }) => handlerClassification(index, target.value)}
@@ -66,7 +68,7 @@ export default function ConfirmationDialog(props) {
                 <Grid item xs>
                   <FormControl size={"medium"} sx={{ m: 1, width: 250 }}>
                     <TextField
-                      label={"Тип"}
+                      label={t("type")}
                       fullWidth={true}
                       select
                       onChange={({ target }) => handlerClassification(index, target.value, "sub")}
@@ -85,8 +87,9 @@ export default function ConfirmationDialog(props) {
           )}
       </DialogContent>
       <DialogActions>
-        <Button variant="outlined" onClick={(item,index) => confirmationDialogHandlerClose(item,index)}>Cancel</Button>
-        <Button variant="outlined" onClick={() => onSubmit(selected, selectedSub)}>Send</Button>
+        <Button variant="outlined"
+          onClick={(item, index) => confirmationDialogHandlerClose(item, index)}>{t("Cancel")}</Button>
+        <Button variant="outlined" onClick={() => onSubmit(selected, selectedSub)}>{t("Send")}</Button>
       </DialogActions>
     </Dialog>
   </>;
