@@ -4,7 +4,4 @@ import App from "@components/app";
 
 if (module?.hot) module.hot.accept();
 
-render(
-  <App />,
-  document.getElementById("app")
-);
+render(<App />, document.getElementById("app"));

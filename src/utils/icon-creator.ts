@@ -1,8 +1,8 @@
 import { createElement } from "react";
 
-const iconCreator = name => {
+const iconCreator = async (name: string) => {
   try {
-    const icon = require("@mui/icons-material/" + name).default;
+    const icon = await import("@mui/icons-material/" + name);
 
     return createElement(icon);
   } catch (error) {

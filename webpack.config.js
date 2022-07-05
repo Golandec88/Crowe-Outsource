@@ -6,11 +6,11 @@ const {
   HotModuleReplacementPlugin,
   ProvidePlugin,
   DefinePlugin,
-  SourceMapDevToolPlugin
+  SourceMapDevToolPlugin,
 } = require("webpack");
 
 const dotenv = require("dotenv").config({
-  path: path.join(__dirname, ".env")
+  path: path.join(__dirname, ".env"),
 });
 
 module.exports = {
@@ -26,7 +26,7 @@ module.exports = {
     port: 3000,
     hot: true,
     historyApiFallback: true,
-    proxy: require("./proxy")(process.env)
+    proxy: require("./proxy")(process.env),
   },
   module: {
     rules: [
@@ -37,9 +37,15 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            presets: ["@babel/preset-env", "@babel/preset-react"]
-          }
-        }
+            presets: ["@babel/preset-env", "@babel/preset-react"],
+          },
+        },
+      },
+      {
+        test: /\.(tsx|ts)?$/,
+        use: "ts-loader",
+        exclude: /node_modules/,
+        include: path.resolve(__dirname, "src"),
       },
       {
         test: /\.(scss|css)$/,
@@ -51,18 +57,14 @@ module.exports = {
             loader: "css-loader",
             options: {
               importLoaders: 1,
-              modules: true
-            }
+              modules: true,
+            },
           },
           {
             loader: "postcss-loader",
             options: {
               postcssOptions: {
-                plugins: [
-                  [
-                    require("autoprefixer")
-                  ],
-                ],
+                plugins: [[require("autoprefixer")]],
               },
             },
           },
@@ -74,13 +76,13 @@ module.exports = {
               },
             },
           },
-        ]
+        ],
       },
       {
         test: /\.(png|jp(e*)g|svg|gif)$/,
         use: ["file-loader"],
       },
-    ]
+    ],
   },
   resolve: {
     alias: {
@@ -99,9 +101,9 @@ module.exports = {
       "@forms": path.resolve(__dirname, "src/components/forms"),
       "@contexts": path.resolve(__dirname, "src/utils/contexts"),
       "@fields": path.resolve(__dirname, "src/components/fields"),
-      "@buttons": path.resolve(__dirname, "src/components/buttons")
+      "@buttons": path.resolve(__dirname, "src/components/buttons"),
     },
-    extensions: ["", ".js", ".jsx"],
+    extensions: ["", ".js", ".jsx", ".tsx", ".ts"],
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -109,18 +111,18 @@ module.exports = {
     }),
     new MiniCssExtractPlugin({
       filename: "[name].bundle.css",
-      chunkFilename: "[id].css"
+      chunkFilename: "[id].css",
     }),
     new ProvidePlugin({
-      "React": "react"
+      React: "react",
     }),
     new HotModuleReplacementPlugin(),
     new DefinePlugin({
-      "process.env": dotenv.parsed
+      "process.env": dotenv.parsed,
     }),
     new SourceMapDevToolPlugin({
-      filename: "[file].map"
-    })
+      filename: "[file].map",
+    }),
   ],
   optimization: {
     splitChunks: {
@@ -140,12 +142,12 @@ module.exports = {
           chunks: "all",
           enforce: true,
           test: /[\\/]node_modules[\\/]/,
-          priority: -10
-        }
+          priority: -10,
+        },
       },
     },
     minimizer: [new CssMinimizerPlugin()],
     minimize: true,
     runtimeChunk: true,
-  }
+  },
 };
