@@ -9,7 +9,7 @@ import { Link, useLocation } from "react-router-dom";
 import s from "./style.module.scss";
 import { useTranslation } from "react-i18next";
 import React from "react";
-import iconCreator from "@utils/icon-creator";
+import { MuiIcon, IconNames } from "@components/mui-icon/";
 
 type listType = {
   iconName: string;
@@ -51,7 +51,10 @@ const AppMenu: React.FC<Props> = ({ list = [], loading = false }) => {
             >
               <ListItemButton className={s.menu_item}>
                 <ListItemIcon className={s.icon}>
-                  {iconCreator(formatIconName(iconName))}
+                  <MuiIcon
+                    name={formatIconName(iconName) as IconNames}
+                    key={"menu-icon-" + index}
+                  />
                 </ListItemIcon>
                 <ListItemText primary={t(name)} />
               </ListItemButton>
@@ -72,8 +75,3 @@ function formatIconName(name: string): string {
 }
 
 export default AppMenu;
-//
-// AppMenu.defaultProps = {
-//   list: [],
-//   loading: false,
-// };

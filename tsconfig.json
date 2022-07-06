@@ -5,31 +5,32 @@
     "noImplicitAny": true,
     "noImplicitThis": true,
     "strictNullChecks": true,
-    "module": "esnext",
+    "module": "es2022",
     "target": "es5",
     "jsx": "react",
     "allowJs": true,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
-    "types": ["node", "jest", "@testing-library/jest-dom"]
+    "types": ["react", "node", "jest", "@testing-library/jest-dom", "@types/react-dom", "webpack-env"],
+    "baseUrl": ".",
+    "paths": {
+      "@src/*": ["src/*"],
+      "@public/*": ["/public/*"],
+      "@types/*": ["src/types/*"],
+      "@store/*": ["src/store/*"],
+      "@views/*": ["src/views/*"],
+      "@utils/*": ["src/utils/*"],
+      "@static/*": ["src/static/*"],
+      "@services/*": ["src/services/*"],
+      "@hooks/*": ["src/utils/hooks/*"],
+      "@fonts/*": ["src/static/fonts/*"],
+      "@modules/*": ["src/store/modules/*"],
+      "@components/*": ["src/components/*"],
+      "@forms/*": ["src/components/forms/*"],
+      "@contexts/*": ["src/utils/contexts/*"],
+      "@fields/*": ["src/components/fields/*"],
+      "@buttons/*": ["src/components/buttons/*"]
+    }
   },
-//  "baseUrl": "./src",
-//  "paths": {
-//    "@src":"src/",
-//    "@public": "public",
-//    "@types":  "src/types",
-//    "@store":  "src/store",
-//    "@views":  "src/views",
-//    "@utils": "src/utils",
-//    "@static":  "src/static",
-//    "@services":  "src/services",
-//    "@hooks":  "src/utils/hooks",
-//    "@fonts": "src/static/fonts",
-//    "@modules":  "src/store/modules",
-//    "@components":  "src/components",
-//    "@forms":  "src/components/forms",
-//    "@contexts":  "src/utils/contexts",
-//    "@fields":  "src/components/fields",
-//    "@buttons":  "src/components/buttons"
-//  }
+
 }
