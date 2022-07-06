@@ -7,8 +7,12 @@ import { getUserInfo } from "@modules/user/creators";
 import { getRoles as getRolesAction } from "@modules/user/creators";
 import useLocalStorage from "@hooks/local-storage";
 
-export default function () {
-  const { info, roles } = useSelector(({ user }) => user);
+type roleType = {
+  role: 1 | 2 | 3 | 4;
+};
+
+const useUserInfo = () => {
+  const { info, roles } = useSelector(({ user }: any) => user);
   const getInfo = useDispatcher(getUserInfo);
   const getRoles = useDispatcher(getRolesAction);
   const isAuth = useLocalStorage("ABV_CRM.token").item;
@@ -18,5 +22,7 @@ export default function () {
     getRoles();
   }, []);
 
-  return [info, roles[info.role]];
-}
+  return [info, roles[info.role] as roleType];
+};
+
+export default useUserInfo;
