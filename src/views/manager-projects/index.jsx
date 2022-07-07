@@ -1,5 +1,5 @@
 import useItemsLoader from "@hooks/items-uploader.js";
-import useLocalStorage from "@hooks/local-storage.js";
+import useLocalStorage from "@hooks/local-storage.ts";
 import {
   createProject as submit,
   getProjects,

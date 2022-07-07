@@ -6,10 +6,7 @@ import useDispatcher from "@hooks/dispatcher";
 import { getUserInfo } from "@modules/user/creators";
 import { getRoles as getRolesAction } from "@modules/user/creators";
 import useLocalStorage from "@hooks/local-storage";
-
-type roleType = {
-  role: 1 | 2 | 3 | 4;
-};
+import { roleType } from "@hooks/types";
 
 const useUserInfo = () => {
   const { info, roles } = useSelector(({ user }: any) => user);

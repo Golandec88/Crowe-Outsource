@@ -4,12 +4,20 @@ export type datesType = {
 };
 export type filesType = {
   name: string;
+  fileName: string;
   guid: string;
   fileClassificationId: string;
 };
 export type addManagerActivityType = {
   manager: string;
   client: string;
+};
+export type infoType = {
+  id: string;
+  userType: "call-center" | "manager";
+  responseType: string | null;
+  comment: string;
+  rejectedFilesList: filesType[];
 };
 export type requestType = {
   passportData: {

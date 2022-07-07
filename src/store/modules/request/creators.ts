@@ -8,6 +8,7 @@ import {
   addManagerActivityType,
   datesType,
   filesType,
+  infoType,
   requestType,
 } from "@modules/request/types";
 
@@ -28,6 +29,7 @@ export const getRequests = (
     dispatch({ type: types.SET_REQUESTS, value: data });
   });
 };
+
 export const getRequest = (
   dispatch: Dispatch,
   tin: string,
@@ -39,6 +41,7 @@ export const getRequest = (
     dispatch,
   }).then(({ data }) => callback(data));
 };
+
 export const getRequestStatuses = (dispatch: Dispatch) => {
   Request({
     method: "GET",
@@ -50,18 +53,21 @@ export const getRequestStatuses = (dispatch: Dispatch) => {
     dispatch({ type: types.SET_REQUEST_STATUSES, value });
   });
 };
+
 export const getAllClassifications = (callback: callbackType) => {
   Request({
     method: "GET",
     url: "/crm/FileClassification/GetAllClassifications",
   }).then((data) => callback(data));
 };
+
 export const getMainClassificationsId = (callback: callbackType) => {
   Request({
     method: "GET",
     url: "/crm/FileClassification/MainClassificationsId",
   }).then((data) => callback(data));
 };
+
 export const getClassifications = (dispatch: Dispatch) => {
   Request({
     method: "GET",
@@ -73,6 +79,7 @@ export const getClassifications = (dispatch: Dispatch) => {
     dispatch({ type: types.SET_CLASSIFICATIONS, value: data.classes });
   });
 };
+
 export const downloadFile = (id: string, callback: callbackType) => {
   Request({
     method: "GET",
@@ -80,6 +87,7 @@ export const downloadFile = (id: string, callback: callbackType) => {
     use: "fetch",
   }).then((data) => data.blob().then(callback));
 };
+
 export const uploadFile = (form: string[], callback: callbackType) => {
   const token = localStorage.getItem("ABV_CRM.token");
   axios({
@@ -92,6 +100,7 @@ export const uploadFile = (form: string[], callback: callbackType) => {
     url: "/crm/Utils/StaffUser/uploadFile",
   }).then((data) => callback(data));
 };
+
 export const deleteFiles = (filesIdArr: string[], callback: callbackType) => {
   const token = localStorage.getItem("ABV_CRM.token");
   axios({
@@ -193,14 +202,14 @@ export const getAllStaffUsersWhoSentFilesToThisRequest = (
   }).then(({ data }) => callback(data));
 };
 
-export const staffUserUploadFiles = (file: any, callback: callbackType) => {
-  //надо поменять any на норм тип file
+export const staffUserUploadFiles = (file: File[], callback: callbackType) => {
   const dataForm = new FormData();
   const token = localStorage.getItem("ABV_CRM.token");
 
   for (let i = 0; i < file.length; i++) {
     dataForm.append("files", file[i]);
   }
+
   axios
     .post("/crm/FileHosting/UploadFiles", dataForm, {
       headers: {
@@ -262,10 +271,10 @@ export const deleteClientSentFiles = (
 
 export const replyOfRequest = (
   dispatch: Dispatch,
-  info: any,
-  //надо поменять any на норм тип
+  info: infoType,
   callback: callbackType
 ) => {
+  console.log(info);
   const {
     id,
     userType: user,
@@ -302,6 +311,7 @@ export const replyOfRequest = (
       }
     }
   }
+
   function createData() {
     if (user === "manager") {
       if (response === "decline" || response === "resend") {
@@ -329,6 +339,7 @@ export const addManagerActivity = (
     },
   }).then(callback);
 };
+
 export const getBankByMfo = (mfo: string, callback: callbackType) => {
   const lang = i18n.language || "ru";
   Request({
