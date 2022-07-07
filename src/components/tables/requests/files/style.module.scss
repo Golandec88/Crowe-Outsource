@@ -1,14 +1,14 @@
 .textField {
   width: 100% !important;
-  background-color: #FFFFFF !important;
+  background-color: #ffffff !important;
   box-sizing: border-box !important;
   border-radius: 8px !important;
-  border: 1px solid #D9D9D9;
+  border: 1px solid #d9d9d9;
   margin-bottom: 20px !important;
 
   fieldset {
     border-radius: 8px;
-    border: 1px solid #D9D9D9;
+    border: 1px solid #d9d9d9;
   }
 
   input:-webkit-autofill {
@@ -29,6 +29,57 @@
 .button {
   height: 56px !important;
   border-radius: 8px !important;
+}
+
+.chip {
+  width: 100%;
+  margin-bottom: 5px;
+  align-items: center;
+  place-content: flex-start;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 5px;
+  padding: 5px 5px 5px 15px;
+
+  &.wait {
+    background: #f6f6f6;
+    color: black;
+  }
+  &.success {
+    background: #2e7d32;
+    color: white;
+  }
+  &.error {
+    background: #c30000;
+    color: white;
+  }
+  &.downloaded {
+    background: #6311af;
+    color: white;
+  }
+  .buttons {
+    display: flex;
+    margin-left: auto;
+    flex-wrap: nowrap;
+    .button {
+      margin-left: 4px;
+      svg path {
+        color: white;
+      }
+      &[aria-label="download"] svg path {
+        color: #6311af;
+      }
+      &[aria-label="error"] svg path {
+        color: #c30000;
+      }
+      &[aria-label="success"] svg path {
+        color: #2e7d32;
+      }
+    }
+  }
+  &.active .buttons .button svg path {
+    color: white;
+  }
 }
 
 .container {
@@ -59,9 +110,15 @@
   }
 }
 
-@media(max-width: 1920px) {
+.cell {
+  padding: 0 !important;
+  div {
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 1920px) {
   .container.ml {
     margin-left: 350px;
   }
 }
-

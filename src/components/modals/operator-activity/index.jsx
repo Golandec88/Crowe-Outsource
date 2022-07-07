@@ -1,7 +1,6 @@
 import { forwardRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import proptypes from "prop-types";
-import { clientType } from "@types/user";
 import s from "@components/tables/requests/manager/style.module.scss";
 import { removeClientsFromProject } from "@modules/project/creators";
 import { setMessage } from "@modules/global/creators";
@@ -24,55 +23,28 @@ import {
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 
-import TableSkeleton from "@components/tables/skeleton";
-import RequestsList from "@components/modals/requests";
-
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function Clients({
-  model,
-  close,
-  clients,
-  loading,
-  disableAdd,
-  id,
-}) {
+export default function OperatorActivity({ open, closeModal, loading, info }) {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-
-  const [addRequestsListModal, setRequestsListModal] = useState(false);
-  const [removedClient, setRemovedClient] = useState(null);
-
-  function removeClient() {
-    if (removedClient) {
-      removeClientsFromProject(
-        { clients: [removedClient.requestId], project: id },
-        () => {
-          setMessage(dispatch, {
-            text: t("successRemoveClientFromProject"),
-            type: "success",
-          });
-          close();
-        }
-      );
-    }
-  }
+  // const dispatch = useDispatch();
+  console.log(info);
 
   return (
     <>
       <Dialog
         fullScreen
-        open={model}
-        onClose={close}
+        open={open}
+        onClose={closeModal}
         TransitionComponent={Transition}
       >
         <DialogTitle>
-          {t("clientsList")}
+          {t("operatorActivity")}
           <IconButton
             aria-label="close"
-            onClick={close}
+            onClick={closeModal}
             sx={{
               position: "absolute",
               right: 8,
@@ -94,45 +66,11 @@ export default function Clients({
                 </TableRow>
               </TableHead>
 
-              <TableBody className={s.body}>
-                {clients?.length ? (
-                  loading ? (
-                    <TableSkeleton cols={3} />
-                  ) : (
-                    clients.map((item, index) => (
-                      <TableRow
-                        key={`#client-${index}`}
-                        className={
-                          removedClient?.tin === item.tin ? s.active : ""
-                        }
-                        onClick={() => setRemovedClient(item)}
-                      >
-                        <TableCell>
-                          {item?.tin || item?.companyInfo?.tin}
-                        </TableCell>
-                        <TableCell>
-                          {item?.fullName || item?.companyInfo?.name}
-                        </TableCell>
-                        <TableCell>
-                          {item?.oked || item?.companyInfo?.oked}
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  )
-                ) : (
-                  <>
-                    <TableRow>
-                      <TableCell colSpan={3} style={{ textAlign: "center" }}>
-                        {t("empty")}
-                      </TableCell>
-                    </TableRow>
-                  </>
-                )}
-              </TableBody>
+              <TableBody className={s.body}></TableBody>
             </Table>
           </TableContainer>
         </DialogContent>
-        <DialogActions>
+        {/* <DialogActions>
           {!disableAdd && clients?.length > 0 && (
             <Button
               size="medium"
@@ -157,30 +95,30 @@ export default function Clients({
               {t("addClientToProject")}
             </Button>
           )}
-        </DialogActions>
+        </DialogActions> */}
       </Dialog>
 
-      <RequestsList
+      {/* <RequestsList
         open={addRequestsListModal}
         onClose={() => setRequestsListModal(false)}
         allClose={() => {
           setRequestsListModal(false);
-          close();
+          closeModal();
         }}
         existingClients={clients}
         id={id}
-      />
+      /> */}
     </>
   );
 }
 
-Clients.propTypes = {
-  model: proptypes.bool,
-  close: proptypes.func,
-  loading: proptypes.bool,
-  clients: proptypes.oneOfType([
-    proptypes.arrayOf(clientType()),
-    proptypes.string,
-  ]),
-  disableAdd: proptypes.bool,
-};
+// Clients.propTypes = {
+//   model: proptypes.bool,
+//   close: proptypes.func,
+//   loading: proptypes.bool,
+//   clients: proptypes.oneOfType([
+//     proptypes.arrayOf(clientType()),
+//     proptypes.string,
+//   ]),
+//   disableAdd: proptypes.bool,
+// };

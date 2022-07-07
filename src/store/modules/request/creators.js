@@ -1,7 +1,7 @@
 import * as types from "@modules/request/types";
 import Request from "@utils/request";
 import axios from "axios";
-
+import i18n from "i18next";
 
 export const getRequests = (dispatch, status, isSilent = false) => {
   Request({
@@ -11,7 +11,7 @@ export const getRequests = (dispatch, status, isSilent = false) => {
     loadingField: "requests",
     data: status,
     dispatch,
-    isSilent
+    isSilent,
   }).then(({ data }) => {
     dispatch({ type: types.SET_REQUESTS, value: data });
   });
@@ -20,27 +20,39 @@ export const getRequest = (dispatch, tin, callback) => {
   Request({
     method: "GET",
     url: "/crm/Request/RequestByTin/" + tin,
-    dispatch
+    dispatch,
   }).then(({ data }) => callback(data));
 };
-export const getRequestStatuses = dispatch => {
+export const getRequestStatuses = (dispatch) => {
   Request({
     method: "GET",
     url: "/crm/Request/GetAllRequestStatuses",
     type: types.GET_REQUEST_STATUSES,
-    dispatch
+    dispatch,
   }).then(({ data }) => {
     const value = typeof data === "object" ? Object.values(data) : data;
     dispatch({ type: types.SET_REQUEST_STATUSES, value });
   });
 };
-export const getClassifications = dispatch => {
+export const getAllClassifications = (callback) => {
+  Request({
+    method: "GET",
+    url: "/crm/FileClassification/GetAllClassifications",
+  }).then((res) => callback(res));
+};
+export const getMainClassificationsId = (callback) => {
+  Request({
+    method: "GET",
+    url: "/crm/FileClassification/MainClassificationsId",
+  }).then((res) => callback(res));
+};
+export const getClassifications = (dispatch) => {
   Request({
     method: "GET",
     url: "/crm/FileClassification/AllClassesWithSubClasses",
     type: types.GET_CLASSIFICATIONS,
     loadingField: "classifications",
-    dispatch
+    dispatch,
   }).then(({ data }) => {
     dispatch({ type: types.SET_CLASSIFICATIONS, value: data.classes });
   });
@@ -49,9 +61,34 @@ export const downloadFile = (id, callback) => {
   Request({
     method: "GET",
     url: "/crm/Utils/DownloadFile/" + id,
-    use: "fetch"
-  }).then(data => data.blob().then(callback));
+    use: "fetch",
+  }).then((data) => data.blob().then(callback));
 };
+export const uploadFile = (form, callback) => {
+  const token = localStorage.getItem("ABV_CRM.token");
+  axios({
+    method: "post",
+    data: form,
+    headers: {
+      Authorization: "Bearer " + token,
+      "Content-Type": "multipart/form-data",
+    },
+    url: "/crm/Utils/StaffUser/uploadFile",
+  }).then((data) => callback(data));
+};
+export const deleteFiles = (filesIdArr, callback) => {
+  const token = localStorage.getItem("ABV_CRM.token");
+  axios({
+    method: "post",
+    data: { filenames: filesIdArr },
+    headers: {
+      Authorization: "Bearer " + token,
+      "Content-Type": "application/json-patch+json",
+    },
+    url: "/crm/Utils/DeleteFiles",
+  }).then(callback);
+};
+
 export const getTransactions = (dispatch, { fromDate, toDate }) => {
   Request({
     method: "GET",
@@ -59,16 +96,19 @@ export const getTransactions = (dispatch, { fromDate, toDate }) => {
     type: types.GET_TRANSACTIONS,
     loadingField: "transactions",
     params: {
-      tin: "306865819", fromDate, toDate,
+      tin: "306865819",
+      fromDate,
+      toDate,
     },
-    dispatch
+    dispatch,
   }).then(({ data }) => {
     const result = [];
     for (const item of data) {
       if (item.debit > 0) result.push(item);
     }
     dispatch({
-      type: types.SET_TRANSACTIONS, value: result
+      type: types.SET_TRANSACTIONS,
+      value: result,
     });
   });
 };
@@ -171,13 +211,19 @@ export const deleteClientSentFiles = (reqId, guids, dispatch) => {
 
 
 export const replyOfRequest = (dispatch, info, callback) => {
-  const { id, userType: user, responseType: response, comment, rejectedFilesList } = info;
+  const {
+    id,
+    userType: user,
+    responseType: response,
+    comment,
+    rejectedFilesList,
+  } = info;
 
   Request({
     method: "POST",
     url: "/crm/Request/" + getReplyUrl() + "/" + id,
     data: createData(),
-    dispatch
+    dispatch,
   }).then(callback);
 
   function getReplyUrl() {
@@ -207,7 +253,7 @@ export const replyOfRequest = (dispatch, info, callback) => {
       if (response === "decline" || response === "resend") {
         return {
           comment,
-          rejectedFiels: rejectedFilesList
+          rejectedFiels: rejectedFilesList,
         };
       }
     }
@@ -216,4 +262,33 @@ export const replyOfRequest = (dispatch, info, callback) => {
   }
 };
 
+export const addManagerActivity = ({ manager, client }, callback) => {
+  Request({
+    method: "PATCH",
+    url: "/crm/OperatorActivity/AddActivity/" + manager,
+    data: {
+      clientTin: client,
+      comment: "",
+    },
+  }).then(callback);
+};
+export const getBankByMfo = (mfo, callback) => {
+  const lang = i18n.language || "ru";
+  Request({
+    method: "GET",
+    url: "/edo/Utils/bank/getByMfo",
+    params: {
+      mfo,
+      lang,
+    },
+  }).then((res) => callback(res));
+};
+export const createRequest = (data, callback, dispatch) => {
+  Request({
+    method: "POST",
+    url: "/crm/Request/Staff/Send",
+    data,
+    dispatch,
+  }).then(callback);
+};
 

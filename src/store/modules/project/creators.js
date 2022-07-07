@@ -4,12 +4,14 @@ import Request from "@utils/request";
 export const getProjects = (dispatch, { role, id }) => {
   Request({
     method: "GET",
-    url: `/crm/Project/GetProjectsBy${role.charAt(0).toUpperCase() + role.slice(1)}/${id}`,
+    url: `/crm/Project/GetProjectsBy${
+      role.charAt(0).toUpperCase() + role.slice(1)
+    }/${id}`,
     type: types.GET_PROJECTS,
     loadingField: "projects",
-    dispatch
+    dispatch,
   }).then(({ data }) => {
-    dispatch({ type: types.SET_PROJECTS, value: data?data:[] });
+    dispatch({ type: types.SET_PROJECTS, value: data ? data : [] });
   });
 };
 export const attachClientToProject = ({ clients, project }, callback) => {
@@ -17,8 +19,17 @@ export const attachClientToProject = ({ clients, project }, callback) => {
     method: "PATCH",
     url: "/crm/Project/AttachClients/" + project,
     data: {
-      clientTins: clients
-    }
+      requestsIds: clients,
+    },
+  }).then(callback);
+};
+export const removeClientsFromProject = ({ clients, project }, callback) => {
+  Request({
+    method: "PATCH",
+    url: "/crm/Project/RemoveClients/" + project,
+    data: {
+      requestsIds: clients,
+    },
   }).then(callback);
 };
 export const addOperatorActivity = ({ operator, client }, callback) => {
@@ -26,15 +37,10 @@ export const addOperatorActivity = ({ operator, client }, callback) => {
     method: "PATCH",
     url: "/crm/OperatorActivity/AddActivity/" + operator,
     data: {
-      clientTin: client
-    }
+      requestId: client,
+    },
   }).then(callback);
 };
-
-
-
-
-
 
 export const getProjectClients = (dispatch, id) => {
   Request({
@@ -42,7 +48,7 @@ export const getProjectClients = (dispatch, id) => {
     url: "/crm/Project/GetClients/" + id,
     loadingField: "projectClients",
     type: types.GET_CLIENTS,
-    dispatch
+    dispatch,
   }).then(({ data }) => {
     dispatch({ type: types.SET_CLIENTS, value: data });
   });
@@ -53,7 +59,7 @@ export const getProjectOperators = (dispatch, id) => {
     url: "/crm/Project/GetOperatorsActivityByProject/" + id,
     loadingField: "operators",
     type: types.GET_OPERATORS,
-    dispatch
+    dispatch,
   }).then(({ data }) => {
     dispatch({ type: types.SET_OPERATORS, value: data.activities });
   });
@@ -64,8 +70,8 @@ export const createProject = (dispatch, name, id, callback) => {
     method: "POST",
     data: {
       name,
-      managerId: id
+      managerId: id,
     },
-    dispatch
+    dispatch,
   }).then(callback);
 };

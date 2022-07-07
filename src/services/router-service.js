@@ -17,15 +17,24 @@ import OperatorProjects from "@views/operator-projects";
 import RequestsArchive from "@views/requests-archive";
 import FileShare from "@views/file-share";
 import ClientInfo from "@components/tables/file-share/ClientInfo";
+import CreateRequest from "@views/create-request";
+import History from "@views/history";
 
-export default function RouterService ({ isAuth, role }) {
+export default function RouterService({ isAuth, role }) {
   const schema = [
-    { path: "auth", element: <EmptyLayout/>, children: [
-      { index: true, element: <Auth/> }
-    ] },
-    PrivateRoute({
-      path: "/", element: <DefaultLayout/>, children: getRoutesList(role)
-    }, isAuth)
+    {
+      path: "auth",
+      element: <EmptyLayout />,
+      children: [{ index: true, element: <Auth /> }],
+    },
+    PrivateRoute(
+      {
+        path: "/",
+        element: <DefaultLayout />,
+        children: getRoutesList(role),
+      },
+      isAuth
+    ),
   ];
 
   return useRoutes(schema);
@@ -33,49 +42,57 @@ export default function RouterService ({ isAuth, role }) {
 
 function PrivateRoute(route, isAuth) {
   if (isAuth) return route;
-  return { path: route.path, element: <Navigate to="/auth"/> };
+  return { path: route.path, element: <Navigate to="/auth" /> };
 }
 
 function getRoutesList(role) {
   switch (role) {
-    case 1: { // Manager
+    case 1: {
+      // Manager
       return [
-        { path: "manager-requests", element: <ManagerRequests/>, index: true },
-        { path: "manager-projects", element: <ManagerProjects/> },
-        { path: "operator-projects", element: <OperatorProjects/> },
-        { path: "activity", element: <Activity/> },
-        { path: "operators", element: <Operators/> },
-        { path: "transactions", element: <Transactions/> },
-        { path: "call-center", element: <Requests/> },
+        { path: "manager-requests", element: <ManagerRequests />, index: true },
+        { path: "manager-projects", element: <ManagerProjects /> },
+        { path: "operator-projects", element: <OperatorProjects /> },
+        { path: "activity", element: <Activity /> },
+        { path: "operators", element: <Operators /> },
+        { path: "transactions", element: <Transactions /> },
+        { path: "call-center", element: <Requests /> },
         { path: "register", element: <RegisterUser /> },
         { path: "activity-archive", element: <ActivityArchive /> },
         { path: "clients-archive", element: <ClientsArchive /> },
         { path: "file-share", element: <FileShare /> },
         { path: "client-info/:id", element: <ClientInfo /> },
-        { path: "/", element: <Navigate to="manager-requests"/> }
+        { path: "create-request", element: <CreateRequest /> },
+        { path: "history", element: <History /> },
+        { path: "/", element: <Navigate to="manager-requests"/> },
       ];
     }
-    case 2: { // Operator
+    case 2: {
+      // Operator
       return [
-        { path: "activity", element: <Activity/>, index: true },
-        { path: "operator-projects", element: <OperatorProjects/> },
-        { path: "call-center", element: <Requests/> },
+        { path: "activity", element: <Activity />, index: true },
+        { path: "operator-projects", element: <OperatorProjects /> },
+        { path: "call-center", element: <Requests /> },
         { path: "register", element: <RegisterUser /> },
         { path: "activity-archive", element: <ActivityArchive /> },
         { path: "clients-archive", element: <ClientsArchive /> },
+        { path: "create-request", element: <CreateRequest /> },
+        { path: "history", element: <History /> },
         { path: "file-share", element: <FileShare /> },
         { path: "client-info", element: <ClientInfo /> },
         { path: "/", element: <Navigate to="activity"/> }
       ];
     }
-    case 3: { // CallCenterOperator
+    case 3: {
+      // CallCenterOperator
       return [
-        { path: "requests", element: <Requests/>, index: true },
+        { path: "requests", element: <Requests />, index: true },
         { path: "register", element: <RegisterUser /> },
         { path: "requests-archive", element: <RequestsArchive /> },
-        { path: "/", element: <Navigate to="requests"/> }
+        { path: "create-request", element: <CreateRequest /> },
+        { path: "history", element: <History /> },
+        { path: "/", element: <Navigate to="requests" /> },
       ];
     }
-
   }
 }
