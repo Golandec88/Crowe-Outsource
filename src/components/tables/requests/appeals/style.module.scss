@@ -14,6 +14,7 @@
     border-radius: 8px;
   }
 }
+
 .container {
   width: 350px !important;
   align-content: baseline;
@@ -28,6 +29,7 @@
     }
   }
 }
+
 .table {
   width: 100%;
   margin-top: 10px !important;
@@ -70,9 +72,11 @@
     td {
       text-align: left;
       padding: 5px 10px;
+
       &.empty {
         text-align: center;
       }
+
       p {
         display: flex;
         margin: 0;
@@ -91,25 +95,29 @@
     }
   }
 }
+
 .skeleton {
   background-color: #00c5ff30;
   cursor: wait;
   height: 60px;
 }
+
 .filters {
   display: flex;
   background-color: transparent !important;
+
   .datepicker {
     background: white;
     margin-right: 10px;
   }
 }
+
 .files {
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-radius: 0 !important;
-  border-bottom: 0.1px solid rgba(84,9,183,0.7);
+  border-bottom: 0.1px solid rgba(84, 9, 183, 0.7);
   box-shadow: none !important;
   background-color: #fff;
 
@@ -118,6 +126,7 @@
   }
 
 }
+
 .accordion {
   margin: 0 !important;
   box-shadow: none !important;
@@ -137,11 +146,13 @@
 
 .form {
   margin-right: 10px;
+
   button {
     width: 100px;
     height: 35px;
     padding: 0;
   }
+
   label {
     width: 100%;
     height: 100%;
@@ -151,17 +162,18 @@
     justify-content: center;
   }
 
-  input{
+  input {
     display: none;
   }
 
 }
+
 .tablePagination {
   border-bottom: none !important;
 }
+
 .footer {
   display: flex !important;
   flex-direction: row-reverse;
   align-items: center;
 }
-

@@ -114,6 +114,16 @@
   "projectName": "Наименование проекта",
   "dateFrom": "Дата (от)",
   "dateTo": "Дата (по)",
+  "File-Share": "Файлообменник",
+  "No-Options": "Нет подходящего варианта",
+  "Client-Info": "Информация о клиенте",
+  "Received" : "Принятые файлы",
+  "Sent": "Отправленные файлы",
+  "UPLOAD" : "Загрузить",
+  "UploadedFiles": "Загруженные файлы",
+  "docClass": "Класс документа",
+  "Cancel" : "Отмена",
+  "Send": "Отправить"
   "transactions-statuses": {
     "docNum": "Номер",
     "debit": "Дебит",

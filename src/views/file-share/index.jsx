@@ -1,5 +1,4 @@
 import Title from "@components/title";
-import { useTranslation } from "react-i18next";
 import s from "@views/manager-requests/style.module.scss";
 import { Grid, TextField } from "@mui/material";
 import useItemsUploader from "@hooks/items-uploader";
@@ -7,8 +6,8 @@ import { getRequests, getRequestStatuses } from "@modules/request/creators";
 import { Autocomplete } from "@mui/material";
 import ClientsTable from "@components/tables/file-share/clientsTable";
 import useScroller from "@hooks/scroller";
-import { useEffect,useState } from "react";
-
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 
 export default function FileShare() {
@@ -20,7 +19,12 @@ export default function FileShare() {
     getRequests,
     { statuses: [4] }
   );
-  const [clientTin,setClientTin] = useState([]);
+  const [clientTin, setClientTin] = useState([]);
+  const [filtered, setFiltered] = useState();
+  const [selected, setSelected] = useState();
+  const [selectedClient, setSelectedClient] = useState();
+  const [filteredRequests, setFilteredRequests] = useState([]);
+
   const [{ items: statuses }] = useItemsUploader(
     "request",
     "statuses",
@@ -28,43 +32,55 @@ export default function FileShare() {
     getRequestStatuses
   );
   const offset = useScroller(135);
-  const [selected, setSelected] = useState();
-  const [selectedClient,setSelectedClient] = useState();
 
   useEffect(() => {
     requests.forEach((el) => {
       clientTin.push(el.request.companyInfo.tin);
     });
-  }, [clientTin]);
+    filteredReq();
+  }, [clientTin, filtered]);
 
 
   const selectClientHandler = (newValue) => {
     setSelectedClient(newValue);
     setClientTin([]);
+    setFiltered(newValue);
   };
 
+  const filteredReq = () => {
+    let newArr = [];
+    requests.forEach((el) => {
+      el.request.companyInfo.tin === filtered ? newArr.push(el) : el;
+    });
+    setFilteredRequests(newArr);
+  };
 
   return <>
-    <Title text={t("fileShare")}/>
-    <Grid id="container" className={`${s.container} ${offset > 135 ? s.fixed : ""}`} container item xs={12}>
+    <Title text={t("File-Share")}/>
+    <Grid id="container"
+      className={`${s.container} ${offset > 135 ? s.fixed : ""}`}
+      container item xs={12}>
       <Grid item xs={12}>
         <Autocomplete
+          value={filtered}
           disablePortal
           options={clientTin}
           sx={{ width: 300 }}
-          renderInput={(params) => <TextField {...params} label="Tin" />}
-          onChange={(event,newValue) =>selectClientHandler(newValue)}
-
+          renderInput={(params) => <TextField {...params} label={t("tin")}/>}
+          onChange={(event, newValue) => selectClientHandler(newValue)}
+          noOptionsText={t("No-Options")}
         />
       </Grid>
-      <Grid className={s.table} item xs={12} >
+      <Grid className={s.table} item xs={12}>
         <ClientsTable
           items={requests}
           statuses={statuses}
           selected={selected}
-          onChange = {setSelected}
-          loading = {loading}
+          onChange={setSelected}
+          loading={loading}
           selectedClient={selectedClient}
+          filtered={filtered}
+          filteredRequests={filteredRequests}
         />
       </Grid>
     </Grid>

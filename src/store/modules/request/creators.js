@@ -114,27 +114,27 @@ export const getTransactions = (dispatch, { fromDate, toDate }) => {
 };
 
 
-export const getClientFiles = (dispatch,id,callback,rows,page) => {
+export const getClientFiles = (dispatch, id, callback, rows, page) => {
   Request({
     method: "GET",
-    url: "/crm/FileHosting/Client/Files/"+id,
+    url: "/crm/FileHosting/Client/Files/" + id,
     type: types.GET_CLIENT_FILES,
     loadingField: "clientFiles",
-    params : {
-      pageNumber:page || 1,
-      pageSize:rows || 5
+    params: {
+      pageNumber: page || 1,
+      pageSize: rows || 5
     },
     dispatch
   }).then(({ data }) => callback(data));
 };
 
-export const getStaffUserSentFiles = (dispatch,id,callback,staffId,rows, page) => {
+export const getStaffUserSentFiles = (dispatch, id, callback, staffId, rows, page) => {
   Request({
     method: "GET",
-    url: "/crm/FileHosting/Staff/Files/"+ id + "/" + staffId,
+    url: "/crm/FileHosting/Staff/Files/" + id + "/" + staffId,
     type: types.GET_STAFFUSER_FILES,
     loadingField: "staffUserFiles",
-    params : {
+    params: {
       pageNumber: page || 1,
       pageSize: rows || 5
     },
@@ -143,73 +143,71 @@ export const getStaffUserSentFiles = (dispatch,id,callback,staffId,rows, page) =
 };
 
 
-export const getAllStaffUsersWhoSentFilesToThisRequest = (dispatch,id,callback,rows,page) => {
+export const getAllStaffUsersWhoSentFilesToThisRequest = (dispatch, id, callback, rows, page) => {
   Request({
     method: "GET",
-    url: "/crm/FileHosting/Staff/All/"+id,
+    url: "/crm/FileHosting/Staff/All/" + id,
     type: types.GET_STAFFUSERS,
     loadingField: "staffUserFiles",
     params: {
       pageNumber: page || 1,
-      pageSize : rows || 5,
+      pageSize: rows || 5,
     },
     dispatch
   }).then(({ data }) => (callback(data)));
 };
 
-export const staffUserUploadFiles = ( file,callback ) => {
+export const staffUserUploadFiles = (file, callback) => {
   const dataForm = new FormData();
   const token = localStorage.getItem("ABV_CRM.token");
 
-  for(let i = 0; i< file.length; i++) {
-    dataForm.append("files",file[i]);
+  for (let i = 0; i < file.length; i++) {
+    dataForm.append("files", file[i]);
   }
   axios.post("/crm/FileHosting/UploadFiles", dataForm, {
-    headers : {
+    headers: {
       "Authorization": "Bearer " + token,
       "Content-Type": "multipart/form-data"
     },
     body: dataForm,
-  }).then((data)=> callback(data.data));
+  }).then((data) => callback(data.data));
 };
 
-export const staffUserSendFiles = (id,files,dispatch) => {
-  Request ( {
+export const staffUserSendFiles = (id, files, dispatch) => {
+  Request({
     method: "POST",
-    url: "/crm/FileHosting/StaffUser/Send/"+id,
-    data : { filesInfo: files },
+    url: "/crm/FileHosting/StaffUser/Send/" + id,
+    data: { filesInfo: files },
     dispatch
   });
 };
 
-export const deleteUploadedFiles = ( guids,index,dispatch) => {
-  Request ( {
-    method:"DELETE",
-    url: "/crm/FileHosting/Files",
-    data : { filesGuids : guids },
-    dispatch
-  });
-};
-
-export const deleteStaffSentFiles = (staffId,reqId,guids,dispatch) => {
+export const deleteUploadedFiles = (guids, index, dispatch) => {
   Request({
     method: "DELETE",
-    url : "/crm/FileHosting/Staff/" + staffId + "/" + reqId,
-    data : { filesGuids : [guids] } ,
+    url: "/crm/FileHosting/Files",
+    data: { filesGuids: guids },
     dispatch
   });
 };
 
-export const deleteClientSentFiles = (reqId,guids,dispatch) => {
-  Request ({
+export const deleteStaffSentFiles = (staffId, reqId, guids, dispatch) => {
+  Request({
+    method: "DELETE",
+    url: "/crm/FileHosting/Staff/" + staffId + "/" + reqId,
+    data: { filesGuids: [guids] },
+    dispatch
+  });
+};
+
+export const deleteClientSentFiles = (reqId, guids, dispatch) => {
+  Request({
     method: "DELETE",
     url: "/crm/FileHosting/Client/" + reqId,
-    data: { filesGuids : [guids] },
+    data: { filesGuids: [guids] },
     dispatch
   });
 };
-
-
 
 
 export const replyOfRequest = (dispatch, info, callback) => {
@@ -249,6 +247,7 @@ export const replyOfRequest = (dispatch, info, callback) => {
       }
     }
   }
+
   function createData() {
     if (user === "manager") {
       if (response === "decline" || response === "resend") {
