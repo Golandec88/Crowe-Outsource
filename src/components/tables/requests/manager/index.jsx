@@ -7,10 +7,10 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import getRequestColor from "@utils/request-color.js";
 import useItemsUploader from "@hooks/items-uploader.js";
-import { getClassifications } from "@modules/request/creators.js";
+import { getClassifications } from "@modules/request/creators.ts";
 import { classificationType, requestType } from "@types/request.js";
 import { Campaign } from "@mui/icons-material";
-import { getOperators, getStaffUserInfo } from "@modules/user/creators.js";
+import { getOperators, getStaffUserInfo } from "@modules/user/creators.ts";
 import TableSkeleton from "@components/tables/skeleton";
 import {
   addOperatorActivity,

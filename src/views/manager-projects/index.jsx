@@ -3,8 +3,8 @@ import useLocalStorage from "@hooks/local-storage.js";
 import {
   createProject as submit,
   getProjects,
-} from "@modules/project/creators.js";
-import { setMessage } from "@modules/global/creators.js";
+} from "@modules/project/creators.ts";
+import { setMessage } from "@modules/global/creators.ts";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 

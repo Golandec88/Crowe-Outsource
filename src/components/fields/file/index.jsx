@@ -1,5 +1,5 @@
 import { createRef, useState } from "react";
-import { uploadFile, deleteFiles } from "@modules/request/creators.js";
+import { uploadFile, deleteFiles } from "@modules/request/creators.ts";
 import proptypes from "prop-types";
 
 import s from "./style.module.scss";

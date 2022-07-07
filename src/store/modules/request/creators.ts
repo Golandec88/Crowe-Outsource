@@ -1,9 +1,21 @@
-import * as types from "@modules/request/types";
+import * as types from "@modules/request/actions-types";
 import Request from "@utils/request";
 import axios from "axios";
 import i18n from "i18next";
+import { Dispatch } from "redux";
+import { callbackType } from "@modules/global/types";
+import {
+  addManagerActivityType,
+  datesType,
+  filesType,
+  requestType,
+} from "@modules/request/types";
 
-export const getRequests = (dispatch, status, isSilent = false) => {
+export const getRequests = (
+  dispatch: Dispatch,
+  status: number[],
+  isSilent: boolean = false
+) => {
   Request({
     method: "POST",
     url: "/crm/Request/GetAll",
@@ -16,14 +28,18 @@ export const getRequests = (dispatch, status, isSilent = false) => {
     dispatch({ type: types.SET_REQUESTS, value: data });
   });
 };
-export const getRequest = (dispatch, tin, callback) => {
+export const getRequest = (
+  dispatch: Dispatch,
+  tin: string,
+  callback: callbackType
+) => {
   Request({
     method: "GET",
     url: "/crm/Request/RequestByTin/" + tin,
     dispatch,
   }).then(({ data }) => callback(data));
 };
-export const getRequestStatuses = (dispatch) => {
+export const getRequestStatuses = (dispatch: Dispatch) => {
   Request({
     method: "GET",
     url: "/crm/Request/GetAllRequestStatuses",
@@ -34,19 +50,19 @@ export const getRequestStatuses = (dispatch) => {
     dispatch({ type: types.SET_REQUEST_STATUSES, value });
   });
 };
-export const getAllClassifications = (callback) => {
+export const getAllClassifications = (callback: callbackType) => {
   Request({
     method: "GET",
     url: "/crm/FileClassification/GetAllClassifications",
-  }).then((res) => callback(res));
+  }).then((data) => callback(data));
 };
-export const getMainClassificationsId = (callback) => {
+export const getMainClassificationsId = (callback: callbackType) => {
   Request({
     method: "GET",
     url: "/crm/FileClassification/MainClassificationsId",
-  }).then((res) => callback(res));
+  }).then((data) => callback(data));
 };
-export const getClassifications = (dispatch) => {
+export const getClassifications = (dispatch: Dispatch) => {
   Request({
     method: "GET",
     url: "/crm/FileClassification/AllClassesWithSubClasses",
@@ -57,14 +73,14 @@ export const getClassifications = (dispatch) => {
     dispatch({ type: types.SET_CLASSIFICATIONS, value: data.classes });
   });
 };
-export const downloadFile = (id, callback) => {
+export const downloadFile = (id: string, callback: callbackType) => {
   Request({
     method: "GET",
     url: "/crm/Utils/DownloadFile/" + id,
     use: "fetch",
   }).then((data) => data.blob().then(callback));
 };
-export const uploadFile = (form, callback) => {
+export const uploadFile = (form: string[], callback: callbackType) => {
   const token = localStorage.getItem("ABV_CRM.token");
   axios({
     method: "post",
@@ -76,7 +92,7 @@ export const uploadFile = (form, callback) => {
     url: "/crm/Utils/StaffUser/uploadFile",
   }).then((data) => callback(data));
 };
-export const deleteFiles = (filesIdArr, callback) => {
+export const deleteFiles = (filesIdArr: string[], callback: callbackType) => {
   const token = localStorage.getItem("ABV_CRM.token");
   axios({
     method: "post",
@@ -89,7 +105,10 @@ export const deleteFiles = (filesIdArr, callback) => {
   }).then(callback);
 };
 
-export const getTransactions = (dispatch, { fromDate, toDate }) => {
+export const getTransactions = (
+  dispatch: Dispatch,
+  { fromDate, toDate }: datesType
+) => {
   Request({
     method: "GET",
     url: "/crm/Utils/GetTransactions",
@@ -113,106 +132,140 @@ export const getTransactions = (dispatch, { fromDate, toDate }) => {
   });
 };
 
-
-export const getClientFiles = (dispatch,id,callback,rows,page) => {
+export const getClientFiles = (
+  dispatch: Dispatch,
+  id: string,
+  callback: callbackType,
+  rows: number,
+  page: number
+) => {
   Request({
     method: "GET",
-    url: "/crm/FileHosting/Client/Files/"+id,
+    url: "/crm/FileHosting/Client/Files/" + id,
     type: types.GET_CLIENT_FILES,
     loadingField: "clientFiles",
-    params : {
-      pageNumber:page || 1,
-      pageSize:rows || 5
+    params: {
+      pageNumber: page || 1,
+      pageSize: rows || 5,
     },
-    dispatch
+    dispatch,
   }).then(({ data }) => callback(data));
 };
 
-export const getStaffUserSentFiles = (dispatch,id,callback,staffId,rows, page) => {
+export const getStaffUserSentFiles = (
+  dispatch: Dispatch,
+  id: string,
+  callback: callbackType,
+  staffId: string,
+  rows: number,
+  page: number
+) => {
   Request({
     method: "GET",
-    url: "/crm/FileHosting/Staff/Files/"+ id + "/" + staffId,
+    url: "/crm/FileHosting/Staff/Files/" + id + "/" + staffId,
     type: types.GET_STAFFUSER_FILES,
     loadingField: "staffUserFiles",
-    params : {
+    params: {
       pageNumber: page || 1,
-      pageSize: rows || 5
+      pageSize: rows || 5,
     },
-    dispatch
-  }).then(({ data }) => (callback(data)));
+    dispatch,
+  }).then(({ data }) => callback(data));
 };
 
-
-export const getAllStaffUsersWhoSentFilesToThisRequest = (dispatch,id,callback,rows,page) => {
+export const getAllStaffUsersWhoSentFilesToThisRequest = (
+  dispatch: Dispatch,
+  id: string,
+  callback: callbackType,
+  rows: number,
+  page: number
+) => {
   Request({
     method: "GET",
-    url: "/crm/FileHosting/Staff/All/"+id,
+    url: "/crm/FileHosting/Staff/All/" + id,
     type: types.GET_STAFFUSERS,
     loadingField: "staffUserFiles",
     params: {
       pageNumber: page || 1,
-      pageSize : rows || 5,
+      pageSize: rows || 5,
     },
-    dispatch
-  }).then(({ data }) => (callback(data)));
+    dispatch,
+  }).then(({ data }) => callback(data));
 };
 
-export const staffUserUploadFiles = ( file,callback ) => {
+export const staffUserUploadFiles = (file: any, callback: callbackType) => {
+  //надо поменять any на норм тип file
   const dataForm = new FormData();
   const token = localStorage.getItem("ABV_CRM.token");
 
-  for(let i = 0; i< file.length; i++) {
-    dataForm.append("files",file[i]);
+  for (let i = 0; i < file.length; i++) {
+    dataForm.append("files", file[i]);
   }
-  axios.post("/crm/FileHosting/UploadFiles", dataForm, {
-    headers : {
-      "Authorization": "Bearer " + token,
-      "Content-Type": "multipart/form-data"
-    },
-    body: dataForm,
-  }).then((data)=> callback(data.data));
+  axios
+    .post("/crm/FileHosting/UploadFiles", dataForm, {
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((data) => callback(data.data));
 };
 
-export const staffUserSendFiles = (id,files,dispatch) => {
-  Request ( {
+export const staffUserSendFiles = (
+  id: string,
+  files: filesType[],
+  dispatch: Dispatch
+) => {
+  Request({
     method: "POST",
-    url: "/crm/FileHosting/StaffUser/Send/"+id,
-    data : { filesInfo: files },
-    dispatch
+    url: "/crm/FileHosting/StaffUser/Send/" + id,
+    data: { filesInfo: files },
+    dispatch,
   });
 };
 
-export const deleteUploadedFiles = ( guids,index,dispatch) => {
-  Request ( {
-    method:"DELETE",
-    url: "/crm/FileHosting/Files",
-    data : { filesGuids : guids },
-    dispatch
-  });
-};
-
-export const deleteStaffSentFiles = (staffId,reqId,guids,dispatch) => {
+export const deleteUploadedFiles = (guids: string[], dispatch: Dispatch) => {
   Request({
     method: "DELETE",
-    url : "/crm/FileHosting/Staff/" + staffId + "/" + reqId,
-    data : { filesGuids : [guids] } ,
-    dispatch
+    url: "/crm/FileHosting/Files",
+    data: { filesGuids: guids },
+    dispatch,
   });
 };
 
-export const deleteClientSentFiles = (reqId,guids,dispatch) => {
-  Request ({
+export const deleteStaffSentFiles = (
+  staffId: string,
+  reqId: string,
+  guids: string[],
+  dispatch: Dispatch
+) => {
+  Request({
+    method: "DELETE",
+    url: "/crm/FileHosting/Staff/" + staffId + "/" + reqId,
+    data: { filesGuids: guids },
+    dispatch,
+  });
+};
+
+export const deleteClientSentFiles = (
+  reqId: string,
+  guids: string[],
+  dispatch: Dispatch
+) => {
+  Request({
     method: "DELETE",
     url: "/crm/FileHosting/Client/" + reqId,
-    data: { filesGuids : [guids] },
-    dispatch
+    data: { filesGuids: guids },
+    dispatch,
   });
 };
 
-
-
-
-export const replyOfRequest = (dispatch, info, callback) => {
+export const replyOfRequest = (
+  dispatch: Dispatch,
+  info: any,
+  //надо поменять any на норм тип
+  callback: callbackType
+) => {
   const {
     id,
     userType: user,
@@ -263,7 +316,10 @@ export const replyOfRequest = (dispatch, info, callback) => {
   }
 };
 
-export const addManagerActivity = ({ manager, client }, callback) => {
+export const addManagerActivity = (
+  { manager, client }: addManagerActivityType,
+  callback: callbackType
+) => {
   Request({
     method: "PATCH",
     url: "/crm/OperatorActivity/AddActivity/" + manager,
@@ -273,7 +329,7 @@ export const addManagerActivity = ({ manager, client }, callback) => {
     },
   }).then(callback);
 };
-export const getBankByMfo = (mfo, callback) => {
+export const getBankByMfo = (mfo: string, callback: callbackType) => {
   const lang = i18n.language || "ru";
   Request({
     method: "GET",
@@ -282,9 +338,13 @@ export const getBankByMfo = (mfo, callback) => {
       mfo,
       lang,
     },
-  }).then((res) => callback(res));
+  }).then((data) => callback(data));
 };
-export const createRequest = (data, callback, dispatch) => {
+export const createRequest = (
+  data: requestType,
+  callback: callbackType,
+  dispatch: Dispatch
+) => {
   Request({
     method: "POST",
     url: "/crm/Request/Staff/Send",
@@ -292,4 +352,3 @@ export const createRequest = (data, callback, dispatch) => {
     dispatch,
   }).then(callback);
 };
-

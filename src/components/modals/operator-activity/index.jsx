@@ -30,7 +30,6 @@ const Transition = forwardRef(function Transition(props, ref) {
 export default function OperatorActivity({ open, closeModal, loading, info }) {
   const { t } = useTranslation();
   // const dispatch = useDispatch();
-  console.log(info);
 
   return (
     <>

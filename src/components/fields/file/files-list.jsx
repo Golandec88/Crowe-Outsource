@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { getAllClassifications } from "@store/modules/request/creators";
+import { getAllClassifications } from "@modules/request/creators";
 import proptypes from "prop-types";
 
 import {

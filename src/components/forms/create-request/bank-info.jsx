@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { t } from "i18next";
 import validationRules from "@utils/validation-rules";
-import { getBankByMfo } from "@modules/request/creators.js";
+import { getBankByMfo } from "@modules/request/creators.ts";
 import proptypes from "prop-types";
 
 import { Grid } from "@mui/material";

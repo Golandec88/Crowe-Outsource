@@ -1,12 +1,12 @@
 import s from "./style.module.scss";
 import React from "react";
 
-interface Props {
+type propsType = {
   text?: string;
   size?: string;
-}
+};
 
-const Title: React.FC<Props> = ({ text = "Title", size = "medium" }) => {
+const Title: React.FC<propsType> = ({ text = "Title", size = "medium" }) => {
   return (
     <>
       <h4

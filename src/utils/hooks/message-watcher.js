@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { CLEAR_MESSAGE } from "@modules/global/types";
+import { CLEAR_MESSAGE } from "@modules/global/action-types";
 
 export default function () {
   const dispatch = useDispatch();
@@ -8,7 +8,7 @@ export default function () {
   const [model, setModel] = useState(false);
 
   useEffect(() => {
-    if(text) {
+    if (text) {
       setModel(true);
 
       const timeout = setTimeout(() => {

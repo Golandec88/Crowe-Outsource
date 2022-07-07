@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import useItemsUploader from "@hooks/items-uploader.js";
-import { getRequests, getRequestStatuses } from "@modules/request/creators.js";
+import { getRequests, getRequestStatuses } from "@modules/request/creators.ts";
 import Title from "@components/title";
 import { Paper } from "@mui/material";
 import s from "@views/manager-requests/style.module.scss";

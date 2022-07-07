@@ -6,7 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 import s from "./style.module.scss";
 import FileItem from "./file-item";
-import { downloadFile as downloadFileAction } from "@modules/request/creators.js";
+import { downloadFile as downloadFileAction } from "@modules/request/creators.ts";
 import downloadFile from "@utils/download-file.js";
 import { useState } from "react";
 

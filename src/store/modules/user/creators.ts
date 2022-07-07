@@ -1,7 +1,10 @@
-import * as types from "@modules/user/types";
+import * as types from "@modules/user/action-types";
 import Request from "@utils/request";
+import { Dispatch } from "redux";
+import { callbackType } from "@modules/global/types";
+import { authType, registerType } from "@modules/user/types";
 
-export const getMenu = (dispatch) => {
+export const getMenu = (dispatch: Dispatch) => {
   Request({
     method: "GET",
     url: "/crm/StaffUserMenu",
@@ -15,7 +18,11 @@ export const getMenu = (dispatch) => {
     });
   });
 };
-export const authUser = (dispatch, payload, callback) => {
+export const authUser = (
+  dispatch: Dispatch,
+  payload: authType,
+  callback: callbackType
+) => {
   const params = {
     method: "POST",
     url: "/crm/StaffUser/Authenticate",
@@ -30,7 +37,7 @@ export const authUser = (dispatch, payload, callback) => {
     callback(token, user);
   });
 };
-export const getUserInfo = (dispatch) => {
+export const getUserInfo = (dispatch: Dispatch) => {
   Request({
     method: "GET",
     url: "/crm/StaffUser",
@@ -41,14 +48,14 @@ export const getUserInfo = (dispatch) => {
     dispatch({ type: types.SET_USER_INFO, value: data });
   });
 };
-export const getStaffUserInfo = (id, callback) => {
+export const getStaffUserInfo = (id: string, callback: callbackType) => {
   Request({
     method: "GET",
     url: "/crm/StaffUser",
     params: { id },
   }).then(callback);
 };
-export const getRoles = (dispatch) => {
+export const getRoles = (dispatch: Dispatch) => {
   Request({
     method: "GET",
     url: "/crm/StaffUser/GetAllRoles",
@@ -59,7 +66,11 @@ export const getRoles = (dispatch) => {
     dispatch({ type: types.SET_ROLES, value: data });
   });
 };
-export const getInfo = (dispatch, identity, callback) => {
+export const getInfo = (
+  dispatch: Dispatch,
+  identity: string,
+  callback: callbackType
+) => {
   Request({
     method: "GET",
     url: "/edo/Utils/" + identity,
@@ -68,21 +79,21 @@ export const getInfo = (dispatch, identity, callback) => {
     dispatch,
   }).then(({ data }) => callback(data));
 };
-export const getInfoByPinfl = (pinfl, callback) => {
+export const getInfoByPinfl = (pinfl: string, callback: callbackType) => {
   Request({
     method: "GET",
     url: "/user/EDOTaxOffice/GetPhysicalTaxPayerInfo",
     params: { tin: pinfl },
   }).then(callback);
 };
-export const getInfoByTin = (tin, callback) => {
+export const getInfoByTin = (tin: string, callback: callbackType) => {
   Request({
     method: "GET",
     url: "/edo/Utils/InfoByTin",
     params: { tin },
   }).then(callback);
 };
-export const getOperators = (dispatch) => {
+export const getOperators = (dispatch: Dispatch) => {
   Request({
     method: "GET",
     url: "/crm/StaffUser/GetUsersByRole/" + 2,
@@ -93,7 +104,11 @@ export const getOperators = (dispatch) => {
     dispatch({ type: types.SET_OPERATORS, value: data });
   });
 };
-export const getOperatorActivities = (dispatch, id, callback) => {
+export const getOperatorActivities = (
+  dispatch: Dispatch,
+  id: string,
+  callback: callbackType
+) => {
   Request({
     method: "GET",
     url: "/crm/OperatorActivity/GetClientsByOperator/" + id,
@@ -105,7 +120,11 @@ export const getOperatorActivities = (dispatch, id, callback) => {
     callback(data);
   });
 };
-export const registerOperator = (dispatch, form, callback) => {
+export const registerOperator = (
+  dispatch: Dispatch,
+  form: registerType,
+  callback: callbackType
+) => {
   Request({
     method: "POST",
     url: "/crm/StaffUser/Register",
@@ -118,7 +137,11 @@ export const registerOperator = (dispatch, form, callback) => {
     }).then(callback);
   });
 };
-export const registerUser = (form, callback, dispatch) => {
+export const registerUser = (
+  form: registerType,
+  callback: callbackType,
+  dispatch: Dispatch
+) => {
   Request({
     method: "POST",
     url: "/user/User/RegisterUserByAdmin",
@@ -126,4 +149,5 @@ export const registerUser = (form, callback, dispatch) => {
     dispatch,
   }).then(callback);
 };
-export const logout = (dispatch) => dispatch({ type: types.USER_CLEAR });
+export const logout = (dispatch: Dispatch) =>
+  dispatch({ type: types.USER_CLEAR });

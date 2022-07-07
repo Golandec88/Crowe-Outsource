@@ -3,9 +3,9 @@ import React from "react";
 
 export type IconNames = keyof typeof icons;
 
-interface IGenericIconProps {
+type IGenericIconProps = {
   name: IconNames;
-}
+};
 
 export const MuiIcon = ({ name }: IGenericIconProps): JSX.Element => {
   const Icon = icons[name];

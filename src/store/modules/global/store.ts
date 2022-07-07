@@ -1,7 +1,7 @@
 export default {
   message: {
     text: null,
-    type: null
+    type: null,
   },
   loadingFields: {
     authorization: false,
@@ -15,6 +15,6 @@ export default {
     operators: false,
     clients: false,
     transactions: false,
-    activities: false
-  }
+    activities: false,
+  },
 };

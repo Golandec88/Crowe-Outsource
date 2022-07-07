@@ -17,12 +17,12 @@ type listType = {
   name: string;
 };
 
-interface Props {
+type propsType = {
   list: listType[];
   loading: boolean;
-}
+};
 
-const AppMenu: React.FC<Props> = ({ list = [], loading = false }) => {
+const AppMenu: React.FC<propsType> = ({ list = [], loading = false }) => {
   const { t } = useTranslation();
   const { pathname } = useLocation();
 

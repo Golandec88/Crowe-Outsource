@@ -11,7 +11,7 @@
     "allowJs": true,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
-    "types": ["react", "node", "jest", "@testing-library/jest-dom", "@types/react-dom", "webpack-env"],
+    "types": ["react", "node", "jest", "@testing-library/jest-dom", "@types/react-dom", "@types/react-redux", "webpack-env"],
     "baseUrl": ".",
     "paths": {
       "@src/*": ["src/*"],

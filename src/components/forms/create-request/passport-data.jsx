@@ -1,6 +1,6 @@
 import { t } from "i18next";
 import proptypes from "prop-types";
-import { getInfoByPinfl } from "@modules/user/creators.js";
+import { getInfoByPinfl } from "@modules/user/creators.ts";
 import validationRules from "@utils/use-form-validation-rules";
 
 import Field from "@components/fields/field";
@@ -18,7 +18,7 @@ export default function PassportData({
 }) {
   function getIsoDate(date) {
     let newDate = "";
-    if (!!date) {
+    if (date) {
       try {
         newDate = new Date(date).toISOString();
       } catch {
@@ -32,7 +32,7 @@ export default function PassportData({
     let newDate = new Date(date);
     newDate.setFullYear(year);
 
-    if (!!date) {
+    if (date) {
       try {
         newDate = newDate.toISOString();
       } catch {}
@@ -52,7 +52,7 @@ export default function PassportData({
             "form.passportData.serialAndNumber",
             data.PassSeries + data.PassNumber
           );
-        if (!!data.PassIssueDate) {
+        if (data.PassIssueDate) {
           setValue(
             "form.passportData.givenDate",
             getIsoDate(data.PassIssueDate)

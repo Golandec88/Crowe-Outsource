@@ -1,12 +1,12 @@
 import { Alert, Grid, OutlinedInput, TextField } from "@mui/material";
-import { downloadFile as downloadFileAction } from "@modules/request/creators.js";
+import { downloadFile as downloadFileAction } from "@modules/request/creators.ts";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import s from "./style.module.scss";
 import proptypes from "prop-types";
 import { classificationType, requestType } from "@types/request.js";
 import downloadFile from "@utils/download-file.js";
-import { getInfoByPinfl as loadInfo } from "@modules/user/creators.js";
+import { getInfoByPinfl as loadInfo } from "@modules/user/creators.ts";
 import FileItem from "@components/tables/requests/files/file-item";
 
 export default function RequestDetails({
@@ -162,7 +162,7 @@ RequestDetails.defaultProps = {
   setCheckList: () => {},
 };
 
-export  function Formatter({ values, titles }) {
+export function Formatter({ values, titles }) {
   const { t } = useTranslation();
 
   return values.map((item, index) => {

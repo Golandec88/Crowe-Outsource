@@ -1,7 +1,17 @@
-import * as types from "@modules/project/types";
+import * as types from "@modules/project/action-types";
 import Request from "@utils/request";
+import { Dispatch } from "redux";
+import {
+  clientsAndProjectsType,
+  getProjectsType,
+  operatorActivityType,
+} from "@modules/project/types";
+import { callbackType } from "@modules/global/types";
 
-export const getProjects = (dispatch, { role, id }) => {
+export const getProjects = (
+  dispatch: Dispatch,
+  { role, id }: getProjectsType
+) => {
   Request({
     method: "GET",
     url: `/crm/Project/GetProjectsBy${
@@ -14,7 +24,10 @@ export const getProjects = (dispatch, { role, id }) => {
     dispatch({ type: types.SET_PROJECTS, value: data ? data : [] });
   });
 };
-export const attachClientToProject = ({ clients, project }, callback) => {
+export const attachClientToProject = (
+  { clients, project }: clientsAndProjectsType,
+  callback: callbackType
+) => {
   Request({
     method: "PATCH",
     url: "/crm/Project/AttachClients/" + project,
@@ -23,7 +36,10 @@ export const attachClientToProject = ({ clients, project }, callback) => {
     },
   }).then(callback);
 };
-export const removeClientsFromProject = ({ clients, project }, callback) => {
+export const removeClientsFromProject = (
+  { clients, project }: clientsAndProjectsType,
+  callback: callbackType
+) => {
   Request({
     method: "PATCH",
     url: "/crm/Project/RemoveClients/" + project,
@@ -32,7 +48,10 @@ export const removeClientsFromProject = ({ clients, project }, callback) => {
     },
   }).then(callback);
 };
-export const addOperatorActivity = ({ operator, client }, callback) => {
+export const addOperatorActivity = (
+  { operator, client }: operatorActivityType,
+  callback: callbackType
+) => {
   Request({
     method: "PATCH",
     url: "/crm/OperatorActivity/AddActivity/" + operator,
@@ -42,7 +61,7 @@ export const addOperatorActivity = ({ operator, client }, callback) => {
   }).then(callback);
 };
 
-export const getProjectClients = (dispatch, id) => {
+export const getProjectClients = (dispatch: Dispatch, id: string) => {
   Request({
     method: "GET",
     url: "/crm/Project/GetClients/" + id,
@@ -53,7 +72,7 @@ export const getProjectClients = (dispatch, id) => {
     dispatch({ type: types.SET_CLIENTS, value: data });
   });
 };
-export const getProjectOperators = (dispatch, id) => {
+export const getProjectOperators = (dispatch: Dispatch, id: string) => {
   Request({
     method: "GET",
     url: "/crm/Project/GetOperatorsActivityByProject/" + id,
@@ -64,7 +83,12 @@ export const getProjectOperators = (dispatch, id) => {
     dispatch({ type: types.SET_OPERATORS, value: data.activities });
   });
 };
-export const createProject = (dispatch, name, id, callback) => {
+export const createProject = (
+  dispatch: Dispatch,
+  name: string,
+  id: string,
+  callback: callbackType
+) => {
   Request({
     url: "/crm/Project",
     method: "POST",
