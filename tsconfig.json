@@ -11,6 +11,7 @@
     "allowJs": true,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
     "types": ["react", "node", "jest", "@testing-library/jest-dom", "@types/react-dom", "@types/react-redux", "webpack-env"],
     "baseUrl": ".",
     "paths": {

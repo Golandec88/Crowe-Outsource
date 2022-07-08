@@ -1,12 +1,7 @@
-export type getProjectsType = {
-  role: string;
-  id: string;
-};
-export type clientsAndProjectsType = {
-  clients: string[];
-  project: string;
-};
-export type operatorActivityType = {
-  operator: string;
-  client: string;
-};
+import { clientType, projectType, userType } from "@store/types";
+
+export interface IProjectState {
+  projects: projectType[];
+  clients: clientType[];
+  operators: userType[];
+}

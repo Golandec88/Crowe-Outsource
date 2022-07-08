@@ -5,8 +5,8 @@ import proptypes from "prop-types";
 import RequestDetails from "./request-details.jsx";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import getRequestColor from "@utils/request-color.js";
-import useItemsUploader from "@hooks/items-uploader.js";
+import getRequestColor from "@utils/request-color.ts";
+import useItemsUploader from "@hooks/items-uploader";
 import { getClassifications } from "@modules/request/creators.ts";
 import { classificationType, requestType } from "@types/request.js";
 import { Campaign } from "@mui/icons-material";
@@ -83,7 +83,7 @@ export default function CollapsibleTable({ items, loading, statuses }) {
         });
       });
     if (operator)
-      addOperatorActivity({ operator, client: selected }, () => {
+      addOperatorActivity(dispatch, { operator, client: selected }, () => {
         setMessage(dispatch, {
           text: t("successAttachOperatorForClient"),
           type: "success",
@@ -144,13 +144,14 @@ function Row({ item, statuses, classifications, submit }) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [checkedList, setCheckList] = useState([]);
-
+  const dispatch = useDispatch();
   const [callCenterName, setCallCenterName] = useState(
     item.request.responceCallCenterOperatorId
   );
 
   function getCallCenterName() {
     getStaffUserInfo(
+      dispatch,
       item.request.responceCallCenterOperatorId,
       function ({ data }) {
         setCallCenterName(data.fullName);

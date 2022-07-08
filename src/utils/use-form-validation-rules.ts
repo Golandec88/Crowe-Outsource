@@ -38,12 +38,6 @@ export default {
       message: t("validation.maxLength5"),
     },
   },
-  minLength5: {
-    minLength: {
-      value: 5,
-      message: t("validation.minLength5"),
-    },
-  },
   length9: {
     minLength: {
       value: 9,

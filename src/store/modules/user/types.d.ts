@@ -1,14 +1,12 @@
-export type authType = {
-  timezoneTerm: number;
-  login: string;
-  password: string;
-};
-export type registerType = {
-  login: string;
-  password: string;
-  fullName: string;
-  phoneNumber: string;
-  email: string;
-  tin: string;
-  phone: string;
-};
+import { activitiesType, menuType, IRoles, userType } from "@store/types";
+
+export interface IUserState {
+  loading: boolean;
+  error: boolean;
+  token: string;
+  info: userType;
+  roles: IRoles;
+  menu: menuType[];
+  operators: userType[];
+  activities: activitiesType[];
+}

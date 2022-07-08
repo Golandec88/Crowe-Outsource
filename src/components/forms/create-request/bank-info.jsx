@@ -6,6 +6,7 @@ import proptypes from "prop-types";
 
 import { Grid } from "@mui/material";
 import Field from "@components/fields/field";
+import { useDispatch } from "react-redux";
 
 export default function BankInfo({
   control,
@@ -15,10 +16,12 @@ export default function BankInfo({
   setValue,
   getValues,
 }) {
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const bankMfo = getValues("form.companyInfo.bank.mfo");
     if (bankMfo?.length === 5) {
-      getBankByMfo(bankMfo, (res) => {
+      getBankByMfo(dispatch, bankMfo, (res) => {
         if (!!res && res.data?.name)
           setValue("form.companyInfo.bank.name", res.data.name);
       });

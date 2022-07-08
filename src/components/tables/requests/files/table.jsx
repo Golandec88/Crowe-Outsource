@@ -7,8 +7,9 @@ import TableRow from "@mui/material/TableRow";
 import s from "./style.module.scss";
 import FileItem from "./file-item";
 import { downloadFile as downloadFileAction } from "@modules/request/creators.ts";
-import downloadFile from "@utils/download-file.js";
+import downloadFile from "@utils/download-file.ts";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 
 export default function SelectTable({
   files,
@@ -54,6 +55,7 @@ function TBody({
   setCheckList,
 }) {
   const [localCheckList, setLocalCheckList] = useState([]);
+  const dispatch = useDispatch();
 
   function onChangeFile(index, value) {
     const result = Array.from(localCheckList);
@@ -64,7 +66,7 @@ function TBody({
 
     if (value === "downloaded") {
       const id = files[index].fileName;
-      downloadFileAction(id, downloadFile);
+      downloadFileAction(dispatch, id, downloadFile);
     }
   }
 

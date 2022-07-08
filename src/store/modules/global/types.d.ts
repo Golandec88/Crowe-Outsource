@@ -1,8 +1,20 @@
-export type dispatchType<T> = { type: string; value: T };
-
-export type loadingType = {
-  field: string;
-  value: boolean;
-};
-
-export type callbackType = (data?: any, user?: any) => void;
+export interface IGlobalState {
+  message: {
+    text: string;
+    type: string;
+  };
+  loadingFields: {
+    authorization: boolean;
+    menu: boolean;
+    userInfo: boolean;
+    roles: boolean;
+    classifications: boolean;
+    requests: boolean;
+    requestUserInfo: boolean;
+    projects: boolean;
+    operators: boolean;
+    clients: boolean;
+    transactions: boolean;
+    activities: boolean;
+  };
+}

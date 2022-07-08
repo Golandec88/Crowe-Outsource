@@ -2,9 +2,9 @@ export default {
   loading: false,
   error: false,
   token: null,
-  info: [],
-  roles: [],
+  info: {},
+  // roles: {},
   menu: [],
   operators: [],
-  activities: []
+  activities: [],
 };

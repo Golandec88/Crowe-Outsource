@@ -48,6 +48,7 @@ export default function Clients({
   function removeClient() {
     if (removedClient) {
       removeClientsFromProject(
+        dispatch,
         { clients: [removedClient.requestId], project: id },
         () => {
           setMessage(dispatch, {

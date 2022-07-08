@@ -1,8 +1,7 @@
 import * as types from "@modules/user/action-types";
 import Request from "@utils/request";
 import { Dispatch } from "redux";
-import { callbackType } from "@modules/global/types";
-import { authType, registerType } from "@modules/user/types";
+import { authType, registerType, callbackType } from "@store/types";
 
 export const getMenu = (dispatch: Dispatch) => {
   Request({
@@ -18,6 +17,7 @@ export const getMenu = (dispatch: Dispatch) => {
     });
   });
 };
+
 export const authUser = (
   dispatch: Dispatch,
   payload: authType,
@@ -37,6 +37,7 @@ export const authUser = (
     callback(token, user);
   });
 };
+
 export const getUserInfo = (dispatch: Dispatch) => {
   Request({
     method: "GET",
@@ -48,13 +49,20 @@ export const getUserInfo = (dispatch: Dispatch) => {
     dispatch({ type: types.SET_USER_INFO, value: data });
   });
 };
-export const getStaffUserInfo = (id: string, callback: callbackType) => {
+
+export const getStaffUserInfo = (
+  dispatch: Dispatch,
+  id: string,
+  callback: callbackType
+) => {
   Request({
     method: "GET",
     url: "/crm/StaffUser",
     params: { id },
+    dispatch,
   }).then(callback);
 };
+
 export const getRoles = (dispatch: Dispatch) => {
   Request({
     method: "GET",
@@ -66,6 +74,7 @@ export const getRoles = (dispatch: Dispatch) => {
     dispatch({ type: types.SET_ROLES, value: data });
   });
 };
+
 export const getInfo = (
   dispatch: Dispatch,
   identity: string,
@@ -79,20 +88,33 @@ export const getInfo = (
     dispatch,
   }).then(({ data }) => callback(data));
 };
-export const getInfoByPinfl = (pinfl: string, callback: callbackType) => {
+
+export const getInfoByPinfl = (
+  dispatch: Dispatch,
+  pinfl: string,
+  callback: callbackType
+) => {
   Request({
     method: "GET",
     url: "/user/EDOTaxOffice/GetPhysicalTaxPayerInfo",
     params: { tin: pinfl },
+    dispatch,
   }).then(callback);
 };
-export const getInfoByTin = (tin: string, callback: callbackType) => {
+
+export const getInfoByTin = (
+  dispatch: Dispatch,
+  tin: string,
+  callback: callbackType
+) => {
   Request({
     method: "GET",
     url: "/edo/Utils/InfoByTin",
     params: { tin },
+    dispatch,
   }).then(callback);
 };
+
 export const getOperators = (dispatch: Dispatch) => {
   Request({
     method: "GET",
@@ -104,6 +126,7 @@ export const getOperators = (dispatch: Dispatch) => {
     dispatch({ type: types.SET_OPERATORS, value: data });
   });
 };
+
 export const getOperatorActivities = (
   dispatch: Dispatch,
   id: string,
@@ -120,6 +143,7 @@ export const getOperatorActivities = (
     callback(data);
   });
 };
+
 export const registerOperator = (
   dispatch: Dispatch,
   form: registerType,
@@ -134,9 +158,11 @@ export const registerOperator = (
     Request({
       method: "PATCH",
       url: "/crm/StaffUser/MakeAnOperator/" + data.user.id,
+      dispatch,
     }).then(callback);
   });
 };
+
 export const registerUser = (
   form: registerType,
   callback: callbackType,
@@ -149,5 +175,6 @@ export const registerUser = (
     dispatch,
   }).then(callback);
 };
+
 export const logout = (dispatch: Dispatch) =>
   dispatch({ type: types.USER_CLEAR });

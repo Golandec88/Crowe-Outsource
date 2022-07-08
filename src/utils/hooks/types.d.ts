@@ -14,3 +14,9 @@ export type roleType = {
 export type schemaType = {
   child: { type: string }[];
 };
+
+export type userType = {
+  user: {
+    roles: number;
+  };
+};

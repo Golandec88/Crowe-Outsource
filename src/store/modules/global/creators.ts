@@ -1,10 +1,10 @@
 import { Dispatch } from "redux";
 import * as types from "@modules/global/action-types";
-import { loadingType } from "@modules/global/types";
+import { loadingType } from "@store/types";
 
-export function setMessage(dispatch: Dispatch, message: string) {
+export function setMessage(dispatch: Dispatch, { text }: { text: string }) {
   dispatch({ type: types.CLEAR_MESSAGE });
-  dispatch({ type: types.SET_MESSAGE, value: message });
+  dispatch({ type: types.SET_MESSAGE, value: text });
 }
 
 export function toggleLoading(

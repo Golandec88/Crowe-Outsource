@@ -1,5 +1,5 @@
 export default {
   projects: [],
   clients: [],
-  operators: []
+  operators: [],
 };

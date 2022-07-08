@@ -1,12 +1,13 @@
 import initialState from "@modules/global/store";
 import * as types from "@modules/global/action-types";
 import combiner from "@utils/store-combiner";
-import { dispatchType } from "@modules/global/types";
+import { IGlobalState } from "@modules/global/types";
+import { dispatchType } from "@store/types";
 
 export default function <T>(
-  state = initialState,
+  state: IGlobalState = initialState,
   { type, value }: dispatchType<T>
-) {
+): IGlobalState {
   switch (type) {
     case types.SET_MESSAGE:
       return combiner(state, { message: value });

@@ -1,6 +1,6 @@
 export default {
   requests: [],
   classifications: [],
-  statuses: [],
-  transactions: []
+  statuses: {},
+  transactions: [],
 };

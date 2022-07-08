@@ -36,7 +36,7 @@ export default function CreateRequest() {
   const [mainClassifications, setClassifications] = useState({});
 
   useEffect(() => {
-    getMainClassificationsId((res) => {
+    getMainClassificationsId(dispatch, (res) => {
       setClassifications(res.data);
     });
   }, []);
@@ -49,7 +49,7 @@ export default function CreateRequest() {
     const filteredArray = files.filter(
       (item) => value.fileName !== item.fileName
     );
-    setFiles(!!replace ? [...filteredArray, value] : [...filteredArray]);
+    setFiles(replace ? [...filteredArray, value] : [...filteredArray]);
   }
 
   function createNewRequest(data) {

@@ -5,9 +5,10 @@ import { useEffect, useState } from "react";
 import s from "./style.module.scss";
 import proptypes from "prop-types";
 import { classificationType, requestType } from "@types/request.js";
-import downloadFile from "@utils/download-file.js";
+import downloadFile from "@utils/download-file.ts";
 import { getInfoByPinfl as loadInfo } from "@modules/user/creators.ts";
 import FileItem from "@components/tables/requests/files/file-item";
+import { useDispatch } from "react-redux";
 
 export default function RequestDetails({
   item,
@@ -19,9 +20,10 @@ export default function RequestDetails({
   const { t } = useTranslation();
   const [fullName, setFullName] = useState("");
   const [localCheckList, setLocalCheckList] = useState([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    loadInfo(item.passportData.pinfl, ({ data }) => {
+    loadInfo(dispatch, item.passportData.pinfl, ({ data }) => {
       setFullName(data.FullName);
     });
   }, [item]);
@@ -35,7 +37,7 @@ export default function RequestDetails({
 
     if (value === "downloaded") {
       const id = item.request.attachedFiles[index].fileName;
-      downloadFileAction(id, downloadFile);
+      downloadFileAction(dispatch, id, downloadFile);
     }
   }
 

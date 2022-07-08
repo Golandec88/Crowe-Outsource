@@ -47,13 +47,17 @@ export default function RequestsList({
   const [addedRequest, setAddedRequest] = useState(null);
 
   function addRequest() {
-    attachClientToProject({ clients: [addedRequest.id], project: id }, () => {
-      allClose();
-      setMessage(dispatch, {
-        text: t("successAddingClientToProject"),
-        type: "success",
-      });
-    });
+    attachClientToProject(
+      dispatch,
+      { clients: [addedRequest.id], project: id },
+      () => {
+        allClose();
+        setMessage(dispatch, {
+          text: t("successAddingClientToProject"),
+          type: "success",
+        });
+      }
+    );
   }
 
   function filterRequests() {

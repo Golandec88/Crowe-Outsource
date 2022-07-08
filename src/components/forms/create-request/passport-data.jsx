@@ -8,6 +8,7 @@ import Title from "@components/title";
 import DatePickerField from "@components/fields/date";
 import { Grid } from "@mui/material";
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 export default function PassportData({
   control,
@@ -16,6 +17,8 @@ export default function PassportData({
   setValue,
   getValues,
 }) {
+  const dispatch = useDispatch();
+
   function getIsoDate(date) {
     let newDate = "";
     if (date) {
@@ -43,7 +46,7 @@ export default function PassportData({
   useEffect(() => {
     const pinfl = getValues("form.passportData.pinfl");
     if (pinfl?.toString().length === 14) {
-      getInfoByPinfl(pinfl, ({ data }) => {
+      getInfoByPinfl(dispatch, pinfl, ({ data }) => {
         data.Address &&
           setValue("form.passportData.registration", data.Address);
         data.PassSeries &&

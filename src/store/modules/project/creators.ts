@@ -5,8 +5,8 @@ import {
   clientsAndProjectsType,
   getProjectsType,
   operatorActivityType,
-} from "@modules/project/types";
-import { callbackType } from "@modules/global/types";
+  callbackType,
+} from "@store/types";
 
 export const getProjects = (
   dispatch: Dispatch,
@@ -24,7 +24,9 @@ export const getProjects = (
     dispatch({ type: types.SET_PROJECTS, value: data ? data : [] });
   });
 };
+
 export const attachClientToProject = (
+  dispatch: Dispatch,
   { clients, project }: clientsAndProjectsType,
   callback: callbackType
 ) => {
@@ -34,9 +36,12 @@ export const attachClientToProject = (
     data: {
       requestsIds: clients,
     },
+    dispatch,
   }).then(callback);
 };
+
 export const removeClientsFromProject = (
+  dispatch: Dispatch,
   { clients, project }: clientsAndProjectsType,
   callback: callbackType
 ) => {
@@ -46,9 +51,12 @@ export const removeClientsFromProject = (
     data: {
       requestsIds: clients,
     },
+    dispatch,
   }).then(callback);
 };
+
 export const addOperatorActivity = (
+  dispatch: Dispatch,
   { operator, client }: operatorActivityType,
   callback: callbackType
 ) => {
@@ -58,6 +66,7 @@ export const addOperatorActivity = (
     data: {
       requestId: client,
     },
+    dispatch,
   }).then(callback);
 };
 
@@ -72,6 +81,7 @@ export const getProjectClients = (dispatch: Dispatch, id: string) => {
     dispatch({ type: types.SET_CLIENTS, value: data });
   });
 };
+
 export const getProjectOperators = (dispatch: Dispatch, id: string) => {
   Request({
     method: "GET",
@@ -83,6 +93,7 @@ export const getProjectOperators = (dispatch: Dispatch, id: string) => {
     dispatch({ type: types.SET_OPERATORS, value: data.activities });
   });
 };
+
 export const createProject = (
   dispatch: Dispatch,
   name: string,

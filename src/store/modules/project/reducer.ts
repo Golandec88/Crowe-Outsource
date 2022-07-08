@@ -1,7 +1,7 @@
 import * as types from "@modules/project/action-types";
 import combiner from "@utils/store-combiner";
 import initialState from "@modules/project/store";
-import { dispatchType } from "@modules/global/types";
+import { dispatchType } from "@store/types";
 
 export default function <T>(
   state = initialState,
