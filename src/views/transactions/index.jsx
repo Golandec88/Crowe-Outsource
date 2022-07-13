@@ -47,7 +47,6 @@ export default function Transactions() {
     "branch",
     "vdate",
   ];
-  const dispatch = useDispatch();
 
   return (
     <>

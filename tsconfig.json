@@ -16,7 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@src/*": ["src/*"],
-      "@public/*": ["/public/*"],
+      "@public/*": ["public/*"],
       "@types/*": ["src/types/*"],
       "@store/*": ["src/store/*"],
       "@views/*": ["src/views/*"],
@@ -31,7 +31,8 @@
       "@contexts/*": ["src/utils/contexts/*"],
       "@fields/*": ["src/components/fields/*"],
       "@buttons/*": ["src/components/buttons/*"]
-    }
+    },
+    "include": ["src/**/*", "public/**/*"]
   },
 
 }

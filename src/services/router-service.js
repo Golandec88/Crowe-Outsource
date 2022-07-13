@@ -64,7 +64,7 @@ function getRoutesList(role) {
         { path: "client-info/:id", element: <ClientInfo /> },
         { path: "create-request", element: <CreateRequest /> },
         { path: "history", element: <History /> },
-        { path: "/", element: <Navigate to="manager-requests"/> },
+        { path: "/", element: <Navigate to="manager-requests" /> },
       ];
     }
     case 2: {
@@ -80,7 +80,7 @@ function getRoutesList(role) {
         { path: "history", element: <History /> },
         { path: "file-share", element: <FileShare /> },
         { path: "client-info", element: <ClientInfo /> },
-        { path: "/", element: <Navigate to="activity"/> }
+        { path: "/", element: <Navigate to="activity" /> },
       ];
     }
     case 3: {
