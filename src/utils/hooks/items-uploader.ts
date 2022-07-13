@@ -3,16 +3,18 @@ import { useEffect } from "react";
 import useDispatcher from "@hooks/dispatcher";
 import { IRootState } from "@store/types";
 
-export default <T>(
+export default <T, C>(
   parent: string,
   field: string,
   loadingField: string,
-  creator: () => any,
+  creator: (c?: C) => void,
   params?: T
 ) => {
   const dispatch = useDispatcher(creator, params);
+
   const items = useSelector((state: IRootState) => state[parent][field]);
-  const loading = useSelector(
+
+  const loading: boolean = useSelector(
     ({ global }: IRootState) => global.loadingFields[loadingField]
   );
 

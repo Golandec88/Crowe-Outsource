@@ -19,9 +19,13 @@ import FileShare from "@views/file-share";
 import ClientInfo from "@components/tables/file-share/ClientInfo";
 import CreateRequest from "@views/create-request";
 import History from "@views/history";
+import { RouteObject } from "react-router/lib/router";
+import { routerServiceType } from "@services/types";
 
-export default function RouterService({ isAuth, role }) {
-  const schema = [
+//TODO разобраться с роутом при переводе на ТайпСкрипт, ругается на тип компонента
+
+export default function RouterService({ isAuth, role }: routerServiceType) {
+  const schema: RouteObject[] = [
     {
       path: "auth",
       element: <EmptyLayout />,
@@ -40,12 +44,12 @@ export default function RouterService({ isAuth, role }) {
   return useRoutes(schema);
 }
 
-function PrivateRoute(route, isAuth) {
+function PrivateRoute(route: RouteObject, isAuth: boolean) {
   if (isAuth) return route;
   return { path: route.path, element: <Navigate to="/auth" /> };
 }
 
-function getRoutesList(role) {
+function getRoutesList(role: number): RouteObject[] {
   switch (role) {
     case 1: {
       // Manager
@@ -93,6 +97,9 @@ function getRoutesList(role) {
         { path: "history", element: <History /> },
         { path: "/", element: <Navigate to="requests" /> },
       ];
+    }
+    default: {
+      return [] as RouteObject[];
     }
   }
 }

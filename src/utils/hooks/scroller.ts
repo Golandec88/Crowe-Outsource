@@ -3,7 +3,7 @@ import { callbackType } from "@store/types";
 
 export default function useScroller(
   eventHeight: number,
-  callback: callbackType,
+  callback?: callbackType,
   condition = (event: number, curr: number): boolean => event >= curr
 ) {
   const [offset, setOffset] = useState(0);

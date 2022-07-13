@@ -14,7 +14,7 @@ const dotenv = require("dotenv").config({
 });
 
 module.exports = {
-  entry: path.join(__dirname, "src", "index.jsx"),
+  entry: path.join(__dirname, "src", "index.tsx"),
   output: {
     filename: "[name].js",
     sourceMapFilename: "[name].js.map",

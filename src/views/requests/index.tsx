@@ -16,6 +16,7 @@ export default function RequestsPage() {
   const offset = useScroller(135);
   const [selected, setSelected] = useState();
   const [checkedList, setCheckList] = useState([]);
+  //TODO Ругается на типы хука useItemsUploader
   const [{ items: requests, loading }, dispatch] = useItemsUploader(
     "request",
     "requests",

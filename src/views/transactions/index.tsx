@@ -14,19 +14,20 @@ import s from "@components/tables/requests/appeals/style.module.scss";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { useState } from "react";
+import { FC, useState } from "react";
 import useItemsUploader from "@hooks/items-uploader";
 import TableSkeleton from "@components/tables/skeleton";
 import Button from "@mui/material/Button";
 import { SearchRounded } from "@mui/icons-material";
-import { useDispatch } from "react-redux";
 
-export default function Transactions() {
+const Transactions: FC = () => {
   const { t } = useTranslation();
   const [fromDate, setFromDate] = useState(
     new Date(new Date().setMonth(new Date().getMonth() - 1))
   );
   const [toDate, setToDate] = useState(new Date());
+
+  //TODO Ругается на типы хука useItemsUploader
   const [{ items: transactions, loading }] = useItemsUploader(
     "request",
     "transactions",
@@ -117,4 +118,6 @@ export default function Transactions() {
       </Paper>
     </>
   );
-}
+};
+
+export default Transactions;
