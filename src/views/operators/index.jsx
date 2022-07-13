@@ -78,8 +78,8 @@ export default function OperatorsPage() {
 
   function submitHandler(event) {
     event.preventDefault();
-    registerOperator(dispatch, registerData(), function () {
-      setMessage(dispatch, { type: "info", text: t("success") });
+    registerOperator(registerData(), function () {
+      setMessage({ type: "info", text: t("success") });
       close();
       updateUsersList();
     });
@@ -98,7 +98,7 @@ export default function OperatorsPage() {
   function onDeleteOperator(id, isConfirmed = false) {
     if (isConfirmed) {
       toggleConfirmModal({ value: false, method: null, text: null });
-      setMessage(dispatch, { type: "info", text: t("methodNotAllowed") });
+      setMessage({ type: "info", text: t("methodNotAllowed") });
     } else {
       toggleConfirmModal({
         value: true,
@@ -110,7 +110,7 @@ export default function OperatorsPage() {
 
   function getInfo(id) {
     toggleInfoLoading(true);
-    getOperatorActivities(dispatch, id, (data) => {
+    getOperatorActivities(id, (data) => {
       setInfo({ ...info, [id]: data });
       toggleInfoLoading(false);
     });

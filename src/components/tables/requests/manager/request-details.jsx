@@ -1,4 +1,4 @@
-import { Alert, Grid, OutlinedInput, TextField } from "@mui/material";
+import { Alert, Grid, TextField } from "@mui/material";
 import { downloadFile as downloadFileAction } from "@modules/request/creators.ts";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
@@ -23,7 +23,7 @@ export default function RequestDetails({
   const dispatch = useDispatch();
 
   useEffect(() => {
-    loadInfo(dispatch, item.passportData.pinfl, ({ data }) => {
+    loadInfo(item.passportData.pinfl, ({ data }) => {
       setFullName(data.FullName);
     });
   }, [item]);

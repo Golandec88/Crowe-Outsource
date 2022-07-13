@@ -1,7 +1,9 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { setMessage, toggleLoading } from "@modules/global/creators";
 import { errCallbackType, requestPropsType } from "@utils/types";
-import { Dispatch } from "redux";
+import store from "@services/store-service";
+
+const dispatch = store.dispatch;
 
 export default function Request<D, P>(props: requestPropsType<D, P>) {
   const {
@@ -10,7 +12,6 @@ export default function Request<D, P>(props: requestPropsType<D, P>) {
     url,
     params,
     type,
-    dispatch,
     loadingField,
     use = "axios",
     isSilent = false,
@@ -30,7 +31,7 @@ export default function Request<D, P>(props: requestPropsType<D, P>) {
 
   return new Promise((resolve, reject) => {
     if (dispatch && type) dispatch({ type });
-    if (!isSilent) toggle(dispatch, loadingField, true);
+    if (!isSilent) toggle(loadingField, true);
 
     if (use === "axios") {
       axios({
@@ -44,7 +45,7 @@ export default function Request<D, P>(props: requestPropsType<D, P>) {
         .catch(({ response }) =>
           errCallback({ response, method, url, dispatch, callback: reject })
         )
-        .finally(() => toggle(dispatch, loadingField, false));
+        .finally(() => toggle(loadingField, false));
     } else if (use === "fetch") {
       fetch(url, {
         method: method.toString().toLowerCase(),
@@ -54,13 +55,13 @@ export default function Request<D, P>(props: requestPropsType<D, P>) {
         .catch(({ response }) =>
           errCallback({ response, method, url, dispatch, callback: reject })
         )
-        .finally(() => toggle(dispatch, loadingField, false));
+        .finally(() => toggle(loadingField, false));
     }
   });
 }
 
-function toggle(dispatch: Dispatch, field: string | unknown, value: boolean) {
-  if (typeof field === "string") toggleLoading(dispatch, { field, value });
+function toggle(field: string | unknown, value: boolean) {
+  if (typeof field === "string") toggleLoading({ field, value });
 }
 
 function formatMessage(
@@ -77,19 +78,13 @@ function formatMessage(
   };
 }
 
-function errCallback({
-  response,
-  method,
-  url,
-  dispatch,
-  callback,
-}: errCallbackType) {
+function errCallback({ response, method, url, callback }: errCallbackType) {
   const { status, statusText, data } = response;
 
   if (status === 401) {
     localStorage.removeItem("ABV_CRM.token");
     window.location.href = "auth";
   }
-  setMessage(dispatch, formatMessage(method, url, statusText, data));
+  setMessage(formatMessage(method, url, statusText, data));
   if (callback) callback<string, string>(statusText);
 }

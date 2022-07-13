@@ -13,16 +13,13 @@ import {
 import FileField from "@components/fields/file";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import { useDispatch } from "react-redux";
 
 export default function FilesList(props) {
   const [itemsCount, setItemsCount] = useState(1);
   const [classifications, setClassifications] = useState([]);
-  const dispatch = useDispatch();
 
   useEffect(
-    () =>
-      getAllClassifications(dispatch, (res) => setClassifications(res.data)),
+    () => getAllClassifications((res) => setClassifications(res.data)),
     []
   );
 

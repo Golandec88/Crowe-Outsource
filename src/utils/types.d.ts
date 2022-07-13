@@ -3,7 +3,6 @@ import { Dispatch } from "redux";
 export type requestPropsType<D = {}, P = {}> = {
   method: string;
   url: string;
-  dispatch: Dispatch;
 
   type?: string;
   loadingField?: string;

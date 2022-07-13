@@ -44,11 +44,11 @@ export default function Projects({ items, onAddProject, role, loading }) {
   function onChange(type, id) {
     setSelected(id);
     if (type === "clients") {
-      if (role === "manager") getProjectClients(dispatch, id);
+      if (role === "manager") getProjectClients(id);
       setClientsModal(true);
     }
     if (type === "operators" && role === "manager") {
-      getProjectOperators(dispatch, id);
+      getProjectOperators(id);
       setOperatorsModal(true);
     }
   }

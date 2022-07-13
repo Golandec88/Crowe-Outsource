@@ -1,7 +1,15 @@
 import { getTransactions } from "@modules/request/creators";
 import { useTranslation } from "react-i18next";
 import Title from "@components/title";
-import { TableBody, TableCell, TableHead, TableRow, Table, Paper, TextField } from "@mui/material";
+import {
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Table,
+  Paper,
+  TextField,
+} from "@mui/material";
 import s from "@components/tables/requests/appeals/style.module.scss";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -13,81 +21,101 @@ import Button from "@mui/material/Button";
 import { SearchRounded } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 
-
 export default function Transactions() {
   const { t } = useTranslation();
-  const [fromDate, setFromDate] = useState(new Date(new Date().setMonth(new Date().getMonth()-1)));
-  const [toDate,setToDate] = useState(new Date());
-  const [{ items: transactions, loading }] = useItemsUploader("request", "transactions", "transactions", getTransactions, {
-    fromDate,
-    toDate
-  });
-  const columns = ["docNum", "debit", "accCo", "name", "purpose", "inn", "branch", "vdate"];
+  const [fromDate, setFromDate] = useState(
+    new Date(new Date().setMonth(new Date().getMonth() - 1))
+  );
+  const [toDate, setToDate] = useState(new Date());
+  const [{ items: transactions, loading }] = useItemsUploader(
+    "request",
+    "transactions",
+    "transactions",
+    getTransactions,
+    {
+      fromDate,
+      toDate,
+    }
+  );
+  const columns = [
+    "docNum",
+    "debit",
+    "accCo",
+    "name",
+    "purpose",
+    "inn",
+    "branch",
+    "vdate",
+  ];
   const dispatch = useDispatch();
 
-
-  return <>
-    <Title text={t("transactions")}/>
-    <Paper elevation={0} className={s.filters}>
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <DatePicker
-          openTo="day"
-          views={["day", "month", "year"]}
-          label={t("dateFrom")}
-          value={fromDate}
-          onChange={setFromDate}
-          renderInput={(params) =>
-            <TextField
-              {...params}
-              className={s.datepicker}
-            />}
-        />
-        <DatePicker
-          openTo="day"
-          views={["day", "month", "year"]}
-          label={t("dateTo")}
-          value={toDate}
-          onChange={setToDate}
-          renderInput={(params) =>
-            <TextField
-              {...params}
-              className={s.datepicker}
-            />}
-        />
-        <Button variant="string"  onClick={() => getTransactions(dispatch,{ fromDate,toDate })}>
-          <SearchRounded />
-        </Button>
-      </LocalizationProvider>
-    </Paper>
-    <Paper elevation={0}>
-      <Table className={s.table}>
-        <TableHead className={s.head}>
-          <TableRow>
-            {columns.map((column, index) =>
-              <TableCell key={`table-th-${index}`}>
-                {t("transactions-statuses." + column)}
-              </TableCell>
+  return (
+    <>
+      <Title text={t("transactions")} />
+      <Paper elevation={0} className={s.filters}>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <DatePicker
+            openTo="day"
+            views={["day", "month", "year"]}
+            label={t("dateFrom")}
+            value={fromDate}
+            onChange={setFromDate}
+            renderInput={(params) => (
+              <TextField {...params} className={s.datepicker} />
             )}
-          </TableRow>
-        </TableHead>
-        <TableBody className={s.body}>
-          {loading ? <TableSkeleton cols={8}/> : transactions?.length ? transactions.map((item, index) => (
-            <TableRow key={`table-tr-${index}`}>
-              {columns.map((label, subIndex) =>
-                <TableCell key={`table-cell-${subIndex}`}>
-                  {item[label]}
-                </TableCell>
-              )}
-            </TableRow>
-          )) :
+          />
+          <DatePicker
+            openTo="day"
+            views={["day", "month", "year"]}
+            label={t("dateTo")}
+            value={toDate}
+            onChange={setToDate}
+            renderInput={(params) => (
+              <TextField {...params} className={s.datepicker} />
+            )}
+          />
+          <Button
+            variant="string"
+            onClick={() => getTransactions({ fromDate, toDate })}
+          >
+            <SearchRounded />
+          </Button>
+        </LocalizationProvider>
+      </Paper>
+      <Paper elevation={0}>
+        <Table className={s.table}>
+          <TableHead className={s.head}>
             <TableRow>
-              <TableCell className={s.empty} colSpan={8}>
-                {t("noTransactions")}...
-              </TableCell>
+              {columns.map((column, index) => (
+                <TableCell key={`table-th-${index}`}>
+                  {t("transactions-statuses." + column)}
+                </TableCell>
+              ))}
             </TableRow>
-          }
-        </TableBody>
-      </Table>
-    </Paper>
-  </>;
+          </TableHead>
+          <TableBody className={s.body}>
+            {loading ? (
+              <TableSkeleton cols={8} />
+            ) : transactions?.length ? (
+              transactions.map((item, index) => (
+                <TableRow key={`table-tr-${index}`}>
+                  {columns.map((label, subIndex) => (
+                    <TableCell key={`table-cell-${subIndex}`}>
+                      {item[label]}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell className={s.empty} colSpan={8}>
+                  {t("noTransactions")}...
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </Paper>
+    </>
+  );
 }

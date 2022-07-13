@@ -1,7 +1,6 @@
 import validationRules from "@utils/use-form-validation-rules";
 import { registerUser } from "@modules/user/creators";
 import s from "./style.module.scss";
-import { useDispatch } from "react-redux";
 import { t } from "i18next";
 import { useForm } from "react-hook-form";
 
@@ -14,12 +13,11 @@ export default function RegisterUser() {
     mode: "onChange",
     reValidateMode: "onChange",
   });
-  const dispatch = useDispatch();
 
   function registerNewUser(data) {
     const form = data;
     delete form.repeatPassword;
-    registerUser(form, () => reset(), dispatch);
+    registerUser(form, () => reset());
   }
 
   return (

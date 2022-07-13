@@ -1,19 +1,19 @@
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import useDispatcher from "@hooks/dispatcher";
-import { loadingType, RootState } from "@modules/global/types";
+import { IRootState } from "@store/types";
 
 export default <T>(
   parent: string,
   field: string,
-  loadingField: loadingType,
+  loadingField: string,
   creator: () => any,
   params?: T
 ) => {
   const dispatch = useDispatcher(creator, params);
-  const items = useSelector((state: RootState) => state[parent][field]);
+  const items = useSelector((state: IRootState) => state[parent][field]);
   const loading = useSelector(
-    ({ global }: RootState) => global.loadingFields[loadingField]
+    ({ global }: IRootState) => global.loadingFields[loadingField]
   );
 
   useEffect(() => {

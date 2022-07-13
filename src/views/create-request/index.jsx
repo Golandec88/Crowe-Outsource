@@ -36,7 +36,7 @@ export default function CreateRequest() {
   const [mainClassifications, setClassifications] = useState({});
 
   useEffect(() => {
-    getMainClassificationsId(dispatch, (res) => {
+    getMainClassificationsId((res) => {
       setClassifications(res.data);
     });
   }, []);
@@ -53,7 +53,7 @@ export default function CreateRequest() {
   }
 
   function createNewRequest(data) {
-    createRequest({ ...data.form, files }, dispatch, () => reset());
+    createRequest({ ...data.form, files }, () => reset());
   }
 
   return (

@@ -46,12 +46,8 @@ export default function ClientInfo() {
   const [{ id }] = useUserInfo();
 
   useEffect(() => {
-    getClientFiles(dispatch, params.id, Receiver, userRowsPerPage, userPage);
-    getAllStaffUsersWhoSentFilesToThisRequest(
-      dispatch,
-      params.id,
-      getStaffUsers
-    );
+    getClientFiles(params.id, Receiver, userRowsPerPage, userPage);
+    getAllStaffUsersWhoSentFilesToThisRequest(params.id, getStaffUsers);
   }, []);
 
   const [receivedFiles, setReceivedFiles] = useState();
@@ -73,7 +69,6 @@ export default function ClientInfo() {
     if (value === "staff") {
       setStaffPage(newPage);
       getStaffUserSentFiles(
-        dispatch,
         params.id,
         Sent,
         staffId,
@@ -92,7 +87,6 @@ export default function ClientInfo() {
     } else {
       setStaffAmountPage(newPage);
       getAllStaffUsersWhoSentFilesToThisRequest(
-        dispatch,
         params.id,
         getStaffUsers,
         staffAmountRowsPerPage,
@@ -106,7 +100,6 @@ export default function ClientInfo() {
       setStaffRowsPerPage(parseInt(event.target.value, 10));
       setStaffPage(0);
       getStaffUserSentFiles(
-        dispatch,
         params.id,
         Sent,
         staffId,
@@ -126,7 +119,6 @@ export default function ClientInfo() {
     } else {
       setStaffAmountRowsPerPage(parseInt(event.target.value, 10));
       getAllStaffUsersWhoSentFilesToThisRequest(
-        dispatch,
         params.id,
         getStaffUsers,
         event.target.value,
@@ -138,7 +130,6 @@ export default function ClientInfo() {
   const accordionHandleChange = (index, staff) => (event, isExpanded) => {
     setExpanded(isExpanded ? index : false);
     getStaffUserSentFiles(
-      dispatch,
       params.id,
       Sent,
       staff.id,
@@ -157,7 +148,7 @@ export default function ClientInfo() {
     staffUploadedFiles.forEach((item) => {
       guids.push(item.guid);
     });
-    deleteUploadedFiles(guids, dispatch);
+    deleteUploadedFiles(guids);
     setOpenConfirmation(false);
   };
 
@@ -193,24 +184,17 @@ export default function ClientInfo() {
       let newObj = staffUploadedFiles[index];
       filesToSend.push(newObj);
     });
-    staffUserSendFiles(params.id, filesToSend, dispatch);
+    staffUserSendFiles(params.id, filesToSend);
     setOpenConfirmation(false);
   };
 
   const onStaffDelete = (guid) => {
-    deleteStaffSentFiles(id, params.id, guid, dispatch);
-    getStaffUserSentFiles(
-      dispatch,
-      params.id,
-      Sent,
-      id,
-      staffRowsPerPage,
-      staffPage
-    );
+    deleteStaffSentFiles(id, params.id, guid);
+    getStaffUserSentFiles(params.id, Sent, id, staffRowsPerPage, staffPage);
   };
 
   const onClientDelete = (guid) => {
-    deleteClientSentFiles(params.id, guid, dispatch);
+    deleteClientSentFiles(params.id, guid);
     getClientFiles(dispatch, params.id, Receiver, userRowsPerPage, userPage);
   };
 

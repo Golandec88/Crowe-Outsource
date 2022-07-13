@@ -1,13 +1,14 @@
 import {
   classificationsType,
   requestType,
-  statusesEnum,
+  statusesType,
   transactionType,
 } from "@store/types";
 
 export interface IRequestState {
   requests: requestType[];
   classifications: classificationsType[];
-  statuses: statusesEnum;
+  // statuses: statusesType;
+  statuses: string[];
   transactions: transactionType[];
 }

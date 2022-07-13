@@ -46,7 +46,7 @@ export default function PassportData({
   useEffect(() => {
     const pinfl = getValues("form.passportData.pinfl");
     if (pinfl?.toString().length === 14) {
-      getInfoByPinfl(dispatch, pinfl, ({ data }) => {
+      getInfoByPinfl(pinfl, ({ data }) => {
         data.Address &&
           setValue("form.passportData.registration", data.Address);
         data.PassSeries &&

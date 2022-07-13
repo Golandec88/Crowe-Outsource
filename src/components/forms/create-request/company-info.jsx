@@ -8,7 +8,6 @@ import Field from "@components/fields/field";
 import Title from "@components/title";
 import { Grid } from "@mui/material";
 import BankInfo from "./bank-info";
-import { useDispatch } from "react-redux";
 
 export default function CompanyInfo({
   control,
@@ -17,13 +16,11 @@ export default function CompanyInfo({
   setValue,
   getValues,
 }) {
-  const dispatch = useDispatch();
-
   useEffect(() => {
     const companyTin = getValues("form.companyInfo.tin");
 
     if (companyTin?.length === 9) {
-      getInfoByTin(dispatch, companyTin, ({ data }) => {
+      getInfoByTin(companyTin, ({ data }) => {
         data.mfo && setValue("form.companyInfo.bank.mfo", data.mfo);
         data.name && setValue("form.companyInfo.name", data.name);
         data.oked && setValue("form.companyInfo.oked", data.oked);

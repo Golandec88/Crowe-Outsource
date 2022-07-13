@@ -2,7 +2,6 @@ import * as types from "@modules/request/actions-types";
 import Request from "@utils/request";
 import axios from "axios";
 import i18n from "i18next";
-import { Dispatch } from "redux";
 import {
   callbackType,
   addManagerActivityType,
@@ -11,93 +10,71 @@ import {
   infoType,
   requestType,
 } from "@store/types";
+import store from "@services/store-service";
 
-export const getRequests = (
-  dispatch: Dispatch,
-  status: number[],
-  isSilent: boolean = false
-) => {
+const dispatch = store.dispatch;
+
+export const getRequests = (status: number[], isSilent: boolean = false) => {
   Request({
     method: "POST",
     url: "/crm/Request/GetAll",
     type: types.GET_REQUESTS,
     loadingField: "requests",
     data: status,
-    dispatch,
     isSilent,
   }).then(({ data }) => {
     dispatch({ type: types.SET_REQUESTS, value: data });
   });
 };
 
-export const getRequest = (
-  dispatch: Dispatch,
-  tin: string,
-  callback: callbackType
-) => {
+export const getRequest = (tin: string, callback: callbackType) => {
   Request({
     method: "GET",
     url: "/crm/Request/RequestByTin/" + tin,
-    dispatch,
   }).then(({ data }) => callback(data));
 };
 
-export const getRequestStatuses = (dispatch: Dispatch) => {
+export const getRequestStatuses = () => {
   Request({
     method: "GET",
     url: "/crm/Request/GetAllRequestStatuses",
     type: types.GET_REQUEST_STATUSES,
-    dispatch,
   }).then(({ data }) => {
     const value = typeof data === "object" ? Object.values(data) : data;
     dispatch({ type: types.SET_REQUEST_STATUSES, value });
   });
 };
 
-export const getAllClassifications = (
-  dispatch: Dispatch,
-  callback: callbackType
-) => {
+export const getAllClassifications = (callback: callbackType) => {
   Request({
     method: "GET",
     url: "/crm/FileClassification/GetAllClassifications",
-    dispatch,
   }).then((data) => callback(data));
 };
 
-export const getMainClassificationsId = (
-  dispatch: Dispatch,
-  callback: callbackType
-) => {
+export const getMainClassificationsId = (callback: callbackType) => {
   Request({
     method: "GET",
     url: "/crm/FileClassification/MainClassificationsId",
-    dispatch,
   }).then((data) => callback(data));
 };
 
-export const getClassifications = (dispatch: Dispatch) => {
+export const getClassifications = () => {
   Request({
     method: "GET",
     url: "/crm/FileClassification/AllClassesWithSubClasses",
     type: types.GET_CLASSIFICATIONS,
     loadingField: "classifications",
-    dispatch,
   }).then(({ data }) => {
     dispatch({ type: types.SET_CLASSIFICATIONS, value: data.classes });
   });
 };
 
-export const downloadFile = (
-  dispatch: Dispatch,
-  id: string,
-  callback: callbackType
-) => {
+export const downloadFile = (id: string, callback: callbackType) => {
   Request({
     method: "GET",
     url: "/crm/Utils/DownloadFile/" + id,
     use: "fetch",
-    dispatch,
   }).then((data: any) => data.blob().then(callback));
 };
 
@@ -127,10 +104,7 @@ export const deleteFiles = (filesIdArr: string[], callback: callbackType) => {
   }).then(callback);
 };
 
-export const getTransactions = (
-  dispatch: Dispatch,
-  { fromDate, toDate }: datesType
-) => {
+export const getTransactions = ({ fromDate, toDate }: datesType) => {
   Request({
     method: "GET",
     url: "/crm/Utils/GetTransactions",
@@ -141,7 +115,6 @@ export const getTransactions = (
       fromDate,
       toDate,
     },
-    dispatch,
   }).then(({ data }) => {
     const result = [];
     for (const item of data) {
@@ -155,7 +128,6 @@ export const getTransactions = (
 };
 
 export const getClientFiles = (
-  dispatch: Dispatch,
   id: string,
   callback: callbackType,
   rows: number,
@@ -170,12 +142,10 @@ export const getClientFiles = (
       pageNumber: page || 1,
       pageSize: rows || 5,
     },
-    dispatch,
   }).then(({ data }) => callback(data));
 };
 
 export const getStaffUserSentFiles = (
-  dispatch: Dispatch,
   id: string,
   callback: callbackType,
   staffId: string,
@@ -191,12 +161,10 @@ export const getStaffUserSentFiles = (
       pageNumber: page || 1,
       pageSize: rows || 5,
     },
-    dispatch,
   }).then(({ data }) => callback(data));
 };
 
 export const getAllStaffUsersWhoSentFilesToThisRequest = (
-  dispatch: Dispatch,
   id: string,
   callback: callbackType,
   rows: number,
@@ -211,7 +179,6 @@ export const getAllStaffUsersWhoSentFilesToThisRequest = (
       pageNumber: page || 1,
       pageSize: rows || 5,
     },
-    dispatch,
   }).then(({ data }) => callback(data));
 };
 
@@ -233,60 +200,43 @@ export const staffUserUploadFiles = (file: File[], callback: callbackType) => {
     .then((data) => callback(data.data));
 };
 
-export const staffUserSendFiles = (
-  id: string,
-  files: filesType[],
-  dispatch: Dispatch
-) => {
+export const staffUserSendFiles = (id: string, files: filesType[]) => {
   return Request({
     method: "POST",
     url: "/crm/FileHosting/StaffUser/Send/" + id,
     data: { filesInfo: files },
-    dispatch,
   });
 };
 
-export const deleteUploadedFiles = (guids: string[], dispatch: Dispatch) => {
+export const deleteUploadedFiles = (guids: string[]) => {
   return Request({
     method: "DELETE",
     url: "/crm/FileHosting/Files",
     data: { filesGuids: guids },
-    dispatch,
   });
 };
 
 export const deleteStaffSentFiles = (
   staffId: string,
   reqId: string,
-  guids: string[],
-  dispatch: Dispatch
+  guids: string[]
 ) => {
   return Request({
     method: "DELETE",
     url: "/crm/FileHosting/Staff/" + staffId + "/" + reqId,
     data: { filesGuids: guids },
-    dispatch,
   });
 };
 
-export const deleteClientSentFiles = (
-  reqId: string,
-  guids: string[],
-  dispatch: Dispatch
-) => {
+export const deleteClientSentFiles = (reqId: string, guids: string[]) => {
   return Request({
     method: "DELETE",
     url: "/crm/FileHosting/Client/" + reqId,
     data: { filesGuids: guids },
-    dispatch,
   });
 };
 
-export const replyOfRequest = (
-  dispatch: Dispatch,
-  info: infoType,
-  callback: callbackType
-) => {
+export const replyOfRequest = (info: infoType, callback: callbackType) => {
   console.log(info);
   const {
     id,
@@ -300,7 +250,6 @@ export const replyOfRequest = (
     method: "POST",
     url: "/crm/Request/" + getReplyUrl() + "/" + id,
     data: createData(),
-    dispatch,
   }).then(callback);
 
   function getReplyUrl() {
@@ -340,7 +289,6 @@ export const replyOfRequest = (
 };
 
 export const addManagerActivity = (
-  dispatch: Dispatch,
   { manager, client }: addManagerActivityType,
   callback: callbackType
 ) => {
@@ -351,15 +299,11 @@ export const addManagerActivity = (
       clientTin: client,
       comment: "",
     },
-    dispatch,
   }).then(callback);
 };
 
-export const getBankByMfo = (
-  dispatch: Dispatch,
-  mfo: string,
-  callback: callbackType
-) => {
+export const getBankByMfo = (mfo: string, callback: callbackType) => {
+  // const dispatch = useDispatch()
   const lang = i18n.language || "ru";
   Request({
     method: "GET",
@@ -368,19 +312,13 @@ export const getBankByMfo = (
       mfo,
       lang,
     },
-    dispatch,
   }).then(callback);
 };
 
-export const createRequest = (
-  data: requestType,
-  callback: callbackType,
-  dispatch: Dispatch
-) => {
+export const createRequest = (data: requestType, callback: callbackType) => {
   Request({
     method: "POST",
     url: "/crm/Request/Staff/Send",
     data,
-    dispatch,
   }).then(callback);
 };

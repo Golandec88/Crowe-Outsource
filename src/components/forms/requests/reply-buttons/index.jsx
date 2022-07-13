@@ -11,26 +11,34 @@ const buttons = [
   {
     type: "decline",
     color: "error",
-    text: "declineRequest"
-  }, {
+    text: "declineRequest",
+  },
+  {
     type: "resend",
     color: "secondary",
-    text: "resendRequest"
-  }, {
+    text: "resendRequest",
+  },
+  {
     type: "accept",
     color: "primary",
-    text: "acceptRequest"
-  }
+    text: "acceptRequest",
+  },
 ];
 
-export default function ReplyButtons({ disabled, id, staffType, onChange, checkedList }) {
+export default function ReplyButtons({
+  disabled,
+  id,
+  staffType,
+  onChange,
+  checkedList,
+}) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
   const [modelType, setModelType] = useState(null);
 
-  const openDialog = type => {
+  const openDialog = (type) => {
     setModelType(type);
     setOpen(true);
   };
@@ -40,43 +48,50 @@ export default function ReplyButtons({ disabled, id, staffType, onChange, checke
     setModelType(null);
   };
 
-  const confirmDialog = comment => {
-    replyOfRequest(dispatch, {
-      id,
-      userType: staffType,
-      responseType: modelType,
-      comment,
-      rejectedFilesList: checkedList
-    }, callback);
+  const confirmDialog = (comment) => {
+    replyOfRequest(
+      {
+        id,
+        userType: staffType,
+        responseType: modelType,
+        comment,
+        rejectedFilesList: checkedList,
+      },
+      callback
+    );
 
     function callback() {
       setOpen(false);
       onChange(modelType, id);
       setModelType(null);
-      setMessage(dispatch, { type: "info", text: t("success") + "!" });
+      setMessage({ type: "info", text: t("success") + "!" });
     }
   };
 
-  return <>
-    {buttons.map(({ type, color, text }, index) => <Button
-      key={"#reply-button-" + index}
-      variant="contained"
-      color={color}
-      disableElevation
-      disabled={disabled}
-      onClick={() => openDialog(type)}
-    >
-      {t(text)}
-    </Button>)}
+  return (
+    <>
+      {buttons.map(({ type, color, text }, index) => (
+        <Button
+          key={"#reply-button-" + index}
+          variant="contained"
+          color={color}
+          disableElevation
+          disabled={disabled}
+          onClick={() => openDialog(type)}
+        >
+          {t(text)}
+        </Button>
+      ))}
 
-    <Dialogs
-      model={open}
-      setModel={setOpen}
-      type={modelType}
-      confirm={confirmDialog}
-      close={closeDialog}
-    />
-  </>;
+      <Dialogs
+        model={open}
+        setModel={setOpen}
+        type={modelType}
+        confirm={confirmDialog}
+        close={closeDialog}
+      />
+    </>
+  );
 }
 
 ReplyButtons.propTypes = {
@@ -84,11 +99,11 @@ ReplyButtons.propTypes = {
   disabled: proptypes.bool,
   id: proptypes.string,
   onChange: proptypes.func,
-  checkedList: proptypes.array
+  checkedList: proptypes.array,
 };
 
 ReplyButtons.defaultProps = {
   disabled: false,
   onChange: () => {},
-  checkedList: []
+  checkedList: [],
 };

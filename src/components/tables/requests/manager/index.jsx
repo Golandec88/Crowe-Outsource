@@ -77,14 +77,14 @@ export default function CollapsibleTable({ items, loading, statuses }) {
   function attachToProject({ operator, project }) {
     if (project)
       attachClientToProject({ clients: [selected], project }, () => {
-        setMessage(dispatch, {
+        setMessage({
           text: t("successAddingClientToProject"),
           type: "success",
         });
       });
     if (operator)
-      addOperatorActivity(dispatch, { operator, client: selected }, () => {
-        setMessage(dispatch, {
+      addOperatorActivity({ operator, client: selected }, () => {
+        setMessage({
           text: t("successAttachOperatorForClient"),
           type: "success",
         });
@@ -144,14 +144,12 @@ function Row({ item, statuses, classifications, submit }) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [checkedList, setCheckList] = useState([]);
-  const dispatch = useDispatch();
   const [callCenterName, setCallCenterName] = useState(
     item.request.responceCallCenterOperatorId
   );
 
   function getCallCenterName() {
     getStaffUserInfo(
-      dispatch,
       item.request.responceCallCenterOperatorId,
       function ({ data }) {
         setCallCenterName(data.fullName);

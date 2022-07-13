@@ -9,9 +9,9 @@ export default function <T>(
 ) {
   switch (type) {
     case types.GET_MENU:
-      return combiner(state, { menu: { items: [] } });
+      return combiner(state, { menu: [] });
     case types.SET_MENU:
-      return combiner(state, { menu: { items: value } });
+      return combiner(state, { menu: value });
     case types.AUTH_USER:
       return combiner(state, { error: false, info: {} });
     case types.AUTH_USER_SUCCESS:

@@ -1,6 +1,8 @@
+import { IRequestState } from "@modules/request/type";
+
 export default {
   requests: [],
   classifications: [],
-  statuses: {},
+  statuses: [] as string[],
   transactions: [],
-};
+} as IRequestState;

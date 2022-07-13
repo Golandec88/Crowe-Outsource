@@ -4,6 +4,7 @@ import { IRequestState } from "@modules/request/type";
 import { IUserState } from "@modules/user/types";
 
 export interface IRootState {
+  [key: string]: any;
   global: IGlobalState;
   user: IUserState;
   project: IProjectState;
@@ -17,7 +18,7 @@ export type loadingType = {
   value: boolean;
 };
 
-export type callbackType = (data?: any, user?: any) => void;
+export type callbackType = (data?: any, user?: any, token?: string) => void;
 
 export type getProjectsType = {
   role: string;
@@ -153,20 +154,13 @@ export type registerType = {
   phone: string;
 };
 
-export interface IRoles {
-  number: string;
-}
+export type rolesType = {
+  [key: number]: string;
+};
 
-export const enum statusesEnum {
-  "CallCenterSubmited",
-  "CallCenterInProcess",
-  "CallCenterRejected",
-  "CallCenterSendedBack",
-  "ManagerSubmited",
-  "ManagerRejected",
-  "ManagerInProcess",
-  "ManagerSendedBack",
-}
+export type statusesType = {
+  [key: number]: string;
+};
 
 export type userType = {
   login: string;

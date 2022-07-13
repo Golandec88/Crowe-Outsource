@@ -1,8 +1,6 @@
-import { Dispatch } from "redux";
-import { callbackType } from "@modules/global/types";
+import { callbackType } from "@store/types";
 
 export type useDispatchFuncType<T> = (
-  dispatch?: Dispatch,
   params?: T,
   callback?: callbackType
 ) => void;

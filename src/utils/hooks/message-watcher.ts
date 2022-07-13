@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CLEAR_MESSAGE } from "@modules/global/action-types";
-// import { RootState } from "@store/types";
+import { IRootState } from "@store/types";
 
 export default function () {
   const dispatch = useDispatch();
-  const { text, type } = useSelector(({ global }: RootState) => global.message);
+  const { text, type } = useSelector(
+    ({ global }: IRootState) => global.message
+  );
   const [model, setModel] = useState(false);
 
   useEffect(() => {

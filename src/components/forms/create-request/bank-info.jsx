@@ -21,7 +21,7 @@ export default function BankInfo({
   useEffect(() => {
     const bankMfo = getValues("form.companyInfo.bank.mfo");
     if (bankMfo?.length === 5) {
-      getBankByMfo(dispatch, bankMfo, (res) => {
+      getBankByMfo(bankMfo, (res) => {
         if (!!res && res.data?.name)
           setValue("form.companyInfo.bank.name", res.data.name);
       });

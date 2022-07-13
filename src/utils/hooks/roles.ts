@@ -2,10 +2,10 @@ import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import useDispatcher from "@hooks/dispatcher";
 import { getRoles as getRolesAction } from "@modules/user/creators";
-import { RootState } from "@modules/global/types";
+import { IRootState } from "@store/types";
 
 const useRoles = (id: number) => {
-  const roles = useSelector(({ user }: RootState) => user.roles);
+  const roles = useSelector(({ user }: IRootState) => user.roles);
   const getRoles = useDispatcher(getRolesAction);
 
   useEffect(() => {

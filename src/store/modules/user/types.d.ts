@@ -1,11 +1,11 @@
-import { activitiesType, menuType, IRoles, userType } from "@store/types";
+import { activitiesType, menuType, rolesType, userType } from "@store/types";
 
 export interface IUserState {
   loading: boolean;
   error: boolean;
-  token: string;
+  token: string | null;
   info: userType;
-  roles: IRoles;
+  roles: rolesType;
   menu: menuType[];
   operators: userType[];
   activities: activitiesType[];

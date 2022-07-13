@@ -25,8 +25,8 @@ export default function ProjectsPage() {
   );
 
   function createProject(projectName) {
-    submit(dispatch, projectName, id, () => {
-      setMessage(dispatch, { type: "info", text: t("created") });
+    submit(projectName, id, () => {
+      setMessage({ type: "info", text: t("created") });
       update();
     });
   }

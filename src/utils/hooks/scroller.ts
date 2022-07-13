@@ -1,5 +1,5 @@
-import { EffectCallback, useEffect, useState } from "react";
-import { callbackType } from "@modules/global/types";
+import { useEffect, useState } from "react";
+import { callbackType } from "@store/types";
 
 export default function useScroller(
   eventHeight: number,
