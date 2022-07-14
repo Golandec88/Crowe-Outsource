@@ -3,24 +3,20 @@ import { useEffect } from "react";
 import useDispatcher from "@hooks/dispatcher";
 import { IRootState } from "@store/types";
 
-export default <T, C>(
-  parent: string,
-  field: string,
-  loadingField: string,
-  creator: (c?: C) => void,
-  params?: T
-) => {
-  const dispatch = useDispatcher(creator, params);
+export default function<T, A, I>(
+    parent: string,
+    field: string,
+    loadingField: string,
+    creator: (action?: A) => void,
+    params?: T
+): [{items: I, loading: boolean}, () => void] {
+    const dispatch = useDispatcher(creator, params);
+    const items = useSelector((state: IRootState) => state[parent][field]);
+    const loading: boolean = useSelector(({ global }: IRootState) => global.loadingFields[loadingField]);
 
-  const items = useSelector((state: IRootState) => state[parent][field]);
+    useEffect(() => {
+      dispatch();
+    }, []);
 
-  const loading: boolean = useSelector(
-    ({ global }: IRootState) => global.loadingFields[loadingField]
-  );
-
-  useEffect(() => {
-    dispatch();
-  }, []);
-
-  return [{ items, loading }, () => dispatch()];
+    return [{ items, loading }, () => dispatch()];
 };
