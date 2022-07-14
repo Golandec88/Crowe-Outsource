@@ -22,8 +22,6 @@ import History from "@views/history";
 import { routerServiceType } from "@services/types";
 import React from "react";
 
-//TODO разобраться с роутом при переводе на ТайпСкрипт, ругается на тип компонента
-
 export default function RouterService({ isAuth, role }: routerServiceType) {
   const schema: RouteObject[] = [
     {

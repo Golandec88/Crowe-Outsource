@@ -6,7 +6,7 @@ import {
 } from "@modules/project/creators";
 import s from "./style.module.scss";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useState } from "react";
 
 import ClientsModal from "@components/modals/clients";
@@ -26,7 +26,6 @@ import {
 
 export default function Projects({ items, onAddProject, role, loading }) {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
   const [selected, setSelected] = useState();
   const [clientsModal, setClientsModal] = useState(false);
   const [operatorsModal, setOperatorsModal] = useState(false);
@@ -160,13 +159,13 @@ export default function Projects({ items, onAddProject, role, loading }) {
   );
 }
 
-Projects.propTypes = {
-  items: proptypes.arrayOf(projectType()),
-  onAddProject: proptypes.oneOfType([proptypes.func, null]),
-  role: proptypes.oneOf(["manager", "operator"]),
-  loading: proptypes.bool,
-};
-
-Projects.defaultProps = {
-  items: [],
-};
+// Projects.propTypes = {
+//   items: proptypes.arrayOf(projectType()),
+//   onAddProject: proptypes.oneOfType([proptypes.func, null]),
+//   role: proptypes.oneOf(["manager", "operator"]),
+//   loading: proptypes.bool,
+// };
+//
+// Projects.defaultProps = {
+//   items: [],
+// };

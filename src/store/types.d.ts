@@ -207,6 +207,7 @@ export type classificationsSubClassesType = {
 };
 
 export type transactionType = {
+  [key: string]: string | Date | null;
   transId: string;
   branch: string;
   bOst: string;

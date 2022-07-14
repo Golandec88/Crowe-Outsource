@@ -14,11 +14,12 @@ import s from "@components/tables/requests/appeals/style.module.scss";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { FC, useState } from "react";
+import React, { FC, useState } from "react";
 import useItemsUploader from "@hooks/items-uploader";
 import TableSkeleton from "@components/tables/skeleton";
 import Button from "@mui/material/Button";
 import { SearchRounded } from "@mui/icons-material";
+import { datesType, transactionType } from "@store/types";
 
 const Transactions: FC = () => {
   const { t } = useTranslation();
@@ -27,18 +28,17 @@ const Transactions: FC = () => {
   );
   const [toDate, setToDate] = useState(new Date());
 
-  //TODO Ругается на типы хука useItemsUploader
-  const [{ items: transactions, loading }] = useItemsUploader(
-    "request",
-    "transactions",
-    "transactions",
-    getTransactions,
-    {
-      fromDate,
-      toDate,
-    }
-  );
-  const columns = [
+  //TODO Во первых вопрос такой - нужно ли при каждом вызове useItemsUploader передавать типы, во вторых не получается передать корректно getTransactions в этот хук
+
+  const [{ items: transactions, loading }] = useItemsUploader<
+    datesType,
+    (dates: datesType) => void,
+    transactionType[]
+  >("request", "transactions", "transactions", getTransactions, {
+    fromDate,
+    toDate,
+  });
+  const columns: string[] = [
     "docNum",
     "debit",
     "accCo",
@@ -75,7 +75,7 @@ const Transactions: FC = () => {
             )}
           />
           <Button
-            variant="string"
+            variant="text"
             onClick={() => getTransactions({ fromDate, toDate })}
           >
             <SearchRounded />
@@ -101,6 +101,7 @@ const Transactions: FC = () => {
                 <TableRow key={`table-tr-${index}`}>
                   {columns.map((label, subIndex) => (
                     <TableCell key={`table-cell-${subIndex}`}>
+                      {/*TODO ну и тут посмотри))) */}
                       {item[label]}
                     </TableCell>
                   ))}

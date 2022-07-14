@@ -41,6 +41,7 @@ const RegisterUser: React.FC = () => {
           onSubmit={handleSubmit(registerNewUser)}
           className={s.form}
         >
+          {/*  TODO к типам компонента field добавил тип UseFormReturn от хука useform, теперь он ругается что они обязательные и классы добавить не получается  */}
           <Field
             required
             fullWidth
