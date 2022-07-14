@@ -5,7 +5,7 @@ import { getBankByMfo } from "@modules/request/creators.ts";
 import proptypes from "prop-types";
 
 import { Grid } from "@mui/material";
-import Field from "@components/fields/field";
+import Field from "@fields/field";
 import { useDispatch } from "react-redux";
 
 export default function BankInfo({

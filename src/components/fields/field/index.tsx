@@ -1,8 +1,8 @@
 import s from "./style.module.scss";
 import { Visibility, VisibilityOff, Close } from "@mui/icons-material";
-import { Controller } from "react-hook-form";
-import { useState } from "react";
+import React, { useRef, useState } from "react";
 import { IMaskInput } from "react-imask";
+import { Controller } from "react-hook-form";
 import {
   FormControl,
   FormHelperText,
@@ -11,19 +11,20 @@ import {
   InputLabel,
   OutlinedInput,
 } from "@mui/material";
+import { fieldType, TextMaskCustomType } from "@fields/field/types";
 
-export default function Field({
+export default function Field<T>({
   control,
   resetField,
   type = "text",
   label,
   name,
   required = false,
-  rules = {},
+  rules,
   fullWidth = false,
   mask,
   ...rest
-}) {
+}: React.PropsWithChildren<fieldType<T>>) {
   const [showPassword, setShowPassword] = useState(false);
   const key = Math.random();
 
@@ -50,6 +51,7 @@ export default function Field({
             onChange={onChange}
             inputProps={{
               mask,
+              name,
             }}
             {...rest}
             inputComponent={mask ? TextMaskCustom : "input"}
@@ -86,33 +88,23 @@ export default function Field({
     />
   );
 }
+const maskInputRef = useRef(null);
 
-// Field.proptypes = {
-//   value: proptypes.any,
-//   onInput: proptypes.func,
-//   type: proptypes.string,
-//   label: proptypes.string,
-//   required: proptypes.bool,
-//   fullWidth: proptypes.bool,
-//   rules: proptypes.array,
-//   name: proptypes.string,
-// };
-
-const TextMaskCustom = React.forwardRef(function TextMaskCustom(props, ref) {
-  const { onChange, mask, ...other } = props;
+const TextMaskCustom: React.FC = (props: TextMaskCustomType) => {
+  const { onChange, mask, name, ...other } = props;
 
   return (
     <IMaskInput
       {...other}
       mask={mask}
-      inputRef={ref}
-      onAccept={(value) => onChange({ target: { name: props.name, value } })}
+      inputRef={() => maskInputRef}
+      onAccept={(e: Event) =>
+        onChange({
+          value: (e.target as HTMLInputElement).value,
+          name: props.name,
+        })
+      }
       overwrite
     />
   );
-});
-
-// TextMaskCustom.propTypes = {
-//   name: PropTypes.string.isRequired,
-//   onChange: PropTypes.func.isRequired,
-// };
+};

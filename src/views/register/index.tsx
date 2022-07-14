@@ -5,17 +5,27 @@ import { t } from "i18next";
 import { useForm } from "react-hook-form";
 
 import { Box, Button, Paper } from "@mui/material";
-import Field from "@components/fields/field";
+import Field from "@fields/field";
 import Title from "@components/title";
+import { registerType } from "@store/types";
+import React from "react";
+import { formType } from "@views/register/types";
+import { UseFormReturn } from "react-hook-form/dist/types/form";
 
-export default function RegisterUser() {
-  const { handleSubmit, control, resetField, getValues, reset } = useForm({
+const RegisterUser: React.FC = () => {
+  const {
+    handleSubmit,
+    control,
+    resetField,
+    getValues,
+    reset,
+  }: UseFormReturn<formType> = useForm<formType>({
     mode: "onChange",
     reValidateMode: "onChange",
   });
 
-  function registerNewUser(data) {
-    const form = data;
+  function registerNewUser(data: registerType) {
+    const form = Object.assign({}, data);
     delete form.repeatPassword;
     registerUser(form, () => reset());
   }
@@ -82,7 +92,7 @@ export default function RegisterUser() {
             control={control}
             resetField={resetField}
             rules={{
-              validate: (value) =>
+              validate: (value: string) =>
                 value === getValues("repeatPassword") ||
                 "" === getValues("repeatPassword") ||
                 t("passwordsDoNotMatch"),
@@ -100,7 +110,7 @@ export default function RegisterUser() {
             control={control}
             resetField={resetField}
             rules={{
-              validate: (value) =>
+              validate: (value: string) =>
                 value === getValues("password") ||
                 getValues("password") === "" ||
                 t("passwordsDoNotMatch"),
@@ -115,4 +125,6 @@ export default function RegisterUser() {
       </Paper>
     </>
   );
-}
+};
+
+export default RegisterUser;

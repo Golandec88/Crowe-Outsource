@@ -4,8 +4,9 @@ import { useTranslation } from "react-i18next";
 import useLocalStorage from "@hooks/local-storage";
 import useItemsLoader from "@hooks/items-uploader";
 import { getProjects } from "@modules/project/creators";
+import React from "react";
 
-export default function OperatorProjects() {
+const OperatorProjects: React.FC = () => {
   const { t } = useTranslation();
   const id = useLocalStorage("ABV_CRM.id").item;
   const params = { role: "operator", id };
@@ -23,4 +24,6 @@ export default function OperatorProjects() {
       <Projects items={projects} role="operator" loading={loading} />
     </>
   );
-}
+};
+
+export default OperatorProjects;

@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form";
 import s from "./style.module.scss";
 
 import Title from "@components/title";
-import Field from "@components/fields/field";
+import Field from "@fields/field";
 import FileField from "@components/fields/file";
 import FilesList from "@components/fields/file/files-list";
 import { Box, Button, Grid, Paper } from "@mui/material";

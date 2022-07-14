@@ -145,10 +145,11 @@ export type authType = {
 };
 
 export type registerType = {
-  login: string;
+  login?: string;
   password: string;
-  fullName: string;
-  phoneNumber: string;
+  repeatPassword?: string;
+  fullName?: string;
+  phoneNumber?: string;
   email: string;
   tin: string;
   phone: string;

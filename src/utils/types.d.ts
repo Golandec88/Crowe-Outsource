@@ -26,3 +26,7 @@ export type errCallbackResponseType = {
   statusText: string;
   data: string;
 };
+
+export interface IValidationRules {
+  [key: string]: string | boolean | number;
+}

@@ -3,7 +3,7 @@ import proptypes from "prop-types";
 import { getInfoByPinfl } from "@modules/user/creators.ts";
 import validationRules from "@utils/use-form-validation-rules";
 
-import Field from "@components/fields/field";
+import Field from "@fields/field";
 import Title from "@components/title";
 import DatePickerField from "@components/fields/date";
 import { Grid } from "@mui/material";
