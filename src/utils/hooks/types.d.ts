@@ -5,9 +5,7 @@ export type useDispatchFuncType<T> = (
   callback?: callbackType
 ) => void;
 
-export type roleType = {
-  role: 1 | 2 | 3 | 4;
-};
+export type roleType = 1 | 2 | 3 | 4;
 
 export type schemaType = {
   child: { type: string }[];

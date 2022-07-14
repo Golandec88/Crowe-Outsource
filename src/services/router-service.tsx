@@ -1,4 +1,4 @@
-import { Navigate, useRoutes } from "react-router-dom";
+import { Navigate, useRoutes, RouteObject } from "react-router-dom";
 
 import DefaultLayout from "@src/layouts/default";
 import EmptyLayout from "@src/layouts/empty";
@@ -19,8 +19,8 @@ import FileShare from "@views/file-share";
 import ClientInfo from "@components/tables/file-share/ClientInfo";
 import CreateRequest from "@views/create-request";
 import History from "@views/history";
-import { RouteObject } from "react-router/lib/router";
 import { routerServiceType } from "@services/types";
+import React from "react";
 
 //TODO разобраться с роутом при переводе на ТайпСкрипт, ругается на тип компонента
 
@@ -42,11 +42,6 @@ export default function RouterService({ isAuth, role }: routerServiceType) {
   ];
 
   return useRoutes(schema);
-}
-
-function PrivateRoute(route: RouteObject, isAuth: boolean) {
-  if (isAuth) return route;
-  return { path: route.path, element: <Navigate to="/auth" /> };
 }
 
 function getRoutesList(role: number): RouteObject[] {
@@ -102,4 +97,9 @@ function getRoutesList(role: number): RouteObject[] {
       return [] as RouteObject[];
     }
   }
+}
+
+function PrivateRoute(route: RouteObject, isAuth: boolean): RouteObject {
+  if (isAuth) return route;
+  return { path: route.path, element: <Navigate to="/auth" /> };
 }
