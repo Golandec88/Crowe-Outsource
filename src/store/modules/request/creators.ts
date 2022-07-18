@@ -14,6 +14,9 @@ import store from "@services/store-service";
 
 const dispatch = store.dispatch;
 
+// TODO запихни этот тип, куда посчитаешь нужным))
+type Action<P> = (params: P) => void
+
 export const getRequests = (status: number[], isSilent: boolean = false) => {
   Request({
     method: "POST",
@@ -104,7 +107,7 @@ export const deleteFiles = (filesIdArr: string[], callback: callbackType) => {
   }).then(callback);
 };
 
-export const getTransactions = ({ fromDate, toDate }: datesType) => {
+export const getTransactions: Action<datesType> = ({ fromDate, toDate }) => {
   Request({
     method: "GET",
     url: "/crm/Utils/GetTransactions",
@@ -322,3 +325,7 @@ export const createRequest = (data: requestType, callback: callbackType) => {
     data,
   }).then(callback);
 };
+
+export {
+
+}

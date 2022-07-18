@@ -1,8 +1,8 @@
 import s from "./style.module.scss";
 import { Visibility, VisibilityOff, Close } from "@mui/icons-material";
-import React, { useRef, useState } from "react";
+import React, {FC, useRef, useState} from "react";
 import { IMaskInput } from "react-imask";
-import { Controller } from "react-hook-form";
+import {Control, Controller, UseFormResetField} from "react-hook-form";
 import {
   FormControl,
   FormHelperText,
@@ -11,20 +11,26 @@ import {
   InputLabel,
   OutlinedInput,
 } from "@mui/material";
-import { fieldType, TextMaskCustomType } from "@fields/field/types";
+import { TextMaskCustomType } from "@fields/field/types";
+import {formType} from "@views/register/types";
+import {RegisterOptions} from "react-hook-form/dist/types/validator";
 
-export default function Field<T>({
-  control,
-  resetField,
-  type = "text",
-  label,
-  name,
-  required = false,
-  rules,
-  fullWidth = false,
-  mask,
-  ...rest
-}: React.PropsWithChildren<fieldType<T>>) {
+interface IField<T, R> {
+    control: Control<T>,
+    resetField: UseFormResetField<T>,
+    type: string,
+    label: string,
+    name: string,
+    required: boolean,
+    fullWidth: boolean,
+    mask?: string,
+    rules?: R,
+    readOnly?: boolean,
+    className?: string
+}
+
+const Field: FC<IField<formType, Omit<RegisterOptions<formType, "Registration">, 'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'>>> = (props) => {
+  const {control, resetField, type = "text", label, name, required = false, rules, fullWidth = false, mask, ...rest} = props
   const [showPassword, setShowPassword] = useState(false);
   const key = Math.random();
 
@@ -108,3 +114,5 @@ const TextMaskCustom: React.FC = (props: TextMaskCustomType) => {
     />
   );
 };
+
+export default Field

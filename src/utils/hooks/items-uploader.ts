@@ -3,16 +3,19 @@ import { useEffect } from "react";
 import useDispatcher from "@hooks/dispatcher";
 import { IRootState } from "@store/types";
 
-export default function <T, A, I>(
+// TODO запихни этот тип, куда посчитаешь нужным))
+type Action<P> = (params: P) => void
+
+export default function <I, T>(
   parent: string,
   field: string,
   loadingField: string,
-  creator: (action?: A) => void,
+  creator: Action<T>,
   params?: T
 ): [{ items: I; loading: boolean }, () => void] {
   const dispatch = useDispatcher(creator, params);
   const items: I = useSelector((state: IRootState) => state[parent][field]);
-  const loading: boolean = useSelector(
+  const loading = useSelector(
     ({ global }: IRootState) => global.loadingFields[loadingField]
   );
 
