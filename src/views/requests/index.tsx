@@ -1,5 +1,5 @@
 import { Paper } from "@mui/material";
-import BasicTabs from "@components/forms/requests/tabs";
+import BasicTabs from "@forms/requests/tabs";
 import FileTable from "@components/tables/requests/files";
 import RequestTable from "@components/tables/requests/appeals";
 import Title from "@components/title";
@@ -7,26 +7,23 @@ import s from "./style.module.scss";
 import useScroller from "@hooks/scroller";
 import useItemsUploader from "@hooks/items-uploader";
 import { getRequests, getRequestStatuses } from "@modules/request/creators";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ReplyButtons from "@forms/requests/reply-buttons";
+import { filesType, requestType, statusesType } from "@store/types";
 
-export default function RequestsPage() {
+const RequestsPage: React.FC = () => {
   const { t } = useTranslation();
   const offset = useScroller(135);
-  const [selected, setSelected] = useState();
-  const [checkedList, setCheckList] = useState([]);
+  const [selected, setSelected] = useState({} as requestType);
+  const [selectedID, setSelectedID] = useState<string>("");
+  const [checkedList, setCheckList] = useState<filesType[]>([]);
 
-  const [{ items: requests, loading }, dispatch] = useItemsUploader(
-    "request",
-    "requests",
-    "requests",
-    getRequests,
-    {
-      statuses: [0, 1, 2, 3],
-    }
-  );
-  const [{ items: statuses }] = useItemsUploader(
+  const [{ items: requests, loading }, dispatch] = useItemsUploader<
+    requestType[],
+    { statuses: statusesType[] }
+  >("request", "requests", "requests", getRequests, { statuses: [0, 1, 2, 3] });
+  const [{ items: statuses }] = useItemsUploader<statusesType>(
     "request",
     "statuses",
     "",
@@ -41,11 +38,8 @@ export default function RequestsPage() {
     };
   }, [dispatch]);
 
-  function submit(type, id) {
-    if (type === "accept") {
-      setAttachModel(true);
-      setSelected(id);
-    }
+  function submit(type: string, id: string) {
+    if (type === "accept") setSelectedID(id);
   }
 
   return (
@@ -81,10 +75,12 @@ export default function RequestsPage() {
             staffType="call-center"
             checkedList={checkedList}
             onChange={submit}
-            type="request"
+            // type="request"
           />
         )}
       </Paper>
     </>
   );
-}
+};
+
+export default RequestsPage;

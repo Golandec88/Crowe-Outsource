@@ -4,19 +4,24 @@ import Card from "@components/cards/cards";
 import Title from "@components/title";
 import useItemsUploader from "@hooks/items-uploader";
 import { getClassifications } from "@modules/request/creators";
-import proptypes from "prop-types";
 import TableFilter from "./table-filter";
 import { useTranslation } from "react-i18next";
-import { requestType } from "@types/request.js";
+import React from "react";
+import {
+  classificationsType,
+  filesType,
+  requestType,
+  statusesType,
+} from "@store/types";
 
-export default function FileTable({
-  selected,
-  statuses,
-  checkedList,
-  setCheckList,
-}) {
+const FileTable: React.FC<{
+  selected: requestType;
+  statuses: statusesType;
+  checkedList: filesType[];
+  setCheckList: (value: filesType[]) => void;
+}> = ({ selected, statuses, checkedList, setCheckList }) => {
   const { t } = useTranslation();
-  const [{ items: classifications }] = useItemsUploader(
+  const [{ items: classifications }] = useItemsUploader<classificationsType[]>(
     "request",
     "classifications",
     "classifications",
@@ -29,7 +34,7 @@ export default function FileTable({
           <Grid item xs={12}>
             <Title size="small" text={t("userFiles")} />
 
-            <TableFilter classifications={classifications} />
+            {/*<TableFilter classifications={classifications} />*/}
           </Grid>
 
           {selected && (
@@ -50,11 +55,6 @@ export default function FileTable({
       </Card>
     </>
   );
-}
-
-FileTable.propTypes = {
-  selected: requestType(),
-  statuses: proptypes.array,
-  checkedList: proptypes.array,
-  setCheckList: proptypes.func,
 };
+
+export default FileTable;

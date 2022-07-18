@@ -8,7 +8,7 @@ import {
 export interface IRequestState {
   requests: requestType[];
   classifications: classificationsType[];
-  // statuses: statusesType;
-  statuses: string[];
+  statuses: statusesType;
+  // statuses: string[];
   transactions: transactionType[];
 }

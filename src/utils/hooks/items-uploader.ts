@@ -1,19 +1,16 @@
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import useDispatcher from "@hooks/dispatcher";
-import { IRootState } from "@store/types";
+import { actionType, IRootState } from "@store/types";
 
-// TODO запихни этот тип, куда посчитаешь нужным))
-type Action<P> = (params: P) => void
-
-export default function <I, T>(
+export default function <I, C = {}>(
   parent: string,
   field: string,
   loadingField: string,
-  creator: Action<T>,
-  params?: T
+  creator: actionType<C>,
+  params?: C
 ): [{ items: I; loading: boolean }, () => void] {
-  const dispatch = useDispatcher(creator, params);
+  const dispatch = useDispatcher<C>(creator, params);
   const items: I = useSelector((state: IRootState) => state[parent][field]);
   const loading = useSelector(
     ({ global }: IRootState) => global.loadingFields[loadingField]

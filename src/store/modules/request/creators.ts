@@ -9,21 +9,23 @@ import {
   filesType,
   infoType,
   requestType,
+  actionType,
+  getRequestsType,
 } from "@store/types";
 import store from "@services/store-service";
 
 const dispatch = store.dispatch;
 
-// TODO запихни этот тип, куда посчитаешь нужным))
-type Action<P> = (params: P) => void
-
-export const getRequests = (status: number[], isSilent: boolean = false) => {
+export const getRequests = ({
+  statuses,
+  isSilent = false,
+}: getRequestsType) => {
   Request({
     method: "POST",
     url: "/crm/Request/GetAll",
     type: types.GET_REQUESTS,
     loadingField: "requests",
-    data: status,
+    data: statuses,
     isSilent,
   }).then(({ data }) => {
     dispatch({ type: types.SET_REQUESTS, value: data });
@@ -107,7 +109,10 @@ export const deleteFiles = (filesIdArr: string[], callback: callbackType) => {
   }).then(callback);
 };
 
-export const getTransactions: Action<datesType> = ({ fromDate, toDate }) => {
+export const getTransactions: actionType<datesType> = ({
+  fromDate,
+  toDate,
+}) => {
   Request({
     method: "GET",
     url: "/crm/Utils/GetTransactions",
@@ -240,7 +245,6 @@ export const deleteClientSentFiles = (reqId: string, guids: string[]) => {
 };
 
 export const replyOfRequest = (info: infoType, callback: callbackType) => {
-  console.log(info);
   const {
     id,
     userType: user,
@@ -326,6 +330,4 @@ export const createRequest = (data: requestType, callback: callbackType) => {
   }).then(callback);
 };
 
-export {
-
-}
+export {};

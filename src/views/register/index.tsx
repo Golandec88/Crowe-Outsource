@@ -2,7 +2,7 @@ import validationRules from "@utils/use-form-validation-rules";
 import { registerUser } from "@modules/user/creators";
 import s from "./style.module.scss";
 import { t } from "i18next";
-import {useForm} from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 import { Box, Button, Paper } from "@mui/material";
 import Field from "@fields/field";
@@ -24,7 +24,6 @@ const RegisterUser: React.FC = () => {
     reValidateMode: "onChange",
   });
 
-
   function registerNewUser(data: registerType) {
     const form = Object.assign({}, data);
     delete form.repeatPassword;
@@ -42,7 +41,6 @@ const RegisterUser: React.FC = () => {
           onSubmit={handleSubmit(registerNewUser)}
           className={s.form}
         >
-          {/*  TODO к типам компонента field добавил тип UseFormReturn от хука useform, теперь он ругается что они обязательные и классы добавить не получается  */}
           <Field
             required
             fullWidth
@@ -94,7 +92,10 @@ const RegisterUser: React.FC = () => {
             control={control}
             resetField={resetField}
             rules={{
-              validate: (value: string) => value === getValues("repeatPassword") || "" === getValues("repeatPassword") || t("passwordsDoNotMatch"),
+              validate: (value: string): any =>
+                value === getValues("repeatPassword") ||
+                "" === getValues("repeatPassword") ||
+                t("passwordsDoNotMatch"),
               ...validationRules.required,
               ...validationRules.minLength5,
             }}
@@ -109,7 +110,10 @@ const RegisterUser: React.FC = () => {
             control={control}
             resetField={resetField}
             rules={{
-              validate: (value: string) => value === getValues("password") || getValues("password") === "" || t("passwordsDoNotMatch"),
+              validate: (value: string): any =>
+                value === getValues("password") ||
+                getValues("password") === "" ||
+                t("passwordsDoNotMatch"),
               ...validationRules.required,
               ...validationRules.minLength5,
             }}

@@ -4,9 +4,9 @@ import store from "@services/store-service";
 
 const dispatch = store.dispatch;
 
-export function setMessage({ text }: { text: string }) {
+export function setMessage({ text, type }: { text: string; type: string }) {
   dispatch({ type: types.CLEAR_MESSAGE });
-  dispatch({ type: types.SET_MESSAGE, value: text });
+  dispatch({ type: types.SET_MESSAGE, value: text, messageType: type });
 }
 
 export function toggleLoading({ field, value }: loadingType) {

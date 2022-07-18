@@ -1,11 +1,15 @@
 import Generator from "@forms/generator";
 import formRules from "@utils/validation-rules";
-import proptypes from "prop-types";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { getInfo } from "@modules/user/creators";
+import { requestType } from "@store/types";
 
-export default function UserInfo({ form }) {
+const UserInfo: React.FC<{ form: requestType }> = ({
+  form,
+}: {
+  form: requestType;
+}) => {
   const dispatch = useDispatch();
   const [{ name, lastname, surname }, setNames] = useState({
     name: "",
@@ -14,7 +18,7 @@ export default function UserInfo({ form }) {
   });
 
   useEffect(() => {
-    updateName(form, setNames, dispatch);
+    updateName(form, setNames);
   }, [dispatch, form]);
 
   return (
@@ -78,7 +82,7 @@ export default function UserInfo({ form }) {
                 name: "passport",
                 label: "Серия и номер",
                 rules: [formRules.required],
-                value: form?.passportData.serialAndNumber,
+                value: form?.request.passportData.serialAndNumber,
                 fullWidth: true,
               },
             },
@@ -88,7 +92,7 @@ export default function UserInfo({ form }) {
                 name: "givenPlace",
                 label: "Кем выдано",
                 rules: [formRules.required],
-                value: form?.passportData.givenPlace,
+                value: form?.request.passportData.givenPlace,
                 fullWidth: true,
               },
             },
@@ -100,7 +104,7 @@ export default function UserInfo({ form }) {
                 label: "Срок (от)",
                 rules: [formRules.required],
                 fullWidth: true,
-                value: form?.passportData.givenDate,
+                value: form?.request.passportData.givenDate,
               },
             },
             {
@@ -111,7 +115,7 @@ export default function UserInfo({ form }) {
                 label: "Срок (до)",
                 rules: [formRules.required],
                 fullWidth: true,
-                value: form?.passportData.expireDate,
+                value: form?.request.passportData.expireDate,
               },
             },
           ],
@@ -127,7 +131,7 @@ export default function UserInfo({ form }) {
                 label: "ИНН / ПИНФЛ физ. лица",
                 rules: [formRules.required],
                 fullWidth: true,
-                value: form?.passportData.pinfl,
+                value: form?.request.passportData.pinfl,
               },
             },
             {
@@ -136,7 +140,7 @@ export default function UserInfo({ form }) {
                 name: "address",
                 cols: 12,
                 label: "Адрес прописки",
-                value: form?.passportData.registration,
+                value: form?.request.passportData.registration,
                 fullWidth: true,
               },
             },
@@ -167,26 +171,26 @@ export default function UserInfo({ form }) {
       ]}
     />
   );
-}
-
-UserInfo.propTypes = {
-  form: proptypes.shape({
-    request: proptypes.object,
-    passportData: proptypes.object,
-  }),
 };
 
-function updateName(form, setNames) {
+function updateName(
+  form: requestType,
+  setNames: (names: { name: string; lastname: string; surname: string }) => void
+) {
   const director = form?.request.companyInfo.director;
-  const identity = form?.passportData.pinfl;
-  const callback = (value) => setNames(formatName(value.Name));
+  const identity = form?.request.passportData.pinfl;
+  const callback = (value: any) => setNames(formatName(value.Name));
 
   if (identity) getInfo(identity, callback);
 
   setNames(formatName(director));
 }
 
-function formatName(str) {
+function formatName(str: string): {
+  name: string;
+  lastname: string;
+  surname: string;
+} {
   if (str) {
     const [...names] = str.split(" ");
 
@@ -202,3 +206,5 @@ function formatName(str) {
     surname: "",
   };
 }
+
+export default UserInfo;

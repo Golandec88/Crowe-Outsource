@@ -1,4 +1,5 @@
 {
+//  "include": ["src/**/*", "public/**/*"],
   "compilerOptions": {
     "lib": ["es6", "dom"],
     "outDir": "./dist/",
@@ -12,7 +13,7 @@
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
-    "types": ["react", "node", "jest", "@testing-library/jest-dom", "@types/react-dom", "@types/react-redux", "webpack-env"],
+    "types": ["react", "node", "jest", "@testing-library/jest-dom", "@types/react-dom", "@types/react-redux", "@mui/types", "webpack-env"],
     "baseUrl": ".",
     "paths": {
       "@src/*": ["src/*"],
@@ -31,8 +32,7 @@
       "@contexts/*": ["src/utils/contexts/*"],
       "@fields/*": ["src/components/fields/*"],
       "@buttons/*": ["src/components/buttons/*"]
-    },
-    "include": ["src/**/*", "public/**/*"]
+    }
   },
 
 }

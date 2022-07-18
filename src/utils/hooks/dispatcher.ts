@@ -1,9 +1,9 @@
 import { useDispatchFuncType } from "@hooks/types";
 
-const useDispatcher = <T>(
+const useDispatcher = <T, C = {}>(
   action: useDispatchFuncType<T>,
-  params?: any,
-  callback?: any
+  params?: T,
+  callback?: (args: C) => void
 ) => {
   return () => action(params instanceof Function ? params() : params, callback);
 };

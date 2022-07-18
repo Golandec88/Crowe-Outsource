@@ -6,13 +6,15 @@ import { dispatchType } from "@store/types";
 
 export default function <T>(
   state: IGlobalState = initialState,
-  { type, value }: dispatchType<T>
+  { type, value, messageType }: dispatchType<T>
 ): IGlobalState {
   switch (type) {
     case types.SET_MESSAGE:
-      return combiner(state, { message: value });
+      return combiner(state, { message: value, type: messageType });
     case types.CLEAR_MESSAGE:
-      return combiner(state, { message: { type: null, text: null } });
+      return combiner(state, {
+        message: { type: null, text: null, messageType: null },
+      });
     case types.TOGGLE_LOADING: {
       return combiner(state, {
         loadingFields: combiner(state.loadingFields, value),

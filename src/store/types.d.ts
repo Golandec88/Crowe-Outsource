@@ -11,7 +11,7 @@ export interface IRootState {
   request: IRequestState;
 }
 
-export type dispatchType<T> = { type: string; value: T };
+export type dispatchType<T> = { type: string; value: T; messageType?: string };
 
 export type loadingType = {
   field: string;
@@ -52,26 +52,28 @@ export type commentType = {
 };
 
 export type requestType = {
-  senderUserId: string;
-  requestStatus: number;
-  responseStaffUserId: string;
-  offerSign: string;
-  responceCallCenterOperatorId: string;
-  requestServiceType: number;
-  sendDate: string;
-  submitDate: string;
-  isActive: boolean;
-  phone: string;
-  email: string;
-  tinKeyPassword: string;
-  pinflKeyPassword: string;
-  companyInfo: companyInfoType;
-  passportData: passportDataType;
-  contractInfo: contractInfo;
-  comment: string;
-  comments: commentType[];
-  attachedFiles: filesType[];
-  id: string;
+  request: {
+    senderUserId: string;
+    requestStatus: number;
+    responseStaffUserId: string;
+    offerSign: string;
+    responceCallCenterOperatorId: string;
+    requestServiceType: number;
+    sendDate: string;
+    submitDate: string;
+    isActive: boolean;
+    phone: string;
+    email: string;
+    tinKeyPassword: string;
+    pinflKeyPassword: string;
+    companyInfo: companyInfoType;
+    passportData: passportDataType;
+    contractInfo: contractInfo;
+    comment: string;
+    comments: commentType[];
+    attachedFiles: filesType[];
+    id: string;
+  };
 };
 
 export type companyInfoType = {
@@ -133,7 +135,7 @@ export type addManagerActivityType = {
 export type infoType = {
   id: string;
   userType: "call-center" | "manager";
-  responseType: string;
+  responseType: string | null;
   comment: string;
   rejectedFilesList: filesType[];
 };
@@ -206,6 +208,11 @@ export type classificationsSubClassesType = {
   id: string;
 };
 
+export type getRequestsType = {
+  statuses: number[];
+  isSilent: boolean;
+};
+
 export type transactionType = {
   transId: string;
   branch: string;
@@ -244,3 +251,5 @@ export type transactionType = {
   errorNote: string;
   [key: string]: string | null;
 };
+
+type actionType<P> = (params: P) => void;

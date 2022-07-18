@@ -1,11 +1,11 @@
 import Button from "@mui/material/Button";
 import { useTranslation } from "react-i18next";
 import Dialogs from "@components/modals/reply-dialog";
-import proptypes from "prop-types";
-import { useState } from "react";
+// import proptypes from "prop-types";
+import React, { useState } from "react";
 import { replyOfRequest } from "@modules/request/creators";
 import { setMessage } from "@modules/global/creators";
-import { useDispatch } from "react-redux";
+import { callbackType, filesType, infoType } from "@store/types";
 
 const buttons = [
   {
@@ -23,22 +23,32 @@ const buttons = [
     color: "primary",
     text: "acceptRequest",
   },
-];
+] as {
+  color:
+    | "inherit"
+    | "primary"
+    | "secondary"
+    | "success"
+    | "error"
+    | "info"
+    | "warning";
+  type: string;
+  text: string;
+}[];
 
-export default function ReplyButtons({
-  disabled,
-  id,
-  staffType,
-  onChange,
-  checkedList,
-}) {
+const ReplyButtons: React.FC<{
+  disabled?: boolean;
+  id: string;
+  staffType: "call-center" | "manager";
+  onChange: (modelType: string | null, id: string) => void;
+  checkedList: filesType[];
+}> = ({ disabled = false, id, staffType, onChange, checkedList }) => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
-  const [modelType, setModelType] = useState(null);
+  const [modelType, setModelType] = useState<string | null>(null);
 
-  const openDialog = (type) => {
+  const openDialog = (type: string) => {
     setModelType(type);
     setOpen(true);
   };
@@ -48,7 +58,7 @@ export default function ReplyButtons({
     setModelType(null);
   };
 
-  const confirmDialog = (comment) => {
+  const confirmDialog = (comment: string) => {
     replyOfRequest(
       {
         id,
@@ -85,25 +95,12 @@ export default function ReplyButtons({
 
       <Dialogs
         model={open}
-        setModel={setOpen}
         type={modelType}
         confirm={confirmDialog}
         close={closeDialog}
       />
     </>
   );
-}
-
-ReplyButtons.propTypes = {
-  staffType: proptypes.oneOf(["call-center", "manager"]),
-  disabled: proptypes.bool,
-  id: proptypes.string,
-  onChange: proptypes.func,
-  checkedList: proptypes.array,
 };
 
-ReplyButtons.defaultProps = {
-  disabled: false,
-  onChange: () => {},
-  checkedList: [],
-};
+export default ReplyButtons;
