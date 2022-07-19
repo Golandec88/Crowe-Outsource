@@ -8,3 +8,8 @@ export type requestsTablePropsType = {
   loading: boolean;
   statuses: number[];
 };
+
+export type columnsType = {
+  id: string;
+  label: string;
+};

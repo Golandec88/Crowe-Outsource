@@ -1,6 +1,19 @@
+import { datesType, transactionType } from "@store/types";
+import React, { FC, useState } from "react";
 import { getTransactions } from "@modules/request/creators";
+import useItemsUploader from "@hooks/items-uploader";
 import { useTranslation } from "react-i18next";
+
+import { cstTableBodyType } from "@views/transactions/types";
+import s from "@components/tables/requests/appeals/style.module.scss";
+
 import Title from "@components/title";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import TableSkeleton from "@components/tables/skeleton";
+import Button from "@mui/material/Button";
+import { SearchRounded } from "@mui/icons-material";
 import {
   TableBody,
   TableCell,
@@ -10,16 +23,6 @@ import {
   Paper,
   TextField,
 } from "@mui/material";
-import s from "@components/tables/requests/appeals/style.module.scss";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import React, { FC, useState } from "react";
-import useItemsUploader from "@hooks/items-uploader";
-import TableSkeleton from "@components/tables/skeleton";
-import Button from "@mui/material/Button";
-import { SearchRounded } from "@mui/icons-material";
-import { datesType, transactionType } from "@store/types";
 
 const Transactions: FC = () => {
   const { t } = useTranslation();
@@ -35,7 +38,7 @@ const Transactions: FC = () => {
     fromDate,
     toDate,
   });
-  const columns = [
+  const columns: string[] = [
     "docNum",
     "debit",
     "accCo",
@@ -101,13 +104,7 @@ const Transactions: FC = () => {
   );
 };
 
-interface ICstTableBody {
-  loading: boolean;
-  transactions: transactionType[];
-  columns: string[];
-}
-
-const CstTableBody: FC<ICstTableBody> = (props) => {
+const CstTableBody: FC<cstTableBodyType> = (props) => {
   const { loading, transactions, columns } = props;
   const { t } = useTranslation();
 

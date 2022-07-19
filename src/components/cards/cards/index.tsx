@@ -1,12 +1,9 @@
 import { Box } from "@mui/material";
 import s from "./style.module.scss";
 import React, { ReactNode } from "react";
+import { cardType } from "@components/cards/cards/types";
 
-const Card: React.FC<{
-  children: ReactNode;
-  marginBottom?: boolean;
-  disableRadius?: "top" | "bottom" | "right" | "left" | "all";
-}> = (props) => {
+const Card: React.FC<cardType> = (props) => {
   const { children, marginBottom = false, disableRadius } = props;
 
   return (

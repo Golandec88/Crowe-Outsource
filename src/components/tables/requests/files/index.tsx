@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import SelectTable from "@components/tables/requests/files/table.jsx";
+import SelectTable from "@components/tables/requests/files/table.js";
 import Card from "@components/cards/cards";
 import Title from "@components/title";
 import useItemsUploader from "@hooks/items-uploader";
@@ -7,19 +7,15 @@ import { getClassifications } from "@modules/request/creators";
 import TableFilter from "./table-filter";
 import { useTranslation } from "react-i18next";
 import React from "react";
-import {
-  classificationsType,
-  filesType,
-  requestType,
-  statusesType,
-} from "@store/types";
+import { classificationsType, filesType, requestType } from "@store/types";
+import { fileTableType } from "@components/tables/requests/files/types";
 
-const FileTable: React.FC<{
-  selected: requestType;
-  statuses: statusesType;
-  checkedList: filesType[];
-  setCheckList: (value: filesType[]) => void;
-}> = ({ selected, statuses, checkedList, setCheckList }) => {
+const FileTable: React.FC<fileTableType> = ({
+  selected,
+  statuses,
+  checkedList,
+  setCheckList,
+}) => {
   const { t } = useTranslation();
   const [{ items: classifications }] = useItemsUploader<classificationsType[]>(
     "request",
@@ -27,6 +23,7 @@ const FileTable: React.FC<{
     "classifications",
     getClassifications
   );
+
   return (
     <>
       <Card>
@@ -34,7 +31,7 @@ const FileTable: React.FC<{
           <Grid item xs={12}>
             <Title size="small" text={t("userFiles")} />
 
-            {/*<TableFilter classifications={classifications} />*/}
+            <TableFilter classifications={classifications} />
           </Grid>
 
           {selected && (
@@ -43,7 +40,6 @@ const FileTable: React.FC<{
                 <SelectTable
                   classifications={classifications}
                   files={selected.request.attachedFiles}
-                  selected={selected}
                   status={statuses[selected.request.requestStatus]}
                   checkedList={checkedList}
                   setCheckList={setCheckList}

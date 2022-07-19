@@ -1,11 +1,10 @@
-import { forwardRef, useState } from "react";
+import React, { ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
-import proptypes from "prop-types";
-import { clientType } from "@types/user";
-import s from "@components/tables/requests/manager/style.module.scss";
 import { removeClientsFromProject } from "@modules/project/creators";
 import { setMessage } from "@modules/global/creators";
-import { useDispatch } from "react-redux";
+
+import { clientsType } from "@components/modals/clients/types";
+import s from "@components/tables/requests/manager/style.module.scss";
 
 import {
   Dialog,
@@ -20,27 +19,30 @@ import {
   TableCell,
   TableBody,
   TableContainer,
+  SlideProps,
 } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-
 import TableSkeleton from "@components/tables/skeleton";
 import RequestsList from "@components/modals/requests";
 
-const Transition = forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
+const Transition = React.forwardRef<ReactElement, SlideProps>((props, ref) => {
+  return (
+    <Slide direction="up" ref={ref} {...props}>
+      {props.children}
+    </Slide>
+  );
 });
 
-export default function Clients({
+const Clients: React.FC<clientsType> = ({
   model,
   close,
   clients,
   loading,
   disableAdd,
   id,
-}) {
+}) => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
 
   const [addRequestsListModal, setRequestsListModal] = useState(false);
   const [removedClient, setRemovedClient] = useState(null);
@@ -172,15 +174,5 @@ export default function Clients({
       />
     </>
   );
-}
-
-Clients.propTypes = {
-  model: proptypes.bool,
-  close: proptypes.func,
-  loading: proptypes.bool,
-  clients: proptypes.oneOfType([
-    proptypes.arrayOf(clientType()),
-    proptypes.string,
-  ]),
-  disableAdd: proptypes.bool,
 };
+export default Clients;

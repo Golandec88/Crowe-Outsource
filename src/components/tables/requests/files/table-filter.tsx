@@ -1,13 +1,19 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { InputAdornment, MenuItem, TextField } from "@mui/material";
-import s from "@components/tables/requests/files/style.module.scss";
-import * as Icon from "@mui/icons-material";
 import { classificationsType } from "@store/types";
 
-const TableFilter: React.FC<classificationsType[]> = (classifications) => {
-  const [model, setModel] = useState<classificationsType[]>([]);
-  const [subModel, setSubModel] = useState([]);
+import s from "@components/tables/requests/files/style.module.scss";
+
+import { InputAdornment, MenuItem, TextField } from "@mui/material";
+import * as Icon from "@mui/icons-material";
+
+const TableFilter: React.FC<{ classifications: classificationsType[] }> = ({
+  classifications,
+}) => {
+  const [model, setModel] = useState<classificationsType>(
+    {} as classificationsType
+  );
+  const [subModel, setSubModel] = useState<string>("");
   const { t } = useTranslation();
 
   return (
@@ -31,15 +37,18 @@ const TableFilter: React.FC<classificationsType[]> = (classifications) => {
             select
             label={t("documentType")}
             value={model}
-            onChange={(event) => setModel(event.target.value)}
+            onChange={(event) => setModel(JSON.parse(event.target.value))}
           >
             {classifications.map((option, index) => (
-              <MenuItem key={option.name + index} value={option}>
+              <MenuItem
+                key={option.name + index}
+                value={JSON.stringify(option)}
+              >
                 {option.name}
               </MenuItem>
             ))}
           </TextField>
-          ;
+
           <TextField
             className={s.textField}
             id="outlined-select-currency"

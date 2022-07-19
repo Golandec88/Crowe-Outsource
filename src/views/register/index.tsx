@@ -1,16 +1,17 @@
 import validationRules from "@utils/use-form-validation-rules";
 import { registerUser } from "@modules/user/creators";
-import s from "./style.module.scss";
 import { t } from "i18next";
 import { useForm } from "react-hook-form";
+import React from "react";
+import { registerType } from "@store/types";
+import { formType } from "@views/register/types";
+import { UseFormReturn } from "react-hook-form/dist/types/form";
+
+import s from "./style.module.scss";
 
 import { Box, Button, Paper } from "@mui/material";
 import Field from "@fields/field";
 import Title from "@components/title";
-import { registerType } from "@store/types";
-import React from "react";
-import { formType } from "@views/register/types";
-import { UseFormReturn } from "react-hook-form/dist/types/form";
 
 const RegisterUser: React.FC = () => {
   const {

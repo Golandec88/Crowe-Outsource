@@ -1,19 +1,20 @@
-import proptypes from "prop-types";
-import { projectType } from "@types/project";
 import {
   getProjectClients,
   getProjectOperators,
 } from "@modules/project/creators";
-import s from "./style.module.scss";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import React, { useState } from "react";
+
+import { projectsType } from "@components/projects/types";
+import { IRootState } from "@store/types";
+
+import s from "./style.module.scss";
 
 import ClientsModal from "@components/modals/clients";
 import OperatorsModal from "@components/modals/operators";
 import CloseIcon from "@mui/icons-material/Close";
 import ProjectCard from "@components/cards/project";
-
 import IconButton from "@mui/material/IconButton";
 import {
   DialogActions,
@@ -24,23 +25,28 @@ import {
   Dialog,
 } from "@mui/material";
 
-export default function Projects({ items, onAddProject, role, loading }) {
+const Projects: React.FC<projectsType> = ({
+  items,
+  onAddProject,
+  role,
+  loading,
+}) => {
   const { t } = useTranslation();
-  const [selected, setSelected] = useState();
+  const [selected, setSelected] = useState("");
   const [clientsModal, setClientsModal] = useState(false);
   const [operatorsModal, setOperatorsModal] = useState(false);
   const [addProjectModal, setAddProjectModal] = useState(false);
-  const [projectName, setProjectName] = useState(null);
-  const operators = useSelector(({ project }) => project.operators);
+  const [projectName, setProjectName] = useState<string>("");
+  const operators = useSelector(({ project }: IRootState) => project.operators);
   const operatorsLoading = useSelector(
-    ({ global }) => global.loadingFields.operators
+    ({ global }: IRootState) => global.loadingFields.operators
   );
-  const clients = useSelector(({ project }) => project.clients);
+  const clients = useSelector(({ project }: IRootState) => project.clients);
   const clientsLoading = useSelector(
-    ({ global }) => global.loadingFields.clients
+    ({ global }: IRootState) => global.loadingFields.clients
   );
 
-  function onChange(type, id) {
+  function onChange(type: string, id: string) {
     setSelected(id);
     if (type === "clients") {
       if (role === "manager") getProjectClients(id);
@@ -53,7 +59,7 @@ export default function Projects({ items, onAddProject, role, loading }) {
   }
   function close() {
     setAddProjectModal(false);
-    setProjectName(null);
+    setProjectName("");
   }
 
   return (
@@ -94,7 +100,7 @@ export default function Projects({ items, onAddProject, role, loading }) {
           role === "manager"
             ? clients
             : selected
-            ? items.find((item) => item.id === selected).requests
+            ? items.find((item) => item.id === selected)?.requests || []
             : []
         }
         loading={clientsLoading}
@@ -138,7 +144,7 @@ export default function Projects({ items, onAddProject, role, loading }) {
             color="primary"
             disableElevation
             onClick={() => {
-              onAddProject(projectName);
+              onAddProject && onAddProject(projectName);
               close();
             }}
           >
@@ -157,15 +163,6 @@ export default function Projects({ items, onAddProject, role, loading }) {
       </Dialog>
     </>
   );
-}
+};
 
-// Projects.propTypes = {
-//   items: proptypes.arrayOf(projectType()),
-//   onAddProject: proptypes.oneOfType([proptypes.func, null]),
-//   role: proptypes.oneOf(["manager", "operator"]),
-//   loading: proptypes.bool,
-// };
-//
-// Projects.defaultProps = {
-//   items: [],
-// };
+export default Projects;

@@ -4,14 +4,11 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { getInfo } from "@modules/user/creators";
 import { requestType } from "@store/types";
+import { namesType } from "@forms/requests/user-info/types";
 
-const UserInfo: React.FC<{ form: requestType }> = ({
-  form,
-}: {
-  form: requestType;
-}) => {
+const UserInfo: React.FC<{ form: requestType }> = ({ form }) => {
   const dispatch = useDispatch();
-  const [{ name, lastname, surname }, setNames] = useState({
+  const [{ name, lastname, surname }, setNames] = useState<namesType>({
     name: "",
     lastname: "",
     surname: "",
@@ -173,10 +170,7 @@ const UserInfo: React.FC<{ form: requestType }> = ({
   );
 };
 
-function updateName(
-  form: requestType,
-  setNames: (names: { name: string; lastname: string; surname: string }) => void
-) {
+function updateName(form: requestType, setNames: (names: namesType) => void) {
   const director = form?.request.companyInfo.director;
   const identity = form?.request.passportData.pinfl;
   const callback = (value: any) => setNames(formatName(value.Name));

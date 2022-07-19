@@ -1,11 +1,15 @@
-import Button from "@mui/material/Button";
 import { useTranslation } from "react-i18next";
-import Dialogs from "@components/modals/reply-dialog";
-// import proptypes from "prop-types";
 import React, { useState } from "react";
 import { replyOfRequest } from "@modules/request/creators";
 import { setMessage } from "@modules/global/creators";
-import { callbackType, filesType, infoType } from "@store/types";
+import { filesType } from "@store/types";
+
+import Button from "@mui/material/Button";
+import Dialogs from "@components/modals/reply-dialog";
+import {
+  colorsType,
+  replyBttonsType,
+} from "@forms/requests/reply-buttons/types";
 
 const buttons = [
   {
@@ -23,26 +27,15 @@ const buttons = [
     color: "primary",
     text: "acceptRequest",
   },
-] as {
-  color:
-    | "inherit"
-    | "primary"
-    | "secondary"
-    | "success"
-    | "error"
-    | "info"
-    | "warning";
-  type: string;
-  text: string;
-}[];
+] as colorsType[];
 
-const ReplyButtons: React.FC<{
-  disabled?: boolean;
-  id: string;
-  staffType: "call-center" | "manager";
-  onChange: (modelType: string | null, id: string) => void;
-  checkedList: filesType[];
-}> = ({ disabled = false, id, staffType, onChange, checkedList }) => {
+const ReplyButtons: React.FC<replyBttonsType> = ({
+  disabled = false,
+  id,
+  staffType,
+  onChange,
+  checkedList,
+}) => {
   const { t } = useTranslation();
 
   const [open, setOpen] = useState(false);

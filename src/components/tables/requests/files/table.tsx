@@ -1,23 +1,25 @@
-import proptypes from "prop-types";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
-import s from "./style.module.scss";
 import FileItem from "./file-item";
-import { downloadFile as downloadFileAction } from "@modules/request/creators.ts";
-import downloadFile from "@utils/download-file.ts";
-import { useState } from "react";
 
-export default function SelectTable({
+import s from "./style.module.scss";
+
+import { downloadFile as downloadFileAction } from "@modules/request/creators";
+import downloadFile from "@utils/download-file";
+import React, { useState } from "react";
+import { classificationsType, filesType, requestType } from "@store/types";
+import { selectTableType } from "@components/tables/requests/files/types";
+
+const SelectTable: React.FC<selectTableType> = ({
   files,
   classifications,
   status,
-  selected,
   checkedList,
   setCheckList,
-}) {
+}) => {
   return (
     <>
       <TableContainer>
@@ -26,7 +28,6 @@ export default function SelectTable({
             files={files}
             classifications={classifications}
             status={status}
-            selected={selected}
             checkedList={checkedList}
             setCheckList={setCheckList}
           />
@@ -34,28 +35,18 @@ export default function SelectTable({
       </TableContainer>
     </>
   );
-}
-
-SelectTable.propTypes = {
-  files: proptypes.array,
-  classifications: proptypes.array,
-  status: proptypes.string,
-  selected: proptypes.object,
-  checkedList: proptypes.array,
-  setCheckList: proptypes.func,
 };
 
-function TBody({
+const TBody: React.FC<selectTableType> = ({
   files,
   classifications,
   status,
-  selected,
   checkedList,
   setCheckList,
-}) {
-  const [localCheckList, setLocalCheckList] = useState([]);
+}) => {
+  const [localCheckList, setLocalCheckList] = useState<string[]>([]);
 
-  function onChangeFile(index, value) {
+  function onChangeFile(index: number, value: string) {
     const result = Array.from(localCheckList);
     result[index] = value;
 
@@ -77,8 +68,8 @@ function TBody({
               <TableCell className={s.cell}>
                 <FileItem
                   info={{
-                    name: fileName,
-                    classificationId: fileClassificationId,
+                    fileName,
+                    fileClassificationId,
                   }}
                   classifications={classifications}
                   type={localCheckList[index] ?? "wait"}
@@ -94,38 +85,6 @@ function TBody({
       </TableBody>
     </>
   );
-}
-
-TBody.propTypes = {
-  files: proptypes.array,
-  classifications: proptypes.array,
-  status: proptypes.string,
-  selected: proptypes.object,
-  checkedList: proptypes.array,
-  setCheckList: proptypes.func,
 };
 
-TBody.defaultProps = {
-  files: [],
-  classifications: [],
-};
-
-function format({ fileClassificationId, fileName }, classifications) {
-  const obj = {
-    classification: null,
-    subClass: null,
-    fileName: null,
-  };
-  classifications.forEach(({ subClasses, name }) => {
-    subClasses.forEach((item) => {
-      if (fileClassificationId === item.id) {
-        return Object.assign(obj, {
-          classification: name,
-          subClass: item.name,
-          fileName: fileName,
-        });
-      }
-    });
-  });
-  return obj;
-}
+export default SelectTable;

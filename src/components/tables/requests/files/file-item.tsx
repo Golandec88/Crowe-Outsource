@@ -1,27 +1,25 @@
-import {
-  attachedFilesType,
-  classificationType,
-  fileCheckTypes,
-} from "@types/request.js";
-import proptypes from "prop-types";
+import React from "react";
 import { useTranslation } from "react-i18next";
-import { Check, Close, Download } from "@mui/icons-material";
-import { IconButton, Tooltip } from "@mui/material";
+
 import s from "./style.module.scss";
 
-export default function FileItem({
+import { Check, Close, Download } from "@mui/icons-material";
+import { IconButton, Tooltip } from "@mui/material";
+import { fileItemType } from "@components/tables/requests/files/types";
+
+const FileItem: React.FC<fileItemType> = ({
   type,
   counter,
   classifications,
   info,
   onChange,
   status,
-}) {
+}) => {
   const { t } = useTranslation();
 
   return (
     <>
-      {status === "ManagerInProcess" ? (
+      {status === 1 ? (
         <Tooltip placement="left" title={t("fileCheckStatuses." + type)}>
           <div
             className={`${s.chip} ${s[type]} ${
@@ -29,7 +27,7 @@ export default function FileItem({
             }`}
           >
             <span>
-              {counter}. {formatName(info.classificationId)}
+              {counter}. {formatName(info?.fileClassificationId!)}
             </span>
 
             <div className={s.buttons}>
@@ -69,7 +67,7 @@ export default function FileItem({
             }`}
           >
             <span>
-              {counter}. {formatName(info.classificationId)}
+              {counter}. {formatName(info?.fileClassificationId!)}
             </span>
             <div className={s.buttons}>
               <IconButton
@@ -87,12 +85,12 @@ export default function FileItem({
     </>
   );
 
-  function formatName(classificationId) {
+  function formatName(fileClassificationId: string) {
     if (!classifications?.length) return t("loading") + "...";
 
     return classifications.map(function ({ subClasses, name: parentName }) {
       return subClasses.map(function ({ id, name: subName }) {
-        if (id === classificationId) {
+        if (id === fileClassificationId) {
           if (parentName !== subName) {
             return `${parentName} - ${subName}`;
           }
@@ -101,13 +99,6 @@ export default function FileItem({
       });
     });
   }
-}
-
-FileItem.propTypes = {
-  onChange: proptypes.func,
-  counter: proptypes.number,
-  type: fileCheckTypes(),
-  info: attachedFilesType(),
-  classifications: proptypes.arrayOf(classificationType()),
-  status: proptypes.string,
 };
+
+export default FileItem;

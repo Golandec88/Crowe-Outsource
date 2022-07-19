@@ -12,14 +12,9 @@ import {
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { useTranslation } from "react-i18next";
+import { dialogsType } from "@components/modals/reply-dialog/types";
 
-const Dialogs: React.FC<{
-  model: boolean;
-  confirm: (arg?: string) => void;
-  close: () => void;
-  type: string | null;
-  text?: string;
-}> = (props) => {
+const Dialogs: React.FC<dialogsType> = (props) => {
   const { model, confirm, close, type, text = "" } = props;
 
   const { t } = useTranslation();

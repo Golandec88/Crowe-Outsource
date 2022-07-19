@@ -1,3 +1,12 @@
+import getRequestColor from "@utils/request-color";
+import {
+  columnsType,
+  requestsTablePropsType,
+} from "@components/tables/requests/appeals/types";
+import React, { ReactNode } from "react";
+
+import s from "./style.module.scss";
+
 import {
   Grid,
   IconButton,
@@ -12,16 +21,11 @@ import {
   Chip,
   Tooltip,
 } from "@mui/material";
-import s from "./style.module.scss";
 import * as Icon from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
-import getRequestColor from "@utils/request-color";
 import TableSkeleton from "@components/tables/skeleton";
-import React, { ReactNode } from "react";
-import { requestType } from "@store/types";
-import { requestsTablePropsType } from "@components/tables/requests/appeals/types";
 
-const columns = [
+const columns: columnsType[] = [
   { id: "tin", label: "tin" },
   { id: "data", label: "date" },
   { id: "notification", label: "" },

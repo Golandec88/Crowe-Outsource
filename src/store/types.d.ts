@@ -86,6 +86,7 @@ export type companyInfoType = {
   headAccountant: string;
   phone: string;
   email: string;
+  nds: string;
 };
 
 export type passportDataType = {
@@ -121,10 +122,10 @@ export type datesType = {
 };
 
 export type filesType = {
-  name: string;
+  name?: string;
   fileName: string;
-  guid: string;
-  fileClassificationId: string;
+  guid?: string;
+  fileClassificationId?: string;
 };
 
 export type addManagerActivityType = {
@@ -210,7 +211,7 @@ export type classificationsSubClassesType = {
 
 export type getRequestsType = {
   statuses: number[];
-  isSilent: boolean;
+  isSilent?: boolean;
 };
 
 export type transactionType = {
